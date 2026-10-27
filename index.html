@@ -5505,7 +5505,7 @@ function tCanWork(u,t){ return tCanManage(u,t)||t.assigneeId===u.id; }          
 function tIsApprover(u,t){ return (tIsAdmin(u)||(u.role==="hod"&&t.dept===u.dept))&&u.id!==t.assigneeId; }
 function tCanDelete(u,t){ return tIsAdmin(u)||(u.role==="hod"&&t.dept===u.dept&&t.assigneeId!==u.id)||(t.creatorId===u.id&&t.stage==="new"); }
 const tCanCreate=u=>!TASK_NO_CREATE.includes(u.role);
-const tDeptsFor=u=>tIsAdmin(u)?DEPTS:[u.dept];
+const tDeptsFor=u=>tIsAdmin(u)?(u.dept&&!DEPTS.includes(u.dept)?[u.dept,...DEPTS]:DEPTS):[u.dept].filter(Boolean);
 function tAssignable(state,u,dept){ const act=state.users.filter(x=>x.active&&!TASK_NO_CREATE.includes(x.role)); return tIsAdmin(u)?act:act.filter(x=>x.dept===dept||x.id===u.id); }
 const tOverdue=t=>T_WORK.includes(t.stage)&&!!t.plannedDate&&t.plannedDate<tToday();
 function tDepsOpen(state,t){ return (t.deps||[]).map(k=>(state.tasks||[]).find(x=>x.key===k)).filter(x=>x&&x.stage!=="done"&&x.stage!=="cancelled"); }
@@ -5563,7 +5563,7 @@ function makeTaskActions(commit,user,toast){
       return run((d,u)=>{
         if(!tCanCreate(u)) fail("Your role can view and comment on tasks but not create them.");
         if(!String(f.title||"").trim()) fail("Give the task a title.");
-        if(!tDeptsFor(u).includes(f.dept)) fail("You can only create tasks in your own department.");
+        if(!f.dept||(!tIsAdmin(u)&&!tDeptsFor(u).includes(f.dept))) fail("You can only create tasks in your own department.");
         if(!tAssignable(d,u,f.dept).some(x=>x.id===f.assigneeId)) fail("Choose someone from this department to do the task.");
         checkDates(f.startDate,f.plannedDate);
         const a=tUser(d,f.assigneeId);
@@ -5585,7 +5585,7 @@ function makeTaskActions(commit,user,toast){
         if(!tCanWork(u,t)) fail("You can't edit this task.");
         const nx={...t,...patch};
         if(!String(nx.title).trim()) fail("The title can't be empty.");
-        if(keys.includes("dept")&&!tDeptsFor(u).includes(nx.dept)) fail("You can only move tasks within your own department.");
+        if(keys.includes("dept")&&(!nx.dept||(!tIsAdmin(u)&&!tDeptsFor(u).includes(nx.dept)))) fail("You can only move tasks within your own department.");
         if((keys.includes("dept")||keys.includes("assigneeId"))&&!tAssignable(d,u,nx.dept).some(x=>x.id===nx.assigneeId)) fail(`${(tUser(d,nx.assigneeId)||{name:"That person"}).name} is not in ${nx.dept}. Choose someone from that department.`);
         if(keys.includes("plannedDate")||keys.includes("startDate")) checkDates(nx.startDate,nx.plannedDate);
         if(keys.includes("deps")){
@@ -5635,7 +5635,7 @@ function makeTaskActions(commit,user,toast){
         const t=find(d,key); if(!t||!taskVisible(u,t)) fail("You can't comment on this task.");
         const body=String(text||"").trim().slice(0,2000); if(!body) fail("Write something first.");
         const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
-        const ment=d.users.filter(x=>x.active&&x.id!==u.id&&new RegExp("(^|[\\s(])@"+esc(x.username)+"(?![\\w.-])","i").test(body)).map(x=>x.id);
+        const ment=d.users.filter(x=>x.active&&x.username&&x.id!==u.id&&new RegExp("(^|[\\s(])@"+esc(x.username)+"(?![\\w.-])","i").test(body)).map(x=>x.id);
         t.comments=t.comments||[]; t.comments.push({id:uid(),uid:u.id,by:u.name,text:body,at:nowISO(),mentions:ment});
         t.watchers=[...new Set([...(t.watchers||[]),...ment])]; t.updatedAt=nowISO();
       });
@@ -5706,7 +5706,7 @@ function tSorted(list){ return list.slice().sort((a,b)=>TPRI[a.priority].rank-TP
 /* ---- quick add: "Prepare ration list @ali tomorrow !high #ramadan" ---- */
 function tParseQuick(text,state,user){
   let s=" "+text+" "; const out={tags:[]};
-  s=s.replace(/\s@([\w.-]+)/g,(_,n)=>{ const u=state.users.find(x=>x.username.toLowerCase()===n.toLowerCase()||x.name.toLowerCase().split(" ")[0]===n.toLowerCase()); if(u) out.assigneeId=u.id; else out.badUser=n; return " "; });
+  s=s.replace(/\s@([\w.-]+)/g,(_,n)=>{ const u=state.users.find(x=>(x.username||"").toLowerCase()===n.toLowerCase()||(x.name||"").toLowerCase().split(" ")[0]===n.toLowerCase()); if(u) out.assigneeId=u.id; else out.badUser=n; return " "; });
   s=s.replace(/\s!(urgent|high|medium|low)\b/gi,(_,p)=>{ out.priority=p[0].toUpperCase()+p.slice(1).toLowerCase(); return " "; });
   s=s.replace(/\s#([\w-]+)/g,(_,tg)=>{ out.tags.push(tg.toLowerCase()); return " "; });
   const days=["sun","mon","tue","wed","thu","fri","sat"];
@@ -5985,7 +5985,7 @@ function TaskModal({tkey,state,user,A,timer,onClose,open}){
   const mentionables=state.users.filter(u=>u.active&&u.id!==user.id);
   const onCmt=e=>{ const v=e.target.value; setCmt(v); const m=/(^|\s)@([\w.-]*)$/.exec(v.slice(0,e.target.selectionStart)); setMent(m?m[2].toLowerCase():null); };
   const pickMent=u=>{ setCmt(c=>c.replace(/(^|\s)@([\w.-]*)$/,(_,s)=>`${s}@${u.username} `)); setMent(null); };
-  const mList=ment===null?[]:mentionables.filter(u=>u.username.toLowerCase().includes(ment)||u.name.toLowerCase().includes(ment)).slice(0,6);
+  const mList=ment===null?[]:mentionables.filter(u=>(u.username||"").toLowerCase().includes(ment)||(u.name||"").toLowerCase().includes(ment)).slice(0,6);
   const renderText=s=>s.split(/(@[\w.-]+)/g).map(p=>p[0]==="@"&&state.users.some(u=>"@"+u.username===p)?html`<span class="m">${p}</span>`:p);
   const del=()=>{ if(confirm(`Delete ${t.id} “${t.title}”? This cannot be undone.`)&&A.tDelete(t.key)) onClose(); };
   const creator=tUser(state,t.creatorId);
