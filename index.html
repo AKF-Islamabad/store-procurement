@@ -407,6 +407,32 @@ body{background:radial-gradient(1200px 600px at 100% -10%,color-mix(in srgb,var(
 .formcard .link{font-weight:800;color:var(--brand-2);font-size:13px;margin-top:4px}
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
 .stepcard{display:grid;gap:6px;align-content:start;justify-items:start;border:1px solid var(--line);border-radius:var(--r-sm);padding:14px;background:var(--surface-2)}
+/* Stock: received / issued action tiles, receipt-type toggle, register */
+.stock-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;gap:12px;align-items:stretch}
+.sa{display:flex;gap:12px;align-items:center;text-align:left;padding:14px 16px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);cursor:pointer;font:inherit;color:var(--ink);transition:transform .15s,border-color .15s}
+.sa:hover:not(:disabled){transform:translateY(-1px);border-color:var(--brand-3)}
+.sa:disabled{opacity:.5;cursor:not-allowed}
+.sa b{display:block;font-size:14.5px}.sa small{display:block;color:var(--ink-3);font-size:12px;margin-top:2px}
+.sa-ic{width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;background:var(--ice);color:var(--brand-2)}
+.sa-in .sa-ic{background:var(--ok-bg);color:var(--ok)} .sa-out .sa-ic{background:var(--warn-bg);color:var(--warn)}
+.sa-more{align-content:center;justify-content:flex-end;max-width:260px}
+.kind-toggle{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kt{display:grid;gap:2px;text-align:left;padding:12px 14px;border-radius:var(--r-sm);border:1.5px solid var(--line);background:var(--surface-2);cursor:pointer;font:inherit;color:var(--ink)}
+.kt b{font-size:15px;letter-spacing:.02em}.kt span{font-size:12.5px;color:var(--ink-2)}
+.kt.on.kt-p{border-color:var(--info);background:var(--info-bg)} .kt.on.kt-d{border-color:var(--ok);background:var(--ok-bg)}
+.reg-kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.rk{display:grid;gap:2px;text-align:left;padding:10px 12px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--surface-2);font:inherit;color:var(--ink)}
+button.rk{cursor:pointer} button.rk.on{border-color:var(--brand-3);background:var(--ice)}
+.rk span{font-size:11.5px;color:var(--ink-3);font-weight:700;text-transform:uppercase;letter-spacing:.04em}.rk b{font-size:20px}
+.rk-p b,.c-p{color:var(--info)} .rk-d b,.c-d{color:var(--ok)} .rk-i b,.c-i{color:var(--warn)} .rk-bad b{color:var(--bad)}
+.reg-tbl th small{font-weight:600;opacity:.75;text-transform:none;letter-spacing:0}
+.reg-tbl td:nth-child(3){min-width:200px}
+.reg-tbl tfoot td{border-top:2px solid var(--line-2);background:var(--surface-2)}
+.import-mode{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.im{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1.5px solid var(--line);border-radius:var(--r-sm);cursor:pointer;background:var(--surface-2)}
+.im b{display:block}.im small{display:block;color:var(--ink-2);font-size:12px;margin-top:2px;line-height:1.45}
+.im.on{border-color:var(--brand-3);background:var(--ice)} .im.on.bad{border-color:var(--bad);background:var(--bad-bg)}
+@media (max-width:900px){.stock-actions{grid-template-columns:1fr}.sa-more{max-width:none;justify-content:flex-start}.reg-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.import-mode,.kind-toggle{grid-template-columns:1fr}}
 .blankform .bf-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px}
 .blankform .bf-fields div{display:grid;gap:2px;font-size:12px;color:var(--ink-2)}
 .blankform .bf-fields i{display:block;border-bottom:1px solid var(--ink-3);height:20px}
@@ -3105,30 +3131,12 @@ function seedState(){
     { id:"V-004", name:"Al-Khidmat Builders",  ntn:"9988776-5", bank:"HBL 9988-7766-5544", cheque:true, contact:"0302-9988776", filer:true,  type:"Services", rating:3, category:"OTHER" },
     { id:"V-005", name:"Capital Food Depot",   ntn:"4455667-1", bank:"Askari 4455-6677-8899", cheque:true, contact:"0345-4455667", filer:true, type:"Goods", rating:4, category:"FOOD" },
   ];
-  const stock=[
-    { id:"AKF-ISB-CS1-MED-2026-00045", name:"Paracetamol 500mg",  category:"MED",  uom:"Box", qty:72,  price:1250, store:"CS1 Central Store 1", rack:"A-12", bin:"04", expiry:"2027-03-01", batch:"B-MED-05", min:30 },
-    { id:"AKF-ISB-CS1-MED-2026-00046", name:"ORS Sachets (50s)",   category:"MED",  uom:"Box", qty:18,  price:900,  store:"CS1 Central Store 1", rack:"A-13", bin:"01", expiry:daysAgo(-20).slice(0,10), batch:"B-MED-07", min:25 },
-    { id:"AKF-ISB-CS1-FOOD-2026-00012",name:"Food Pack 20kg",     category:"FOOD", uom:"Pcs", qty:118, price:3400, store:"CS1 Central Store 1", rack:"B-02", bin:"11", expiry:daysAgo(-12).slice(0,10), batch:"B-FOOD-05", min:50 },
-    { id:"AKF-ISB-CS1-FOOD-2026-00013",name:"Cooking Oil 5L",     category:"FOOD", uom:"Pcs", qty:40,  price:2650, store:"CS1 Central Store 1", rack:"B-03", bin:"02", expiry:"2027-01-15", batch:"B-FOOD-06", min:20 },
-    { id:"AKF-ISB-CS2-NFI-2026-00008", name:"Family Tent",        category:"NFI",  uom:"Pcs", qty:15,  price:15000,store:"CS2 Central Store 2", rack:"C-01", bin:"01", expiry:"", batch:"", min:10 },
-    { id:"AKF-ISB-CS2-NFI-2026-00009", name:"Blanket (Fleece)",   category:"NFI",  uom:"Pcs", qty:260, price:1100, store:"CS2 Central Store 2", rack:"C-04", bin:"06", expiry:"", batch:"", min:100 },
-    { id:"AKF-ISB-CS1-OFF-2026-00003", name:"A4 Paper Ream",      category:"OFF",  uom:"Pack",qty:9,   price:1150, store:"CS1 Central Store 1", rack:"D-01", bin:"03", expiry:"", batch:"", min:20 },
-    { id:"AKF-ISB-CS1-IT-2026-00002",  name:"Laptop (Core i5)",   category:"IT",   uom:"Pcs", qty:3,   price:165000,store:"CS1 Central Store 1", rack:"E-01", bin:"01", expiry:"", batch:"", min:2 },
-  ];
-  const ledger=[
-    { id:"L1", at:daysAgo(14,10), itemId:"AKF-ISB-CS1-MED-2026-00045", type:"in",  qty:50, ref:"AKF-GRN-P-2026-10-0001", note:"Purchase receipt" },
-    { id:"L2", at:daysAgo(13,11), itemId:"AKF-ISB-CS1-MED-2026-00045", type:"out", qty:8,  ref:"AKF-GIN-2026-0001", note:"Issued to Health camp" },
-    { id:"L3", at:daysAgo(12,14), itemId:"AKF-ISB-CS1-MED-2026-00045", type:"in",  qty:30, ref:"AKF-GRN-D-2026-10-0001", note:"Donation receipt" },
-    { id:"L4", at:daysAgo(5,15),  itemId:"AKF-ISB-CS1-FOOD-2026-00012", type:"in", qty:120, ref:"AKF-GRN-D-2026-10-0001", note:"Donation receipt" },
-    { id:"L5", at:daysAgo(4,16),  itemId:"AKF-ISB-CS1-FOOD-2026-00012", type:"out", qty:2, ref:"AKF-GIN-2026-0002", note:"Beneficiary distribution Nilore" },
-    { id:"L6", at:daysAgo(9,10),  itemId:"AKF-ISB-CS2-NFI-2026-00009", type:"in", qty:260, ref:"AKF-GRN-D-2026-10-0002", note:"Winter donation" },
-  ];
+  /* No demo stock: the real register is loaded with Excel Import → Stock register (AKF format). */
+  const stock=[];
+  const ledger=[];
   const docs=[
     { id:"AKF-GRN-P-2026-10-0001", type:"GRN-P", title:"Goods receipt (purchase)", at:daysAgo(14,10), by:"Bilal Ahmed", amount:62500, ref:"PO-2026-0044", store:"CS1 Central Store 1", lines:[{item:"Paracetamol 500mg",qty:50,uom:"Box",price:1250}] },
-    { id:"AKF-GRN-D-2026-10-0001", type:"GRN-D", title:"Goods receipt (donation)", at:daysAgo(12,14), by:"Bilal Ahmed", amount:445500, ref:"Donor: General Fund", store:"CS1 Central Store 1", lines:[{item:"Paracetamol 500mg",qty:30,uom:"Box",price:1250},{item:"Food Pack 20kg",qty:120,uom:"Pcs",price:3400}] },
-    { id:"AKF-GRN-D-2026-10-0002", type:"GRN-D", title:"Goods receipt (donation)", at:daysAgo(9,10), by:"Bilal Ahmed", amount:286000, ref:"Donor: Disaster", store:"CS2 Central Store 2", lines:[{item:"Blanket (Fleece)",qty:260,uom:"Pcs",price:1100}] },
     { id:"AKF-GIN-2026-0001", type:"GIN", title:"Goods Issuance Note", at:daysAgo(13,11), by:"Bilal Ahmed", amount:10000, ref:"AKF-SR-2026-0001", store:"CS1 Central Store 1", lines:[{item:"Paracetamol 500mg",qty:8,uom:"Box",price:1250}], gatePass:"AKF-GP-2026-10-0001", vehicle:"LEA-123", driver:"Ali" },
-    { id:"AKF-GIN-2026-0002", type:"GIN", title:"Goods Issuance Note", at:daysAgo(4,16), by:"Bilal Ahmed", amount:6800, ref:"Beneficiary AKF-BEN-RCT-2026-10-00125", store:"CS1 Central Store 1", lines:[{item:"Food Pack 20kg",qty:2,uom:"Pcs",price:3400}], gatePass:"AKF-GP-2026-10-0002", vehicle:"ICT-908", driver:"Rashid" },
   ];
   const T=(at,stage,uidv,by,role,action,comment)=>({at,stage,uid:uidv,by,role,action,comment:comment||""});
   const requests=[
@@ -3260,7 +3268,9 @@ const DB = {
   /* read everything and rebuild the in-memory state object */
   async load(){
     const authLoaded=!!(await sb.auth.getSession()).data.session;
-    const { data, error } = await sb.from("portal_rows").select("collection,id,data,created_at").order("created_at",{ascending:true}).limit(20000);
+    let { data, error } = await sb.from("portal_rows").select("collection,id,data,created_at").order("created_at",{ascending:true}).limit(20000);
+    /* before sign-in the locked table refuses the public key: show the login screen, not an error */
+    if(error && !authLoaded && (error.code==="42501" || /permission denied/i.test(error.message||""))){ data=[]; error=null; }
     if(error) throw error;
     const seed=seedState();
     const state={ version:3, settings:{...DEFAULT_SETTINGS} };
@@ -3427,7 +3437,31 @@ const linkOf=q=>q.token?vendorLink(q.token):"";
 function waNumber(c){ let d=String(c||"").replace(/\D/g,""); if(d.startsWith("00")) d=d.slice(2); if(d.startsWith("0")) d="92"+d.slice(1); return d; }
 function rfqMessage(rfq,req,v,link){ return `Assalam o Alaikum ${v.name},\n\n${SETTINGS.orgName||"Alkhidmat Foundation"} invites your quotation for ${rfq.id}${req?` (${req.purpose})`:""}.\n\nPlease open this secure link, review the items and submit your price before ${fmtDT(rfq.deadline)}:\n${link}\n\nState whether your price includes all taxes. The link works once and expires at the deadline.\n\nAdmin Officer, ${SETTINGS.orgName||"Alkhidmat Foundation"}`; }
 /* Vendor-submitted quotes store only amount + "includes tax"; totals are always recomputed here from the vendor profile */
-function normalizeVendorQuotes(state){ (state.rfqs||[]).forEach(r=>(r.quotes||[]).forEach(q=>{ if(q.byVendor&&q.amount!=null&&!q.calcDone){ const v=(state.vendors||[]).find(x=>x.id===q.vendorId)||{}; Object.assign(q,quoteCalc(Number(q.amount),!!q.inclusive,v)); if(!q.docs) q.docs=v.ntn&&v.bank&&v.cheque?100:80; } })); return state; }
+function normalizeVendorQuotes(state){ (state.rfqs||[]).forEach(r=>(r.quotes||[]).forEach(q=>{ if(q.byVendor&&q.amount!=null&&!q.calcDone){ const v=(state.vendors||[]).find(x=>x.id===q.vendorId)||{}; Object.assign(q,quoteCalc(Number(q.amount),!!q.inclusive,v)); if(!q.docs) q.docs=v.ntn&&v.bank&&v.cheque?100:80; } })); migrateStockDocs(state); return state; }
+/* Old document types: donation receipts "GRN-D" are now GDN-D, dispatch notes "GDN" are GIN. Numbers stay. */
+function migrateStockDocs(state){ (state.docs||[]).forEach(d=>{ if(d.type==="GRN-D"){ d.type="GDN-D"; d.title="Goods Donation Note (donation in kind)"; } else if(d.type==="GDN") d.type="GIN"; }); }
+/* Stock movement helpers shared by the register, the forms, the import and the Excel export */
+const RECEIPT_TYPES={ "GRN-P":"Purchased (GRN-P)", "GDN-D":"Donation in kind (GDN-D)" };
+const movementKind=l=>/^AKF-(OPENING|EXCEL-IMPORT)|^EXCEL-IMPORT/.test(l.ref)?"opening":l.type==="in"?(/^AKF-GRN-P/.test(l.ref)?"p":/^AKF-(GDN-D|GRN-D)/.test(l.ref)?"d":"adj"):(/^AKF-(GIN|GDN|BEN)/.test(l.ref)?"issued":"adj");
+function parseAnyDate(v){
+  if(v===null||v===undefined||v==="") return "";
+  if(v instanceof Date) return isNaN(v)?"":v.toISOString().slice(0,10);
+  if(typeof v==="number") return xlDate(v);
+  const s=String(v).trim(); let m=/^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(s); if(m) return `${m[1]}-${pad(+m[2],2)}-${pad(+m[3],2)}`;
+  m=/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})$/.exec(s); if(m){ let y=+m[3]; if(y<100) y+=2000; const d=+m[1], mo=+m[2]; if(mo<1||mo>12||d<1||d>31) return ""; return `${y}-${pad(mo,2)}-${pad(d,2)}`; }
+  const t=new Date(s); return isNaN(t)?"":t.toISOString().slice(0,10);
+}
+const itemKey=s=>String(s||"").toLowerCase().replace(/\s+/g," ").trim();
+function findOrCreateItem(d,{name,category,uom,price,store,rack,bin,expiry,batch,min}){
+  store=store||STORES[0]; name=String(name||"").replace(/\s+/g," ").trim();
+  let s=d.stock.find(x=>itemKey(x.name)===itemKey(name)&&x.store===store);
+  if(!s){ const cat=String(category||"OTHER").toUpperCase().replace(/[^A-Z0-9]/g,"")||"OTHER"; const code=store.split(" ")[0];
+    s={id:nextNumber(d,`AKF-ISB-${code}-${cat}-${YEAR}-`,5),name,category:cat,uom:uom||"Pcs",qty:0,price:Number(price)||0,store,rack:rack||"",bin:bin||"",expiry:expiry||"",batch:batch||"",min:Number(min)||0}; d.stock.push(s); }
+  return s;
+}
+const atOfDate=date=>!date||date===nowISO().slice(0,10)?nowISO():new Date(date+"T12:00:00").toISOString();
+/* Fiscal year runs 1 July – 30 June */
+function fiscalYears(state){ const ys=new Set(); const fy=iso=>{ const d=new Date(iso); return d.getMonth()>=6?d.getFullYear():d.getFullYear()-1; }; ys.add(fy(nowISO())); (state.ledger||[]).forEach(l=>ys.add(fy(l.at))); for(let y=Math.min(...ys);y<Math.max(...ys);y++) ys.add(y); return [...ys].sort((a,b)=>b-a).map(y=>({key:String(y),label:`FY ${y}-${String(y+1).slice(2)}`,from:`${y}-07-01`,to:`${y+1}-06-30`})); }
 const loadedScripts={};
 function loadScript(src){ if(!loadedScripts[src]) loadedScripts[src]=new Promise((ok,bad)=>{ const s=document.createElement("script"); s.src=src; s.onload=ok; s.onerror=()=>{ delete loadedScripts[src]; bad(new Error("Could not load "+src+" — check the internet connection")); }; document.head.appendChild(s); }); return loadedScripts[src]; }
 const JSQR_URL="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js";
@@ -3698,13 +3732,58 @@ function makeActions(commit, user, toast){
         log(d,"EXCEL-IMPORT",`Excel import · ${kind}`,`${rows.length} rows`);
       }); toast(`${n} ${kind} rows imported`,"ok"); return n;
     },
-    receiveDonation({store,donor,lines,note}){
-      let id; commit(d=>{ id=nextNumber(d,`AKF-GRN-D-${YEAR}-${MONTH()}-`); let amount=0;
-        lines.forEach(l=>{ amount+=l.qty*l.price; let s=d.stock.find(s=>s.name.toLowerCase()===l.item.toLowerCase()&&s.store===store);
-          if(!s){ const code=store.split(" ")[0]; s={id:nextNumber(d,`AKF-ISB-${code}-${l.category}-${YEAR}-`,5),name:l.item,category:l.category,uom:l.uom,qty:0,price:l.price,store,rack:l.rack||"",bin:l.bin||"",expiry:l.expiry||"",batch:l.batch||"",min:5}; d.stock.push(s); }
-          s.qty+=l.qty; d.ledger.unshift({id:uid(),at:nowISO(),itemId:s.id,type:"in",qty:l.qty,ref:id,note:"Donation · "+donor}); });
-        d.docs.unshift({id,type:"GRN-D",title:"Goods receipt (donation)",at:nowISO(),by:user.name,amount,ref:"Donor: "+donor,store,lines,note}); log(d,id,"Donation receipt created",`${donor} · ${pkr(amount)}`);
-      }); toast(`${id} created`,"ok");
+    /* Stock received outside a procurement request: purchased (GRN-P) or donation in kind (GDN-D) */
+    receiveStock({kind,date,store,from,ref,purpose,lines,note}){
+      let id; commit(d=>{ id=nextNumber(d,`AKF-${kind}-${YEAR}-${MONTH()}-`); const at=atOfDate(date); let amount=0;
+        const out=lines.map(l=>{ amount+=l.qty*l.price; const s=findOrCreateItem(d,{name:l.item,category:l.category,uom:l.uom,price:l.price,store,rack:l.rack,bin:l.bin,expiry:l.expiry,min:l.min});
+          s.qty+=l.qty; if(l.price) s.price=l.price; if(l.expiry) s.expiry=l.expiry; if(l.rack) s.rack=l.rack; if(l.bin) s.bin=l.bin;
+          d.ledger.unshift({id:uid(),at,itemId:s.id,type:"in",qty:l.qty,ref:id,note:(kind==="GRN-P"?"Purchase · ":"Donation in kind · ")+from});
+          return {item:s.name,qty:l.qty,uom:s.uom,price:l.price,expiry:l.expiry||""}; });
+        d.docs.unshift({id,type:kind,title:kind==="GRN-P"?"Goods Received Note (purchase)":"Goods Donation Note (donation in kind)",at,by:user.name,byId:user.id,amount,ref:ref||"",from,purpose,store,lines:out,note});
+        log(d,id,kind==="GRN-P"?"Stock received (purchase)":"Stock received (donation in kind)",`${from} · ${lines.length} item${lines.length>1?"s":""} · ${pkr(amount)}`);
+      }); toast(`${id} created · stock updated`,"ok");
+    },
+    /* Direct issue (GIN) — distributions and dispatches approved outside a store request; the approval reference is mandatory */
+    issueStock({date,store,to,purpose,receiver,approval,lines,note}){
+      let id; commit(d=>{ id=nextNumber(d,`AKF-GIN-${YEAR}-`); const at=atOfDate(date); let amount=0; const out=[];
+        lines.forEach(l=>{ const s=d.stock.find(x=>x.id===l.itemId); if(!s||l.qty<=0) return; s.qty=Math.max(0,s.qty-l.qty); amount+=l.qty*s.price; out.push({item:s.name,qty:l.qty,uom:s.uom,price:s.price});
+          d.ledger.unshift({id:uid(),at,itemId:s.id,type:"out",qty:l.qty,ref:id,note:"Issued to "+to}); });
+        d.docs.unshift({id,type:"GIN",title:"Goods Issuance Note",at,by:user.name,byId:user.id,amount,ref:approval,approval,store,lines:out,to:to+(receiver?" · received by "+receiver:""),purpose,note});
+        log(d,id,"Stock issued (GIN)",`${to} · ${out.length} item${out.length>1?"s":""} · approval ${approval}`);
+      }); toast(`GIN ${id} issued · stock updated`,"ok");
+    },
+    /* Excel import of the AKF stock register workbook (Home + Received + Dispatched sheets) */
+    importRegister({items,received,issued,store,replace,openingDate,defaultType}){
+      let res={items:0,received:0,issued:0,skipped:0}; commit(d=>{
+        if(replace){ const keep=x=>(x.ref&&(d.requests.some(r=>r.id===x.ref)||d.pos.some(p=>p.id===x.ref)));
+          d.stock=[]; d.ledger=[]; d.docs=d.docs.filter(x=>!["GRN-P","GDN-D","GRN-D","GIN","GDN","BEN","ST","RTN","DIS","PSV"].includes(x.type)||keep(x)); }
+        const fresh=new Set(); const openAt=atOfDate(openingDate);
+        items.forEach(it=>{ const before=d.stock.length; const s=findOrCreateItem(d,{...it,store:it.store||store}); if(d.stock.length>before) fresh.add(s.id);
+          if(it.min) s.min=it.min; if(it.price) s.price=it.price;
+          if(it.opening>0&&fresh.has(s.id)){ s.qty+=it.opening; d.ledger.unshift({id:uid(),at:openAt,itemId:s.id,type:"in",qty:it.opening,ref:"AKF-OPENING-"+openingDate,note:"Opening stock (stock register import)"}); }
+          res.items++; });
+        const groups=(rows,keyOf)=>{ const m=new Map(); rows.forEach(r=>{ const k=keyOf(r); if(!m.has(k)) m.set(k,[]); m.get(k).push(r); }); return [...m.values()]; };
+        const uniqueId=base=>{ let id=base,k=2; while(d.docs.some(x=>x.id===id)) id=base+"-"+(k++); return id; };
+        /* "Add" mode skips rows already in the portal: same document type, same date and the same items and quantities */
+        const sig=(type,date,lines)=>[type,date,lines.map(l=>itemKey(l.item||l.name)+":"+l.qty).sort().join(",")].join("|");
+        const have=new Set(replace?[]:d.docs.filter(x=>x.lines).map(x=>sig(x.type==="GRN-D"?"GDN-D":x.type,new Date(x.at).toLocaleDateString("en-CA"),x.lines)));
+        groups(received,r=>[r.type||defaultType,r.date,r.no].join("|")).forEach(g=>{ const f=g[0], type=f.type||defaultType; const xkey=sig(type,f.date,g);
+          if(have.has(xkey)){ res.skipped+=g.length; return; }
+          const id=uniqueId(`AKF-${type}-${f.date.slice(0,4)}-${f.date.slice(5,7)}-${pad(f.no||0,4)}`); const at=atOfDate(f.date); let amount=0;
+          const lines=g.map(r=>{ const s=findOrCreateItem(d,{name:r.name,store:r.store||store}); s.qty+=r.qty; amount+=r.qty*(s.price||0);
+            d.ledger.unshift({id:uid(),at,itemId:s.id,type:"in",qty:r.qty,ref:id,note:(type==="GRN-P"?"Purchase · ":"Donation in kind · ")+(r.from||"—")+(r.purpose?" · "+r.purpose:"")}); res.received++;
+            return {item:s.name,qty:r.qty,uom:s.uom,price:s.price||0}; });
+          d.docs.unshift({id,type,title:type==="GRN-P"?"Goods Received Note (purchase)":"Goods Donation Note (donation in kind)",at,by:user.name,byId:user.id,amount,ref:f.no?"Register no. "+f.no:"",from:g.map(r=>r.from).find(Boolean)||"",purpose:[...new Set(g.map(r=>r.purpose).filter(Boolean))].join(" · "),store:f.store||store,lines,note:"Imported from stock register (Excel)",xkey}); });
+        groups(issued,r=>[r.date,r.no,r.to].join("|")).forEach(g=>{ const f=g[0]; const xkey=sig("GIN",f.date,g);
+          if(have.has(xkey)){ res.skipped+=g.length; return; }
+          const id=uniqueId(`AKF-GIN-${f.date.slice(0,4)}-${pad(f.no||0,4)}`); const at=atOfDate(f.date); let amount=0;
+          const lines=g.map(r=>{ const s=findOrCreateItem(d,{name:r.name,store:r.store||store}); s.qty-=r.qty; amount+=r.qty*(s.price||0);
+            d.ledger.unshift({id:uid(),at,itemId:s.id,type:"out",qty:r.qty,ref:id,note:"Issued to "+(r.to||"—")+(r.purpose?" · "+r.purpose:"")}); res.issued++;
+            return {item:s.name,qty:r.qty,uom:s.uom,price:s.price||0}; });
+          d.docs.unshift({id,type:"GIN",title:"Goods Issuance Note",at,by:user.name,byId:user.id,amount,ref:f.no?"Register no. "+f.no:"",store:f.store||store,lines,to:f.to||"",purpose:[...new Set(g.map(r=>r.purpose).filter(Boolean))].join(" · "),note:"Imported from stock register (Excel)",xkey}); });
+        d.stock.forEach(s=>{ if(s.qty<0) s.qty=0; });
+        log(d,"EXCEL-IMPORT",replace?"Stock register imported (replaced all stock)":"Stock register imported",`${res.items} items · ${res.received} received rows · ${res.issued} issued rows${res.skipped?` · ${res.skipped} already imported, skipped`:""}`);
+      }); toast(`Stock register imported · ${res.items} items, ${res.received} received, ${res.issued} issued`,"ok"); return res;
     },
     stockMove(kind,{itemId,qty,note,toStore}){
       const map={transfer:["AKF-ST","Stock transfer"],return:["AKF-RTN","Return to store"],disposal:["AKF-DIS","Disposal"],psv:["AKF-PSV","Physical stock verification"]};
@@ -4056,7 +4135,7 @@ function DocModal({id,state,onClose,openReq}){
   else if(doc){ const isIssue=doc.type==="GIN"||doc.type==="GDN"; const req=/^AKF-(MR|SR)/.test(doc.ref)?reqOf(doc.ref):null;
     body=html`<div class="doc">${header(doc.type==="GDN"?"Goods dispatch note":doc.title,`${doc.store||""} · ${fmtDT(doc.at)}`)}
       ${doc.beneficiary&&html`<div class="kv"><dt>Beneficiary</dt><dd>${doc.beneficiary.name} s/o·d/o ${doc.beneficiary.father}</dd><dt>CNIC</dt><dd class="num">${doc.beneficiary.cnic}</dd><dt>Phone</dt><dd>${doc.beneficiary.phone||"—"}</dd><dt>Village</dt><dd>${doc.beneficiary.village}</dd><dt>Family size</dt><dd>${doc.beneficiary.family}</dd><dt>Purpose</dt><dd>${doc.beneficiary.purpose}</dd></div>`}
-      <div class="kv"><dt>Reference</dt><dd>${req?html`<button class="btn btn-soft btn-sm id" onClick=${()=>openReq(doc.ref)}>${doc.ref}</button>`:doc.ref||"—"}</dd>${doc.to&&html`<dt>Issued to</dt><dd>${doc.to}</dd>`}${doc.gatePass&&html`<dt>Gate pass</dt><dd class="id">${doc.gatePass} · Vehicle ${doc.vehicle} · Driver ${doc.driver}</dd>`}<dt>Prepared by</dt><dd>${doc.by} · Store Officer</dd>${doc.note&&html`<dt>Note</dt><dd>${doc.note}</dd>`}</div>
+      <div class="kv">${RECEIPT_TYPES[doc.type]&&html`<dt>Receipt type</dt><dd><b>${RECEIPT_TYPES[doc.type]}</b></dd>`}${doc.from&&html`<dt>${doc.type==="GDN-D"?"Donor":"Supplier"}</dt><dd>${doc.from}</dd>`}<dt>${doc.approval?"Approval reference":"Reference"}</dt><dd>${req?html`<button class="btn btn-soft btn-sm id" onClick=${()=>openReq(doc.ref)}>${doc.ref}</button>`:doc.ref||"—"}</dd>${doc.to&&html`<dt>Issued to</dt><dd>${doc.to}</dd>`}${doc.purpose&&html`<dt>Purpose</dt><dd>${doc.purpose}</dd>`}${doc.gatePass&&html`<dt>Gate pass</dt><dd class="id">${doc.gatePass} · Vehicle ${doc.vehicle} · Driver ${doc.driver}</dd>`}<dt>Prepared by</dt><dd>${doc.by} · Store Officer</dd>${doc.note&&html`<dt>Note</dt><dd>${doc.note}</dd>`}</div>
       <div class="tbl-wrap"><table class="tbl" style="min-width:420px"><thead><tr><th>Item</th><th class="r">Qty</th><th class="r">Unit price</th><th class="r">Amount</th></tr></thead><tbody>${doc.lines.map(l=>html`<tr><td>${l.item}${l.batch?html`<div class="xs faint">Batch ${l.batch}${l.expiry?" · exp "+l.expiry:""}</div>`:""}</td><td class="r num">${l.qty} ${l.uom}</td><td class="r num">${fmt(l.price)}</td><td class="r num bold">${fmt(l.qty*l.price)}</td></tr>`)}<tr><td colspan="3" class="r bold">Total</td><td class="r num bold">${pkr(doc.amount)}</td></tr></tbody></table></div>
       <div class="split" style="align-items:center"><div class="signs">
         ${sign(doc.byId?{uid:doc.byId,by:doc.by,at:doc.at}:{by:doc.by,at:doc.at},"Prepared by","store_officer")}
@@ -4284,7 +4363,7 @@ function Store({state,user,A,openReq,openDoc,readOnly,focusItem}){
   const isHod=user.role==="hod";
   const all=visibleRequests(user,state.requests).filter(r=>r.type==="store");
   const [rows,bar]=useFilter(all);
-  const [tab,setTab]=useState(isHod?"requests":"stock"); const [q,setQ]=useState(""); const [sel,setSel]=useState(focusItem||null);
+  const [tab,setTab]=useState(isHod?"requests":"register"); const [q,setQ]=useState(""); const [sel,setSel]=useState(focusItem||null);
   const [form,setForm]=useState(null);
   const mine=visibleRequests(user,state.requests).filter(r=>canAct(user,r)&&(r.type==="store"||["po","grn"].includes(r.stage)));
   const stock=state.stock.filter(s=>!q||(s.name+s.id+s.category+s.store).toLowerCase().includes(q.toLowerCase()));
@@ -4293,11 +4372,20 @@ function Store({state,user,A,openReq,openDoc,readOnly,focusItem}){
   useEffect(()=>{ if(focusItem){ setSel(focusItem); setTab("stock"); } },[focusItem]);
   return html`<div class="stack" style="gap:16px">
     ${isHod&&!readOnly&&html`<${NewRequest} type="store" user=${user} state=${state} A=${A} onDone=${openReq}/>`}
-    ${!isHod&&html`<div class="row between wrap"><div class="seg">${[["stock","Stock ledger"],["requests","Issue requests"],["assets","Assets"],["docs","Documents"]].map(([k,l])=>html`<button class=${tab===k?"active":""} onClick=${()=>setTab(k)}>${l}</button>`)}</div>
-      ${!readOnly&&html`<div class="row wrap"><button class="btn btn-primary" onClick=${()=>setForm("beneficiary")}><${Icon} name="user"/>Beneficiary receipt</button><button class="btn btn-ghost" onClick=${()=>setForm("donation")}><${Icon} name="plus"/>Receive donation</button><button class="btn btn-ghost" onClick=${()=>setForm("transfer")}>Transfer</button><button class="btn btn-ghost" onClick=${()=>setForm("return")}>Return</button><button class="btn btn-ghost" onClick=${()=>setForm("disposal")}>Disposal</button><button class="btn btn-ghost" onClick=${()=>setForm("psv")}>Stock count</button></div>`}</div>`}
-    ${form==="donation"&&html`<${DonationForm} onCancel=${()=>setForm(null)} onSave=${p=>{A.receiveDonation(p);setForm(null);}}/>`}
+    ${!isHod&&!readOnly&&html`<div class="stock-actions">
+      <button class="sa sa-in" onClick=${()=>setForm("receive")}><span class="sa-ic"><${Icon} name="download"/></span><span><b>Stock received</b><small>Purchased (GRN-P) or donation in kind (GDN-D)</small></span></button>
+      <button class="sa sa-out" disabled=${!state.stock.some(s=>s.qty>0)} onClick=${()=>setForm("issue")}><span class="sa-ic"><${Icon} name="upload"/></span><span><b>Stock issued (GIN)</b><small>Goods issuance note with approval reference</small></span></button>
+      <button class="sa" disabled=${!state.stock.some(s=>s.qty>0)} onClick=${()=>setForm("beneficiary")}><span class="sa-ic"><${Icon} name="user"/></span><span><b>Beneficiary receipt</b><small>Distribution to a family / person</small></span></button>
+      <div class="row wrap sa-more"><button class="btn btn-ghost btn-sm" disabled=${!state.stock.length} onClick=${()=>setForm("transfer")}>Transfer</button><button class="btn btn-ghost btn-sm" disabled=${!state.stock.length} onClick=${()=>setForm("return")}>Return</button><button class="btn btn-ghost btn-sm" disabled=${!state.stock.length} onClick=${()=>setForm("disposal")}>Disposal</button><button class="btn btn-ghost btn-sm" disabled=${!state.stock.length} onClick=${()=>setForm("psv")}>Stock count</button></div>
+    </div>`}
+    ${!isHod&&html`<div class="seg">${[["register","Stock register"],["received","Received"],["issued","Issued"],["stock","Bin cards"],["requests","Issue requests"],["assets","Assets"],["docs","Documents"]].map(([k,l])=>html`<button class=${tab===k?"active":""} onClick=${()=>setTab(k)}>${l}</button>`)}</div>`}
+    ${form==="receive"&&html`<${StockReceiveForm} state=${state} onCancel=${()=>setForm(null)} onSave=${p=>{A.receiveStock(p);setForm(null);setTab("received");}}/>`}
+    ${form==="issue"&&html`<${StockIssueForm} state=${state} onCancel=${()=>setForm(null)} onSave=${p=>{A.issueStock(p);setForm(null);setTab("issued");}}/>`}
     ${form==="beneficiary"&&html`<${BeneficiaryForm} stock=${state.stock.filter(s=>s.qty>0)} onCancel=${()=>setForm(null)} onSave=${p=>{A.distribute(p);setForm(null);}}/>`}
-    ${form&&!["donation","beneficiary"].includes(form)&&html`<${MoveForm} kind=${form} stock=${state.stock} preset=${sel} onCancel=${()=>setForm(null)} onSave=${p=>{A.stockMove(form,p);setForm(null);}}/>`}
+    ${form&&!["receive","issue","beneficiary"].includes(form)&&html`<${MoveForm} kind=${form} stock=${state.stock} preset=${sel} onCancel=${()=>setForm(null)} onSave=${p=>{A.stockMove(form,p);setForm(null);}}/>`}
+    ${tab==="register"&&!isHod&&html`<${StockRegister} state=${state} openItem=${id=>{ setSel(id); setTab("stock"); }}/>`}
+    ${(tab==="received"||tab==="issued")&&!isHod&&html`<${StockMovements} kind=${tab} state=${state} openDoc=${openDoc}/>`}
+    ${tab==="register"&&!isHod&&!state.stock.length&&html`<div class="notice notice-info"><${Icon} name="upload"/><span>The stock register is empty. Load your register from <b>Excel Import → Stock register (AKF format)</b>, using the same workbook you keep today (Home, Received and Dispatched sheets).</span></div>`}
     ${!isHod&&mine.length>0&&html`<${Card} title=${`Action needed (${mine.length})`} desc="Stock checks, goods receipts and issues waiting on you"><div class="list">${mine.map(r=>html`<button class="item" onClick=${()=>openReq(r.id)}><div class="t"><b class="id">${r.id}</b><${Tag} tone=${statusTone(r)} dot>${nextStage(r).label}</${Tag}>${isEscalated(r)&&html`<${Tag} tone="bad">48h</${Tag}>`}<span class="grow"/><b class="num">${pkr(reqTotal(r))}</b></div><div class="m">${r.purpose} · ${r.dept}</div></button>`)}</div><//>`}
     ${tab==="stock"&&!isHod&&(()=>{ const low=state.stock.filter(s=>s.qty<=s.min); if(!low.length) return ""; const already=state.requests.some(r=>r.status==="active"&&r.stage!=="closed"&&r.purpose.startsWith("Reorder")); return html`<div class="notice notice-warn" style="align-items:center"><${Icon} name="alert"/><span class="grow"><b>${low.length} item${low.length>1?"s":""} at or below minimum:</b> ${low.map(s=>`${s.name} (${s.qty}/${s.min})`).join(", ")}</span>${!readOnly&&!already&&html`<button class="btn btn-primary btn-sm" onClick=${()=>openReq(A.reorder(low.map(s=>({name:s.name,category:s.category,uom:s.uom,qty:Math.max(1,s.min*2-s.qty),price:s.price}))))}><${Icon} name="cart"/>Raise reorder request</button>`}${already&&html`<${Tag} tone="info">Reorder request open</${Tag}>`}</div>`; })()}
     ${(tab==="stock"&&!isHod)&&html`<div class="split" style="grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr)">
@@ -4310,8 +4398,8 @@ function Store({state,user,A,openReq,openDoc,readOnly,focusItem}){
     </div>`}
     ${(tab==="requests"||isHod)&&html`<${Card} title=${isHod?"My department's store requests":"Store issue requests"} desc="HOD → Store Officer (confirm items) → Manager Admin & HR → Regional Manager → President → GIN issue → HOD" right=${bar}><${RequestTable} rows=${rows} openReq=${openReq} showDept=${!isHod}/><//>`}
     ${tab==="assets"&&!isHod&&html`<${Card} title="Fixed-asset register" desc=${`IT items and anything valued at ${pkr(state.settings.assetThreshold||50000)} or more receive an asset tag at goods receipt and follow their custodian when issued`}>${(state.assets||[]).length?html`<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Asset tag</th><th>Asset</th><th class="r">Value</th><th>Status</th><th>Custodian</th><th>Location</th><th class="r">Since</th></tr></thead><tbody>${state.assets.map(a=>html`<tr><td><b class="id">${a.tag}</b>${a.grn&&html`<div class="xs faint id">${a.grn}</div>`}</td><td><b>${a.name}</b>${a.serial&&html`<div class="xs faint">S/N ${a.serial}</div>`}</td><td class="r num">${fmt(a.value)}</td><td><${Tag} tone=${a.status==="Issued"?"info":"ok"} dot>${a.status}</${Tag}></td><td class="sm">${a.custodian}</td><td class="sm">${a.location}</td><td class="r sm nowrap">${fmtD(a.issuedAt||a.at)}</td></tr>`)}</tbody></table></div>`:html`<${Empty} title="No assets yet"/>`}<//>`}
-    ${tab==="docs"&&!isHod&&html`<${Card} title="Store documents" desc="GRN-P (purchase), GRN-D (donation), GIN (goods issuance note) + gate pass, comparative statements, regret letters, transfers, returns, disposals, stock counts — each with a verifiable QR">
-      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Document</th><th>Type</th><th>Reference</th><th class="r">Amount</th><th>By</th><th class="r">Date</th></tr></thead><tbody>${state.docs.map(d=>html`<tr class="click" onClick=${()=>openDoc(d.id)}><td><b class="id">${d.id}</b>${d.gatePass&&html`<div class="xs faint id">${d.gatePass}</div>`}</td><td><${Tag} tone=${d.type.startsWith("GRN")?"ok":(d.type==="GDN"||d.type==="GIN")?"info":d.type==="BEN"?"violet":d.type==="DIS"?"bad":"neutral"}>${d.type}</${Tag}></td><td class="sm">${d.ref}</td><td class="r num">${fmt(d.amount)}</td><td class="sm">${d.by}</td><td class="r sm nowrap">${fmtD(d.at)}</td></tr>`)}</tbody></table></div><//>`}
+    ${tab==="docs"&&!isHod&&html`<${Card} title="Store documents" desc="GRN-P (purchase), GDN-D (donation in kind), GIN (goods issuance note) + gate pass, comparative statements, regret letters, transfers, returns, disposals, stock counts — each with a verifiable QR">
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Document</th><th>Type</th><th>Reference</th><th class="r">Amount</th><th>By</th><th class="r">Date</th></tr></thead><tbody>${state.docs.map(d=>html`<tr class="click" onClick=${()=>openDoc(d.id)}><td><b class="id">${d.id}</b>${d.gatePass&&html`<div class="xs faint id">${d.gatePass}</div>`}</td><td><${Tag} tone=${(d.type.startsWith("GRN")||d.type==="GDN-D")?"ok":d.type==="GIN"?"info":d.type==="BEN"?"violet":d.type==="DIS"?"bad":"neutral"}>${d.type}</${Tag}></td><td class="sm">${d.ref}</td><td class="r num">${fmt(d.amount)}</td><td class="sm">${d.by}</td><td class="r sm nowrap">${fmtD(d.at)}</td></tr>`)}</tbody></table></div><//>`}
   </div>`;
 }
 function Ledger({itemId,state,openDoc}){
@@ -4320,18 +4408,139 @@ function Ledger({itemId,state,openDoc}){
   if(!withBal.length) return html`<div class="empty" style="padding:14px">No movements recorded.</div>`;
   return html`<div class="tbl-wrap" style="margin-top:6px"><table class="tbl" style="min-width:380px"><thead><tr><th>Date</th><th>Reference</th><th class="r">In</th><th class="r">Out</th><th class="r">Balance</th></tr></thead><tbody>${withBal.map(r=>html`<tr class="click" onClick=${()=>openDoc(r.ref)}><td class="sm nowrap">${fmtD(r.at)}</td><td class="xs id">${r.ref}<div class="faint" style="font-weight:500">${r.note}</div></td><td class="r num" style="color:var(--ok)">${r.type==="in"?r.qty:""}</td><td class="r num" style="color:var(--bad)">${r.type==="out"?r.qty:""}</td><td class="r num bold">${r.bal}</td></tr>`)}</tbody></table></div>`;
 }
-function DonationForm({onCancel,onSave}){
-  const [store,setStore]=useState(STORES[0]); const [donor,setDonor]=useState(DONORS[3]); const [note,setNote]=useState("");
-  const [lines,setLines]=useState([{item:"",category:"FOOD",uom:"Pcs",qty:1,price:0,rack:"",bin:"",batch:"",expiry:""}]);
-  const set=(i,k,v)=>setLines(l=>l.map((x,j)=>j===i?{...x,[k]:v}:x)); const ok=lines.every(l=>l.item&&l.qty>0);
-  return html`<${Card} title="Receive donation (GRN-D)" desc="Donated goods enter stock at estimated value so reports and beneficiary receipts show worth."><div class="stack">
-    <div class="grid3"><${Field} label="Store"><${Pick} value=${store} options=${STORES} onChange=${setStore}/><//><${Field} label="Donor"><${Pick} value=${donor} options=${DONORS} onChange=${setDonor}/><//><${Field} label="Note"><input class="input" value=${note} onInput=${e=>setNote(e.target.value)} placeholder="Donor name, vehicle, photos ref…"/><//></div>
-    <div class="tbl-wrap"><table class="tbl" style="min-width:760px"><thead><tr><th>Item</th><th>Cat.</th><th>Unit</th><th class="r">Qty</th><th class="r">Est. unit value</th><th>Rack</th><th>Bin</th><th>Expiry</th><th/></tr></thead><tbody>${lines.map((l,i)=>html`<tr><td><input class="input" placeholder="Item name" value=${l.item} onInput=${e=>set(i,"item",e.target.value)}/></td><td><${Pick} value=${l.category} options=${CATS} onChange=${v=>set(i,"category",v)}/></td><td><${Pick} value=${l.uom} options=${UOMS} onChange=${v=>set(i,"uom",v)}/></td><td><input class="input" type="number" min="1" style="width:80px" value=${l.qty} onInput=${e=>set(i,"qty",Number(e.target.value))}/></td><td><input class="input" type="number" min="0" style="width:110px" value=${l.price} onInput=${e=>set(i,"price",Number(e.target.value))}/></td><td><input class="input" style="width:70px" value=${l.rack} onInput=${e=>set(i,"rack",e.target.value)}/></td><td><input class="input" style="width:60px" value=${l.bin} onInput=${e=>set(i,"bin",e.target.value)}/></td><td><input class="input" type="date" value=${l.expiry} onInput=${e=>set(i,"expiry",e.target.value)}/></td><td><button class="iconbtn" style="width:32px;height:32px" disabled=${lines.length===1} onClick=${()=>setLines(lines.filter((_,j)=>j!==i))}><${Icon} name="trash"/></button></td></tr>`)}</tbody></table></div>
-    <div class="row wrap"><button class="btn btn-ghost btn-sm" onClick=${()=>setLines([...lines,{item:"",category:"FOOD",uom:"Pcs",qty:1,price:0,rack:"",bin:"",batch:"",expiry:""}])}><${Icon} name="plus"/>Add line</button><span class="grow"/><button class="btn btn-ghost" onClick=${onCancel}>Cancel</button><button class="btn btn-primary" disabled=${!ok} onClick=${()=>onSave({store,donor,lines,note})}><${Icon} name="check"/>Create GRN-D</button></div></div><//>`;
+/* ---------- Stock received (GRN-P / GDN-D), stock issued (GIN), stock register ---------- */
+const dedupeCI=a=>{ const seen=new Set(); return a.filter(x=>{ const k=String(x).toLowerCase(); if(!x||seen.has(k)) return false; seen.add(k); return true; }); };
+function StockReceiveForm({state,onCancel,onSave}){
+  const today=nowISO().slice(0,10);
+  const vendors=state.vendors.map(v=>v.name);
+  const donors=dedupeCI([...state.docs.filter(d=>d.type==="GDN-D"&&d.from).map(d=>d.from),...DONORS.filter(x=>x!=="OTHER")]);
+  const optsFor=k=>k==="GRN-P"?vendors:donors;
+  const [kind,setKind]=useState("GDN-D"); const [date,setDate]=useState(today); const [store,setStore]=useState(STORES[0]);
+  const [from,setFrom]=useState(donors[0]||""); const [ref,setRef]=useState(""); const [purpose,setPurpose]=useState(""); const [note,setNote]=useState("");
+  const blank={item:"",category:"OTHER",uom:"Unit",qty:1,price:0,rack:"",bin:"",expiry:""};
+  const [lines,setLines]=useState([{...blank}]);
+  const names=dedupeCI(state.stock.map(s=>s.name)).sort();
+  const uoms=dedupeCI(["Unit",...UOMS,...state.stock.map(s=>s.uom)]);
+  const cats=dedupeCI([...CATS,...state.stock.map(s=>s.category)]);
+  const set=(i,k,v)=>setLines(l=>l.map((x,j)=>{ if(j!==i) return x; const n={...x,[k]:v}; if(k==="item"){ const s=state.stock.find(s=>itemKey(s.name)===itemKey(v)); if(s){ n.uom=uoms.find(u=>u.toLowerCase()===String(s.uom).toLowerCase())||s.uom; n.category=s.category; if(!x.price) n.price=s.price||0; } } return n; }));
+  const total=lines.reduce((s,l)=>s+(l.qty||0)*(l.price||0),0);
+  const ok=String(from).trim()&&date&&date<=today&&lines.every(l=>l.item.trim()&&l.qty>0);
+  return html`<${Card} title="Stock received" desc=${kind==="GRN-P"?"Purchased goods. Purchases made through a procurement request are received from that request; use this for purchases recorded outside the portal.":"Donated goods (donation in kind). They enter stock at the estimated value so reports show their worth."}><div class="stack">
+    <div class="kind-toggle">${Object.keys(RECEIPT_TYPES).map(k=>html`<button class=${"kt"+(kind===k?" on":"")+(k==="GRN-P"?" kt-p":" kt-d")} onClick=${()=>{ setKind(k); setFrom(optsFor(k)[0]||""); }}><b>${k}</b><span>${k==="GRN-P"?"Purchased":"Donation in kind"}</span></button>`)}</div>
+    <div class="grid3">
+      <${Field} label="Date received"><input class="input" type="date" max=${today} value=${date} onInput=${e=>setDate(e.target.value)}/><//>
+      <${Field} label="Store"><${Pick} value=${store} options=${STORES} onChange=${setStore}/><//>
+      <${Field} label=${kind==="GRN-P"?"Supplier":"Donor"}><${Pick} value=${from} options=${optsFor(kind)} onChange=${setFrom} placeholder=${kind==="GRN-P"?"Supplier name":"Donor name"}/><//>
+      <${Field} label=${kind==="GRN-P"?"Bill / challan / PO no.":"Donation letter / reference"}><input class="input" value=${ref} onInput=${e=>setRef(e.target.value)} placeholder="Optional"/><//>
+      <${Field} label="Purpose"><input class="input" value=${purpose} onInput=${e=>setPurpose(e.target.value)} placeholder="Flood, Ramadan, Winter package…"/><//>
+      <${Field} label="Note"><input class="input" value=${note} onInput=${e=>setNote(e.target.value)} placeholder="Vehicle, condition, photos ref…"/><//>
+    </div>
+    <datalist id="stock-names">${names.map(n=>html`<option value=${n}/>`)}</datalist>
+    <div class="tbl-wrap"><table class="tbl" style="min-width:860px"><thead><tr><th>Particular</th><th>Category</th><th>Unit</th><th class="r">Qty</th><th class="r">${kind==="GRN-P"?"Unit price":"Est. unit value"}</th><th class="r">Amount</th><th>Rack</th><th>Bin</th><th>Expiry</th><th/></tr></thead><tbody>${lines.map((l,i)=>html`<tr>
+      <td><input class="input" list="stock-names" placeholder="Item name" value=${l.item} onInput=${e=>set(i,"item",e.target.value)} style="min-width:180px"/>${l.item&&!state.stock.some(s=>itemKey(s.name)===itemKey(l.item))&&html`<div class="xs faint">New item — added to the register</div>`}</td>
+      <td><select class="select" style="min-width:110px" value=${l.category} onChange=${e=>set(i,"category",e.target.value)}>${cats.map(c=>html`<option>${c}</option>`)}</select></td>
+      <td><${Pick} value=${l.uom} options=${uoms} onChange=${v=>set(i,"uom",v)} style="min-width:110px"/></td>
+      <td><input class="input" type="number" min="1" style="width:84px" value=${l.qty} onInput=${e=>set(i,"qty",Number(e.target.value))}/></td>
+      <td><input class="input" type="number" min="0" style="width:110px" value=${l.price} onInput=${e=>set(i,"price",Number(e.target.value))}/></td>
+      <td class="r num">${fmt((l.qty||0)*(l.price||0))}</td>
+      <td><input class="input" style="width:70px" value=${l.rack} onInput=${e=>set(i,"rack",e.target.value)}/></td>
+      <td><input class="input" style="width:60px" value=${l.bin} onInput=${e=>set(i,"bin",e.target.value)}/></td>
+      <td><input class="input" type="date" value=${l.expiry} onInput=${e=>set(i,"expiry",e.target.value)}/></td>
+      <td><button class="iconbtn" style="width:32px;height:32px" disabled=${lines.length===1} onClick=${()=>setLines(lines.filter((_,j)=>j!==i))}><${Icon} name="trash"/></button></td></tr>`)}</tbody></table></div>
+    <div class="row wrap"><button class="btn btn-ghost btn-sm" onClick=${()=>setLines([...lines,{...blank}])}><${Icon} name="plus"/>Add line</button><span class="grow"/><span class="sm muted">Total <b class="num">${pkr(total)}</b></span><button class="btn btn-ghost" onClick=${onCancel}>Cancel</button><button class="btn btn-primary" disabled=${!ok} onClick=${()=>onSave({kind,date,store,from:String(from).trim(),ref,purpose,lines:lines.map(l=>({...l,item:l.item.trim()})),note})}><${Icon} name="check"/>Create ${kind}</button></div></div><//>`;
+}
+function StockIssueForm({state,onCancel,onSave}){
+  const today=nowISO().slice(0,10);
+  const stores=[...new Set(state.stock.filter(s=>s.qty>0).map(s=>s.store))];
+  const [store,setStore]=useState(stores[0]||STORES[0]); const avail=state.stock.filter(s=>s.store===store&&s.qty>0);
+  const toOpts=["Beneficiaries / families",...DEPTS.filter(d=>d!=="OTHER"),"Alkhidmat Pakistan","Other Alkhidmat region"];
+  const [date,setDate]=useState(today); const [to,setTo]=useState(toOpts[0]); const [receiver,setReceiver]=useState(""); const [purpose,setPurpose]=useState(""); const [approval,setApproval]=useState(""); const [note,setNote]=useState("");
+  const [lines,setLines]=useState([{itemId:avail[0]?avail[0].id:"",qty:1}]);
+  const changeStore=v=>{ setStore(v); const a=state.stock.filter(s=>s.store===v&&s.qty>0); setLines([{itemId:a[0]?a[0].id:"",qty:1}]); };
+  const set=(i,k,v)=>setLines(l=>l.map((x,j)=>j===i?{...x,[k]:v}:x));
+  const want={}; lines.forEach(l=>{ want[l.itemId]=(want[l.itemId]||0)+(l.qty||0); });
+  const over=l=>{ const s=avail.find(x=>x.id===l.itemId); return !s||want[l.itemId]>s.qty; };
+  const ok=String(to).trim()&&approval.trim()&&date&&date<=today&&lines.every(l=>l.itemId&&l.qty>0&&!over(l));
+  return html`<${Card} title="Stock issued (GIN)" desc="Goods issuance note for approved dispatches and distributions. The approval reference prints on the GIN."><div class="stack">
+    <div class="notice notice-info"><${Icon} name="shield"/><span>Department requests from HODs still follow the store approval matrix (HOD → Store Officer → Manager Admin & HR → Regional Manager → President) and are issued from <b>Issue requests</b>.</span></div>
+    <div class="grid3">
+      <${Field} label="Date issued"><input class="input" type="date" max=${today} value=${date} onInput=${e=>setDate(e.target.value)}/><//>
+      <${Field} label="Store"><select class="select" value=${store} onChange=${e=>changeStore(e.target.value)}>${(stores.length?stores:STORES).map(s=>html`<option>${s}</option>`)}</select><//>
+      <${Field} label="Issued to"><${Pick} value=${to} options=${toOpts} onChange=${setTo} placeholder="Department, family, organisation…"/><//>
+      <${Field} label="Received by (name)"><input class="input" value=${receiver} onInput=${e=>setReceiver(e.target.value)} placeholder="Person who collected the goods"/><//>
+      <${Field} label="Purpose"><input class="input" value=${purpose} onInput=${e=>setPurpose(e.target.value)} placeholder="Flood relief, Ramadan, Sindh…"/><//>
+      <${Field} label="Approval reference (required)"><input class="input" value=${approval} onInput=${e=>setApproval(e.target.value)} placeholder="Approved by President · letter no. / date"/><//>
+    </div>
+    <div class="tbl-wrap"><table class="tbl" style="min-width:620px"><thead><tr><th>Particular</th><th class="r">In stock</th><th class="r">Qty to issue</th><th class="r">Balance after</th><th/></tr></thead><tbody>${lines.map((l,i)=>{ const s=avail.find(x=>x.id===l.itemId); return html`<tr style=${over(l)&&l.itemId?"background:var(--bad-bg)":""}>
+      <td><select class="select" value=${l.itemId} onChange=${e=>set(i,"itemId",e.target.value)}>${avail.map(x=>html`<option value=${x.id}>${x.name}</option>`)}</select></td>
+      <td class="r num">${s?`${s.qty} ${s.uom}`:"—"}</td>
+      <td class="r"><input class="input" type="number" min="1" max=${s?s.qty:0} style="width:96px" value=${l.qty} onInput=${e=>set(i,"qty",Number(e.target.value))}/></td>
+      <td class="r num bold" style=${over(l)?"color:var(--bad)":""}>${s?s.qty-want[l.itemId]:"—"}${over(l)&&s?html`<div class="xs">More than in stock</div>`:""}</td>
+      <td><button class="iconbtn" style="width:32px;height:32px" disabled=${lines.length===1} onClick=${()=>setLines(lines.filter((_,j)=>j!==i))}><${Icon} name="trash"/></button></td></tr>`; })}</tbody></table></div>
+    <div class="row wrap"><button class="btn btn-ghost btn-sm" disabled=${!avail.length} onClick=${()=>setLines([...lines,{itemId:avail[0]?avail[0].id:"",qty:1}])}><${Icon} name="plus"/>Add line</button><span class="grow"/><input class="input" style="max-width:260px" value=${note} onInput=${e=>setNote(e.target.value)} placeholder="Note (vehicle, gate pass…)"/><button class="btn btn-ghost" onClick=${onCancel}>Cancel</button><button class="btn btn-primary" disabled=${!ok} onClick=${()=>onSave({date,store,to:String(to).trim(),receiver,purpose,approval:approval.trim(),lines,note})}><${Icon} name="check"/>Issue GIN</button></div></div><//>`;
+}
+/* Opening + received (GRN-P / GDN-D) − issued (GIN) ± adjustments = balance, for a period, from the ledger */
+function registerRows(state,{from,to},store){
+  const byItem=new Map(state.stock.filter(s=>store==="all"||s.store===store).map(s=>[s.id,{s,opening:0,p:0,d:0,issued:0,adj:0}]));
+  state.ledger.forEach(l=>{ const r=byItem.get(l.itemId); if(!r) return; const day=new Date(l.at).toLocaleDateString("en-CA"); const sign=l.type==="in"?1:-1; const k=movementKind(l);
+    if(to&&day>to) return;
+    if((from&&day<from)||k==="opening"){ r.opening+=sign*l.qty; return; }
+    if(k==="p") r.p+=l.qty; else if(k==="d") r.d+=l.qty; else if(k==="issued") r.issued+=l.qty; else r.adj+=sign*l.qty; });
+  return [...byItem.values()].map(r=>{ const balance=r.opening+r.p+r.d-r.issued+r.adj; const min=r.s.min||0; return {...r,balance,order:balance<=0?"Item needed":min>0&&balance<=min?"Reorder":"OK"}; });
+}
+function periodPicker(state,period,setPeriod){ const fys=fiscalYears(state); return html`<select class="select" style="max-width:150px" value=${period} onChange=${e=>setPeriod(e.target.value)}>${fys.map(f=>html`<option value=${f.key}>${f.label}</option>`)}<option value="all">All dates</option></select>`; }
+const periodRange=(state,period)=>period==="all"?{from:"",to:"",label:"All dates"}:(fiscalYears(state).find(f=>f.key===period)||fiscalYears(state)[0]);
+function StockRegister({state,openItem}){
+  const [period,setPeriod]=useState(fiscalYears(state)[0].key); const [store,setStore]=useState("all"); const [q,setQ]=useState(""); const [only,setOnly]=useState("all");
+  const range=periodRange(state,period);
+  const all=useMemo(()=>registerRows(state,range,store),[state,period,store]);
+  const rows=all.filter(r=>(!q||itemKey(r.s.name+" "+r.s.category).includes(itemKey(q)))&&(only==="all"||(only==="stock"?r.balance>0:r.order!=="OK")));
+  const hasAdj=all.some(r=>r.adj!==0); const T=k=>rows.reduce((s,r)=>s+r[k],0);
+  const value=rows.reduce((s,r)=>s+r.balance*(r.s.price||0),0);
+  const stores=[...new Set(state.stock.map(s=>s.store))];
+  const need=all.filter(r=>r.order!=="OK").length;
+  return html`<${Card} title="Stock register" desc=${`${range.label}${range.from?` · ${fmtD(range.from)} – ${fmtD(range.to)}`:""} · opening + received − issued = balance`} right=${html`<div class="row wrap no-print">${periodPicker(state,period,setPeriod)}${stores.length>1&&html`<select class="select" style="max-width:170px" value=${store} onChange=${e=>setStore(e.target.value)}><option value="all">All stores</option>${stores.map(s=>html`<option>${s}</option>`)}</select>`}<input class="input" placeholder="Search particulars…" value=${q} onInput=${e=>setQ(e.target.value)} style="max-width:180px"/><button class="btn btn-ghost btn-sm" onClick=${()=>exportRegisterXlsx(state,range)}><${Icon} name="download"/>Excel</button><button class="btn btn-ghost btn-sm" onClick=${e=>printNode(e.currentTarget.closest(".card"))}><${Icon} name="print"/>Print</button></div>`}>
+    <div class="reg-kpis">
+      <button class=${"rk"+(only==="all"?" on":"")} onClick=${()=>setOnly("all")}><span>Items</span><b class="num">${all.length}</b></button>
+      <div class="rk rk-p"><span>Received · GRN-P</span><b class="num">${fmt(all.reduce((s,r)=>s+r.p,0))}</b></div>
+      <div class="rk rk-d"><span>Received · GDN-D</span><b class="num">${fmt(all.reduce((s,r)=>s+r.d,0))}</b></div>
+      <div class="rk rk-i"><span>Issued · GIN</span><b class="num">${fmt(all.reduce((s,r)=>s+r.issued,0))}</b></div>
+      <button class=${"rk"+(only==="stock"?" on":"")} onClick=${()=>setOnly(only==="stock"?"all":"stock")}><span>In stock</span><b class="num">${all.filter(r=>r.balance>0).length}</b></button>
+      <button class=${"rk rk-bad"+(only==="need"?" on":"")} onClick=${()=>setOnly(only==="need"?"all":"need")}><span>Item needed / reorder</span><b class="num">${need}</b></button>
+    </div>
+    <div class="tbl-wrap"><table class="tbl reg-tbl"><thead><tr><th>#</th><th>Category</th><th>Particular</th><th>Unit</th><th class="r">Opening</th><th class="r">Received<br/><small>GRN-P</small></th><th class="r">Received<br/><small>GDN-D</small></th><th class="r">Issued<br/><small>GIN</small></th>${hasAdj&&html`<th class="r">Adj. ±<br/><small>transfer / count</small></th>`}<th class="r">Balance</th><th class="r">Min level</th><th>Place order</th><th class="r">Each</th><th class="r">Net value</th></tr></thead>
+      <tbody>${rows.map((r,i)=>html`<tr class="click" onClick=${()=>openItem(r.s.id)}><td class="num faint">${i+1}</td><td class="sm">${r.s.category}</td><td><b>${r.s.name}</b>${stores.length>1&&html`<div class="xs faint">${r.s.store.split(" ")[0]}</div>`}</td><td class="sm">${r.s.uom}</td><td class="r num">${fmt(r.opening)}</td><td class="r num c-p">${r.p?fmt(r.p):"—"}</td><td class="r num c-d">${r.d?fmt(r.d):"—"}</td><td class="r num c-i">${r.issued?fmt(r.issued):"—"}</td>${hasAdj&&html`<td class="r num">${r.adj?(r.adj>0?"+":"")+fmt(r.adj):"—"}</td>`}<td class="r num bold">${fmt(r.balance)}</td><td class="r num">${r.s.min||"—"}</td><td>${r.order==="OK"?html`<${Tag} tone="ok">OK</${Tag}>`:html`<${Tag} tone=${r.order==="Reorder"?"warn":"bad"}>${r.order}</${Tag}>`}</td><td class="r num">${r.s.price?fmt(r.s.price):"—"}</td><td class="r num">${r.s.price?fmt(r.balance*r.s.price):"—"}</td></tr>`)}
+      ${!rows.length&&html`<tr><td colspan="14"><div class="empty" style="padding:16px">No items match.</div></td></tr>`}</tbody>
+      ${rows.length>0&&html`<tfoot><tr><td/><td/><td><b>Totals</b></td><td/><td class="r num bold">${fmt(T("opening"))}</td><td class="r num bold c-p">${fmt(T("p"))}</td><td class="r num bold c-d">${fmt(T("d"))}</td><td class="r num bold c-i">${fmt(T("issued"))}</td>${hasAdj&&html`<td class="r num bold">${fmt(T("adj"))}</td>`}<td class="r num bold">${fmt(T("balance"))}</td><td/><td/><td/><td class="r num bold">${fmt(value)}</td></tr></tfoot>`}
+    </table></div><//>`;
+}
+/* Received / Issued registers — the portal's version of the Received and Dispatched sheets */
+function movementRows(state,kind,range){
+  const inRange=iso=>{ const d=new Date(iso).toLocaleDateString("en-CA"); return (!range.from||d>=range.from)&&(!range.to||d<=range.to); };
+  const regNo=d=>{ const m=/Register no\. (\S+)/.exec(d.ref||""); if(m) return m[1]; const n=/-(\d{4,5})(?:-\d{1,2})?$/.exec(d.id); return n?String(Number(n[1])):""; };
+  const vendorOf=d=>{ const po=state.pos.find(p=>p.id===d.ref); return po?(state.vendors.find(v=>v.id===po.vendorId)||{}).name:""; };
+  const reqOf=id=>state.requests.find(r=>r.id===id);
+  const posted=new Set(state.ledger.map(l=>l.ref)); /* only documents that moved stock, so the lists agree with the register */
+  const docs=state.docs.filter(d=>posted.has(d.id)&&inRange(d.at)&&(kind==="received"?["GRN-P","GDN-D"].includes(d.type):(d.type==="BEN"||(d.type==="GIN"&&!/placed in store/i.test(d.title)))));
+  return docs.flatMap(d=>d.lines.map(l=>{ const r=reqOf(d.ref);
+    return kind==="received"
+      ?{doc:d,date:d.at,no:regNo(d),type:d.type,item:l.item,qty:l.qty,uom:l.uom,party:d.from||vendorOf(d)||(d.ref||"").replace(/^Donor: /,""),purpose:d.purpose||(r?r.purpose:"")}
+      :{doc:d,date:d.at,no:regNo(d),type:d.type,item:l.item,qty:l.qty,uom:l.uom,party:d.to||(d.beneficiary?d.beneficiary.name+" · "+d.beneficiary.village:r?r.dept:""),purpose:d.purpose||(d.beneficiary?d.beneficiary.purpose:r?r.purpose:"")}; }))
+    .sort((a,b)=>a.date<b.date?1:-1);
+}
+function StockMovements({kind,state,openDoc}){
+  const [period,setPeriod]=useState(fiscalYears(state)[0].key); const [type,setType]=useState("all"); const [q,setQ]=useState("");
+  const range=periodRange(state,period);
+  const rows=movementRows(state,kind,range).filter(r=>(type==="all"||r.type===type)&&(!q||itemKey([r.item,r.party,r.purpose,r.doc.id].join(" ")).includes(itemKey(q))));
+  const isR=kind==="received";
+  return html`<${Card} title=${isR?"Stock received":"Stock issued"} desc=${`${range.label} · ${rows.length} line${rows.length===1?"":"s"} · ${fmt(rows.reduce((s,r)=>s+r.qty,0))} units`} right=${html`<div class="row wrap no-print">${periodPicker(state,period,setPeriod)}${isR&&html`<select class="select" style="max-width:190px" value=${type} onChange=${e=>setType(e.target.value)}><option value="all">GRN-P and GDN-D</option><option value="GRN-P">Purchased (GRN-P)</option><option value="GDN-D">Donation in kind (GDN-D)</option></select>`}<input class="input" placeholder="Search…" value=${q} onInput=${e=>setQ(e.target.value)} style="max-width:170px"/><button class="btn btn-ghost btn-sm" onClick=${()=>exportRegisterXlsx(state,range)}><${Icon} name="download"/>Excel</button></div>`}>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>${isR?"Document":"GIN"}</th>${isR&&html`<th>Type</th>`}<th>Particulars</th><th class="r">${isR?"Received qty":"Issued qty"}</th><th>${isR?"Donor / Supplier":"Issued to"}</th><th>Purpose</th></tr></thead>
+      <tbody>${rows.map(r=>html`<tr class="click" onClick=${()=>openDoc(r.doc.id)}><td class="sm nowrap">${fmtD(r.date)}</td><td><b class="id xs">${r.doc.id}</b>${r.no&&html`<div class="xs faint">No. ${r.no}</div>`}</td>${isR&&html`<td><${Tag} tone=${r.type==="GRN-P"?"info":"ok"}>${r.type}</${Tag}></td>`}<td><b>${r.item}</b></td><td class="r num bold">${fmt(r.qty)} <span class="faint" style="font-weight:600">${r.uom||""}</span></td><td class="sm">${r.party||"—"}</td><td class="sm">${r.purpose||"—"}</td></tr>`)}
+      ${!rows.length&&html`<tr><td colspan="7"><div class="empty" style="padding:16px">Nothing ${isR?"received":"issued"} in this period.</div></td></tr>`}</tbody></table></div><//>`;
 }
 function MoveForm({kind,stock,preset,onCancel,onSave}){
   const titles={transfer:["Stock transfer (AKF-ST)","Move quantity between stores."],return:["Return to store (AKF-RTN)","Returnable items coming back, e.g. tents."],disposal:["Disposal (AKF-DIS)","Expired or damaged items. Requires photo and approval reference."],psv:["Physical stock verification (AKF-PSV)","Enter the counted quantity; the variance is posted automatically."]};
-  const [itemId,setItemId]=useState(preset||stock[0].id); const [qty,setQty]=useState(1); const [note,setNote]=useState(""); const s=stock.find(x=>x.id===itemId);
+  const [itemId,setItemId]=useState(preset||(stock[0]?stock[0].id:"")); const [qty,setQty]=useState(1); const [note,setNote]=useState(""); const s=stock.find(x=>x.id===itemId);
   const [toStore,setToStore]=useState(STORES.find(x=>x!==(s||{}).store)||STORES[1]);
   const ok=s&&qty>=0&&(kind==="psv"||qty>0)&&(kind!=="disposal"||note.trim());
   return html`<${Card} title=${titles[kind][0]} desc=${titles[kind][1]}><div class="grid3">
@@ -4393,7 +4602,7 @@ function Reports({state,user,openReq,openDoc}){
   /* ---- store data ---- */
   const catData=[...new Set(state.stock.map(s=>s.category))].map((c,i)=>({label:c,value:sum(state.stock.filter(s=>s.category===c&&(f.store==="all"||s.store===f.store)),s=>s.qty*s.price),color:color(i)})).filter(d=>d.value>0);
   const storeData=stores.map((s,i)=>({label:s,value:sum(state.stock.filter(x=>x.store===s&&(f.cat==="all"||x.category===f.cat)),x=>x.qty*x.price),color:color(i+3)})).filter(d=>d.value>0);
-  const isIn=d=>d.type.startsWith("GRN"), isOut=d=>["GIN","GDN","BEN"].includes(d.type)&&!/placed in store/i.test(d.title);
+  const isIn=d=>d.type.startsWith("GRN")||d.type==="GDN-D", isOut=d=>["GIN","BEN"].includes(d.type)&&!/placed in store/i.test(d.title);
   const flow=months.map(k=>({key:k,label:mLabel(k),value:sum(state.docs.filter(d=>monthKey(d.at)===k&&isIn(d)&&(f.store==="all"||d.store===f.store)),d=>d.amount),color:"#0F8A5F"}));
   const flowOut=months.map(k=>({key:k,label:mLabel(k),value:sum(state.docs.filter(d=>monthKey(d.at)===k&&isOut(d)&&(f.store==="all"||d.store===f.store)),d=>d.amount),color:"#C8322B"}));
   const docTypes=[...new Set(state.docs.map(d=>d.type))].map((t,i)=>({label:t,value:state.docs.filter(d=>d.type===t&&inRange(d.at)).length,color:color(i)}));
@@ -4566,7 +4775,7 @@ function BeneficiaryForm({stock,onCancel,onSave}){
   return html`<${Card} title="Beneficiary receipt (AKF-BEN-RCT)" desc="Direct distribution from store to a beneficiary. Stock is deducted and a receipt with QR, thumb impression and signatures is generated."><div class="stack">
     <div class="grid4"><${Field} label="Beneficiary name"><input class="input" value=${b.name} onInput=${e=>set("name",e.target.value)}/><//><${Field} label="Father / husband"><input class="input" value=${b.father} onInput=${e=>set("father",e.target.value)}/><//><${Field} label="CNIC (37405-1234567-8)"><input class="input" value=${b.cnic} onInput=${e=>set("cnic",e.target.value)} placeholder="37405-1234567-8"/><//><${Field} label="Phone"><input class="input" value=${b.phone} onInput=${e=>set("phone",e.target.value)}/><//><${Field} label="Village / area"><input class="input" value=${b.village} onInput=${e=>set("village",e.target.value)}/><//><${Field} label="Family size"><input class="input" type="number" min="1" value=${b.family} onInput=${e=>set("family",Number(e.target.value))}/><//><${Field} label="Purpose"><input class="input" value=${b.purpose} onInput=${e=>set("purpose",e.target.value)}/><//><${Field} label="Donor"><${Pick} value=${donor} options=${DONORS} onChange=${setDonor}/><//></div>
     <div class="list">${lines.map((l,i)=>html`<div class="row"><select class="select grow" value=${l.itemId} onChange=${e=>setLines(lines.map((x,j)=>j===i?{...x,itemId:e.target.value}:x))}>${stock.map(s=>html`<option value=${s.id}>${s.name} · ${s.qty} ${s.uom} available</option>`)}</select><input class="input" type="number" min="1" style="width:90px" value=${l.qty} onInput=${e=>setLines(lines.map((x,j)=>j===i?{...x,qty:Number(e.target.value)}:x))}/><button class="iconbtn" style="width:32px;height:32px" disabled=${lines.length===1} onClick=${()=>setLines(lines.filter((_,j)=>j!==i))}><${Icon} name="trash"/></button></div>`)}</div>
-    <div class="row wrap"><button class="btn btn-ghost btn-sm" onClick=${()=>setLines([...lines,{itemId:stock[0].id,qty:1}])}><${Icon} name="plus"/>Add item</button><span class="grow"/><button class="btn btn-ghost" onClick=${onCancel}>Cancel</button><button class="btn btn-primary" disabled=${!ok} onClick=${()=>onSave({beneficiary:b,lines,donor})}><${Icon} name="check"/>Issue receipt</button></div></div><//>`;
+    <div class="row wrap"><button class="btn btn-ghost btn-sm" onClick=${()=>setLines([...lines,{itemId:stock[0]?stock[0].id:"",qty:1}])}><${Icon} name="plus"/>Add item</button><span class="grow"/><button class="btn btn-ghost" onClick=${onCancel}>Cancel</button><button class="btn btn-primary" disabled=${!ok} onClick=${()=>onSave({beneficiary:b,lines,donor})}><${Icon} name="check"/>Issue receipt</button></div></div><//>`;
 }
 function ChangePassword({A,onClose}){
   const [c,setC]=useState(""); const [n,setN]=useState(""); const [n2,setN2]=useState("");
@@ -4607,10 +4816,7 @@ function SignatureModal({user,A,onClose}){
 
 /* ---------- Excel import: templates first, then upload ---------- */
 const IMPORTS={
-  stock:{ title:"Stock items (opening balances)", roles:["super","store_officer"], cols:[["Item Name","Paracetamol 500mg"],["Category","MED"],["Unit","Box"],["Quantity",100],["Unit Price (PKR)",1250],["Store","CS1 Central Store 1"],["Rack","A-12"],["Bin","04"],["Batch","B-MED-11"],["Expiry (YYYY-MM-DD)","2027-06-30"],["Minimum Level",20]],
-    help:[["Category",CATS.filter(c=>c!=="OTHER").join(", ")+" — or any new category"],["Unit",UOMS.join(", ")+" — or any unit"],["Store",STORES.join(" / ")+" — or a new store name"],["Quantity","Added to the existing balance if the same item already exists in that store"]],
-    map:r=>({name:r["Item Name"],category:String(r["Category"]||"OTHER").toUpperCase(),uom:r["Unit"]||"Pcs",qty:Number(r["Quantity"])||0,price:Number(r["Unit Price (PKR)"])||0,store:r["Store"]||STORES[0],rack:r["Rack"]||"",bin:String(r["Bin"]||""),batch:r["Batch"]||"",expiry:xlDate(r["Expiry (YYYY-MM-DD)"]),min:Number(r["Minimum Level"])||0}),
-    check:r=>!r.name?"Item Name missing":r.qty<0?"Quantity negative":"" },
+  register:{ title:"Stock register (AKF format)", roles:["super","store_officer"], custom:true, cols:[] },
   vendors:{ title:"Vendors", roles:["super","admin_officer"], cols:[["Vendor Name","Al-Shifa Traders"],["NTN","1234567-8"],["Contact","0300-1234567"],["Bank & Account","HBL 1234-5678-9012"],["Supplies (Goods/Services)","Goods"],["FBR Status (Filer/Non-Filer)","Filer"],["GST Registered (Yes/No)","Yes"],["Category","MED"],["Cheque Copy Received (Yes/No)","Yes"],["Address","Blue Area, Islamabad"],["E-mail","sales@example.com"]],
     help:[["NTN","Format 1234567-8"],["FBR Status","Filer or Non-Filer — decides WHT"],["GST Registered","Yes = GST added automatically when a quotation excludes tax"]],
     map:r=>({name:r["Vendor Name"],ntn:String(r["NTN"]||""),contact:String(r["Contact"]||""),bank:r["Bank & Account"]||"",type:r["Supplies (Goods/Services)"]||"Goods",filer:!/non/i.test(r["FBR Status (Filer/Non-Filer)"]||""),gstRegistered:!/^n/i.test(r["GST Registered (Yes/No)"]||"Yes"),category:String(r["Category"]||"OTHER").toUpperCase(),cheque:/^y/i.test(r["Cheque Copy Received (Yes/No)"]||""),address:r["Address"]||"",email:r["E-mail"]||""}),
@@ -4645,6 +4851,121 @@ function ExcelItemsButton({onRows}){
   const onFile=async e=>{ const f=e.target.files[0]; e.target.value=""; if(!f) return; try{ const {rows,missing}=await readExcel(f,"items"); if(missing.length){ window.__toast(`Wrong template — missing column: ${missing[0]}`,"bad"); return; } const good=rows.filter(r=>!r.error).map(r=>r.data); const bad=rows.length-good.length; onRows(good); window.__toast(`${good.length} item${good.length===1?"":"s"} added from Excel${bad?` · ${bad} row${bad>1?"s":""} skipped (missing name or quantity)`:""}`,bad?"":"ok"); }catch(x){ window.__toast(x.message,"bad"); } };
   return html`<input type="file" class="hidden" accept=".xlsx,.xls,.csv" ref=${ref} onChange=${onFile}/><button class="btn btn-ghost btn-sm" onClick=${()=>ref.current.click()}><${Icon} name="upload"/>Import items (Excel)</button><button class="btn btn-ghost btn-sm" onClick=${()=>downloadTemplate("items")}><${Icon} name="download"/>Items template</button>`;
 }
+/* ---------- Stock register workbook (AKF format): Home + Received + Dispatched ----------
+   Columns are found by their header text, so extra columns, notes and blank rows are ignored. */
+function parseRegisterWorkbook(wb){
+  const norm=v=>String(v==null?"":v).replace(/\s+/g," ").trim();
+  const sheets=wb.SheetNames.map(n=>({name:n,rows:XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,defval:"",raw:true,blankrows:true})}));
+  const findHeader=(rows,re)=>rows.findIndex(r=>r.some(c=>re.test(norm(c))));
+  const col=(row,re)=>(row||[]).findIndex(c=>re.test(norm(c)));
+  const home=sheets.find(s=>findHeader(s.rows,/^particulars?$/i)>=0&&findHeader(s.rows,/^opening/i)>=0);
+  const recv=sheets.find(s=>findHeader(s.rows,/^received\s*qty/i)>=0), iss=sheets.find(s=>findHeader(s.rows,/^issued\s*qty/i)>=0);
+  const out={items:[],received:[],issued:[],fyFrom:"",fyTo:"",sheets:{home:home&&home.name,received:recv&&recv.name,issued:iss&&iss.name}};
+  if(home){
+    const R=home.rows, h=findHeader(R,/^particulars?$/i), H=R[h], H2=R[h+1]||[];
+    const both=re=>{ const i=col(H,re); return i>=0?i:col(H2,re); };
+    const ci={cat:col(H,/^category$/i),name:col(H,/^particulars?$/i),uom:both(/^(unit|units|uom)$/i),open:both(/^opening/i),min:both(/^minimum/i),price:both(/^(each|unit price|rate)$/i),bal:both(/^balance/i),store:both(/^store$/i)};
+    R.slice(0,h).forEach(r=>r.forEach((c,i)=>{ const k=norm(c).toLowerCase(); if(k==="from"||k==="to"){ const d=parseAnyDate(r.slice(i+1).find(x=>x!==""&&x!=null)); if(d) out[k==="from"?"fyFrom":"fyTo"]=d; } }));
+    const seen=new Map();
+    for(let i=h+1;i<R.length;i++){ const r=R[i], name=norm(r[ci.name]);
+      if(/^totals?$/i.test(norm(r[0]))||/^totals?$/i.test(name)) break;
+      if(!name||/^particulars?$/i.test(name)) continue;
+      const num=k=>ci[k]>=0?Number(String(r[ci[k]]).replace(/,/g,""))||0:0;
+      const it={row:i+1,name,category:ci.cat>=0?norm(r[ci.cat]):"",uom:(ci.uom>=0&&norm(r[ci.uom]))||"Unit",opening:num("open"),min:num("min"),price:num("price"),excelBal:ci.bal>=0&&r[ci.bal]!==""?num("bal"):null,store:ci.store>=0?norm(r[ci.store]):""};
+      it.error=it.opening<0?"Opening stock is negative":"";
+      const k=itemKey(name); if(seen.has(k)){ const f=seen.get(k); f.opening+=it.opening; f.merged=(f.merged||1)+1; continue; }
+      seen.set(k,it); out.items.push(it); }
+  }
+  const moves=(s,qtyRe,isRecv)=>{ if(!s) return []; const R=s.rows, h=findHeader(R,qtyRe), H=R[h];
+    const ci={date:col(H,/^date$/i),no:col(H,isRecv?/^(grn|gdn|no\.?|doc|receipt)/i:/^(gin|gdn|no\.?|doc|issue)/i),name:col(H,/^particulars?$/i),qty:col(H,qtyRe),party:col(H,isRecv?/donor|supplier|^from/i:/issued\s*to|^to$/i),purpose:col(H,/^pu\w*pose$/i),type:col(H,/^type/i),store:col(H,/^store$/i)};
+    const list=[], today=nowISO().slice(0,10);
+    for(let i=h+1;i<R.length;i++){ const r=R[i], name=norm(r[ci.name]), rawQty=ci.qty>=0?r[ci.qty]:"";
+      if(!name&&(rawQty===""||rawQty==null)) continue;
+      const qty=Number(String(rawQty).replace(/,/g,"")), date=ci.date>=0?parseAnyDate(r[ci.date]):"", t=ci.type>=0?norm(r[ci.type]):"";
+      const m={row:i+1,date,no:ci.no>=0?norm(r[ci.no]):"",name,qty,party:ci.party>=0?norm(r[ci.party]):"",purpose:ci.purpose>=0?norm(r[ci.purpose]):"",type:/grn|purch/i.test(t)?"GRN-P":/gdn|don/i.test(t)?"GDN-D":"",store:ci.store>=0?norm(r[ci.store]):""};
+      m.error=!name?"Particular missing":!(qty>0)?"Quantity missing":!date?"Date not readable":date>today?"Date is in the future":"";
+      list.push(m); }
+    return list; };
+  out.received=moves(recv,/^received\s*qty/i,true).map(m=>({...m,from:m.party}));
+  out.issued=moves(iss,/^issued\s*qty/i,false).map(m=>({...m,to:m.party}));
+  return out;
+}
+/* Writes the register in the same workbook layout it is imported from (Home / Received / Dispatched) */
+async function exportRegisterXlsx(state,range,blank){
+  try{ await loadScript(XLSX_URL);
+    const r=range||periodRange(state,fiscalYears(state)[0].key);
+    const fy=r.from?`${r.from.slice(0,4)}-${r.to.slice(2,4)}`:"All dates";
+    const dmy=iso=>{ const d=new Date(iso); return `${pad(d.getDate(),2)}-${pad(d.getMonth()+1,2)}-${d.getFullYear()}`; };
+    const rows=blank?[]:registerRows(state,r,"all");
+    const home=[["Stock Maintenance Sheet"],[SETTINGS.orgName||"Alkhidmat Foundation Islamabad"],["Stock Taking Report","","","Fiscal Year","","From",r.from?dmy(r.from):"","","","Estimated Stock Value in PKR"],["","","",fy,"","To",r.to?dmy(r.to):""],
+      ["Category","Particular","Unit","Quantity","","","","","","Each","Consumed","Available","Net Value"],["","","","Opening Stock","Received Stock","Issued Stock","Balance Stock","Minimum Level of Stock","Place Order"],
+      ...rows.map(x=>{ const p=x.s.price||0, rec=x.p+x.d+Math.max(0,x.adj), iss=x.issued+Math.max(0,-x.adj); return [x.s.category,x.s.name,x.s.uom,x.opening,rec,iss,x.balance,x.s.min||"",x.order==="OK"?"":x.order,p||"",p?p*iss:"",p?p*x.balance:"",p?p*(iss+x.balance):""]; })];
+    const rec=blank?[]:movementRows(state,"received",r).reverse(), iss=blank?[]:movementRows(state,"issued",r).reverse();
+    const wb=XLSX.utils.book_new();
+    const add=(aoa,name,widths,merges)=>{ const ws=XLSX.utils.aoa_to_sheet(aoa); ws["!cols"]=widths.map(w=>({wch:w})); if(merges) ws["!merges"]=merges; XLSX.utils.book_append_sheet(wb,ws,name); };
+    const M=(r1,c1,r2,c2)=>({s:{r:r1,c:c1},e:{r:r2,c:c2}});
+    add(home,"Home",[12,32,9,13,14,13,13,12,13,10,12,12,12],[M(0,0,0,12),M(1,0,1,12),M(4,3,4,8)]);
+    add([[""],["Stock Received"],["Date","GRN","Particulars","Received QTY","Donor/Supplier","Purpose","Type (GRN-P / GDN-D)"],...rec.map(m=>[dmy(m.date),m.no,m.item,m.qty,m.party,m.purpose,m.type])],"Received",[12,8,30,13,28,28,20],[M(1,0,1,6)]);
+    add([[""],["","Stock Issued"],["","Date","GIN","Particular","Issued QTY","Issued To","Purpose"],...iss.map(m=>["",dmy(m.date),m.no,m.item,m.qty,m.party,m.purpose])],"Dispatched",[3,12,8,30,12,30,28],[M(1,1,1,6)]);
+    add([["How to use this stock register workbook"],[""],
+      ["Home","One row per item from row 7: Category, Particular, Unit, Opening Stock, Minimum Level of Stock, Each (unit price). Received / Issued / Balance are calculated by the portal."],
+      ["Received","One row per item received: Date (dd-mm-yyyy), GRN no., Particulars, Received QTY, Donor/Supplier, Purpose, Type."],
+      ["Type","GRN-P = purchased · GDN-D = donation in kind. If left blank, you choose the type when importing."],
+      ["Dispatched","One row per item issued: Date, GIN no., Particular, Issued QTY, Issued To, Purpose."],
+      ["Names","Write each Particular exactly as on the Home sheet (capital letters do not matter). A new name becomes a new item."],
+      ["Import","Portal → Excel Import → Stock register (AKF format) → choose this file → check the preview → Import."]],"Instructions",[14,110]);
+    XLSX.writeFile(wb,blank?"AKF-Stock-Register-template.xlsx":`AKF-Stock-Register-${fy.replace(/\s+/g,"-")}.xlsx`);
+  }catch(e){ window.__toast&&window.__toast(e.message,"bad"); }
+}
+function RegisterImport({state,A}){
+  const [res,setRes]=useState(null); const [busy,setBusy]=useState(false); const [done,setDone]=useState(null); const ref=useRef();
+  const [store,setStore]=useState(STORES[0]); const [defType,setDefType]=useState("GDN-D"); const [mode,setMode]=useState(""); const [openDate,setOpenDate]=useState(""); const [view,setView]=useState("items");
+  const onFile=async e=>{ const f=e.target.files[0]; e.target.value=""; if(!f) return; setBusy(true); setDone(null);
+    try{ await loadScript(XLSX_URL); const wb=XLSX.read(await f.arrayBuffer(),{type:"array"}); const r=parseRegisterWorkbook(wb);
+      if(!r.sheets.home&&!r.sheets.received&&!r.sheets.issued) window.__toast("No Home, Received or Dispatched sheet found in this file","bad");
+      else { setRes({file:f.name,...r}); setOpenDate(r.fyFrom||fiscalYears(state)[0].from); setMode(state.stock.length?"":"add"); setView(r.items.length?"items":r.received.length?"received":"issued"); } }
+    catch(x){ window.__toast(x.message,"bad"); } setBusy(false); };
+  const ok=k=>res?res[k].filter(x=>!x.error):[];
+  const flow=useMemo(()=>{ const m={}; if(!res) return m; const get=n=>m[itemKey(n)]=m[itemKey(n)]||{rec:0,iss:0};
+    ok("received").forEach(r=>get(r.name).rec+=r.qty); ok("issued").forEach(r=>get(r.name).iss+=r.qty); return m; },[res]);
+  const known=res?new Set(res.items.map(i=>itemKey(i.name))):new Set();
+  const newNames=res?dedupeCI([...ok("received"),...ok("issued")].map(r=>r.name).filter(n=>!known.has(itemKey(n)))):[];
+  const errors=res?["items","received","issued"].reduce((s,k)=>s+res[k].filter(x=>x.error).length,0):0;
+  const untyped=res?ok("received").filter(r=>!r.type).length:0;
+  const run=()=>{ if(mode==="replace"){ if(!confirm(`Replace all stock?\n\nThis removes the ${state.stock.length} current items, their ledger and the store documents that are not linked to a request, then loads this file.\nA backup file is downloaded first.`)) return;
+      downloadText(`AKF-backup-before-stock-import-${nowISO().slice(0,10)}.json`,JSON.stringify(state),"application/json"); }
+    const r=A.importRegister({items:ok("items"),received:ok("received").map(x=>({...x,type:x.type||defType})),issued:ok("issued"),store,replace:mode==="replace",openingDate:openDate,defaultType:defType});
+    setDone({...r,file:res.file}); setRes(null); };
+  const chk=x=>x.error?html`<${Tag} tone="bad">${x.error}</${Tag}>`:html`<${Tag} tone="ok">OK</${Tag}>`;
+  return html`<div class="stack" style="margin-top:14px">
+    <div class="steps">
+      <div class="stepcard"><span class="stepnum">1</span><b>Use your stock register workbook</b><span class="sm muted">The same file you keep today, with the <b>Home</b>, <b>Received</b> and <b>Dispatched</b> sheets. Or start from the blank template.</span><div class="row wrap"><button class="btn btn-ghost btn-sm" onClick=${()=>exportRegisterXlsx(state,null,true)}><${Icon} name="download"/>Blank template</button>${state.stock.length>0&&html`<button class="btn btn-ghost btn-sm" onClick=${()=>exportRegisterXlsx(state)}><${Icon} name="download"/>Current register</button>`}</div></div>
+      <div class="stepcard"><span class="stepnum">2</span><b>What is read</b><span class="sm muted">Home: Category · Particular · Unit · Opening Stock · Minimum Level · Each.<br/>Received: Date · GRN · Particulars · Received QTY · Donor/Supplier · Purpose · Type (GRN-P / GDN-D).<br/>Dispatched: Date · GDN/GIN · Particular · Issued QTY · Issued To · Purpose.</span></div>
+      <div class="stepcard"><span class="stepnum">3</span><b>Upload the workbook</b><span class="sm muted">.xlsx or .xls — check the preview, then import</span><input type="file" class="hidden" accept=".xlsx,.xls" ref=${ref} onChange=${onFile}/><button class="btn btn-primary" disabled=${busy} onClick=${()=>ref.current.click()}><${Icon} name="upload"/>${busy?"Reading…":"Choose workbook"}</button></div>
+    </div>
+    ${done&&html`<div class="notice notice-ok"><${Icon} name="check"/><span><b>${done.file} imported.</b> ${done.items} items · ${done.received} received rows · ${done.issued} issued rows${done.skipped?` · ${done.skipped} rows were already in the portal and were skipped`:""}. Open <b>Store → Stock register</b> to see the balances.</span></div>`}
+    ${res&&html`<div class="card" style="padding:16px"><div class="stack">
+      <div class="row between wrap"><div><b>Preview · ${res.file}</b><div class="sm muted">Sheets found: ${[res.sheets.home&&"Home → "+res.sheets.home,res.sheets.received&&"Received → "+res.sheets.received,res.sheets.issued&&"Issued → "+res.sheets.issued].filter(Boolean).join(" · ")}${res.fyFrom?` · fiscal year from ${fmtD(res.fyFrom)}`:""}</div></div>
+        <div class="seg">${[["items",`Items (${res.items.length})`],["received",`Received (${res.received.length})`],["issued",`Issued (${res.issued.length})`]].map(([k,l])=>html`<button class=${view===k?"active":""} onClick=${()=>setView(k)}>${l}</button>`)}</div></div>
+      ${errors>0&&html`<div class="notice notice-warn"><${Icon} name="alert"/><span><b>${errors} row${errors>1?"s":""} will be skipped</b> (marked in red). Fix them in Excel and import again with “Add”, or import now and enter them by hand.</span></div>`}
+      ${newNames.length>0&&html`<div class="notice notice-info"><${Icon} name="plus"/><span><b>${newNames.length} particular${newNames.length>1?"s are":" is"} not on the Home sheet</b> and will be added as new item${newNames.length>1?"s":""}: ${newNames.join(", ")}.</span></div>`}
+      ${view==="items"&&html`<div class="tbl-wrap" style="max-height:420px"><table class="tbl"><thead><tr><th>Row</th><th>Category</th><th>Particular</th><th>Unit</th><th class="r">Opening</th><th class="r">+ Received</th><th class="r">− Issued</th><th class="r">= Balance</th><th class="r">Excel balance</th><th>Check</th></tr></thead><tbody>${res.items.map(x=>{ const fl=flow[itemKey(x.name)]||{rec:0,iss:0}; const bal=x.opening+fl.rec-fl.iss; const diff=x.excelBal!==null&&x.excelBal!==bal;
+        return html`<tr style=${x.error?"background:var(--bad-bg)":""}><td class="num faint">${x.row}</td><td class="sm">${x.category||html`<span class="faint">OTHER</span>`}</td><td><b>${x.name}</b>${x.merged&&html`<div class="xs faint">${x.merged} rows with this name merged</div>`}</td><td class="sm">${x.uom}</td><td class="r num">${fmt(x.opening)}</td><td class="r num c-p">${fl.rec?fmt(fl.rec):"—"}</td><td class="r num c-i">${fl.iss?fmt(fl.iss):"—"}</td><td class="r num bold">${fmt(bal)}</td><td class="r num">${x.excelBal===null?"—":fmt(x.excelBal)}</td><td>${x.error?chk(x):diff?html`<${Tag} tone="warn">Differs from Excel</${Tag}>`:chk(x)}</td></tr>`; })}</tbody></table></div>`}
+      ${view!=="items"&&html`<div class="tbl-wrap" style="max-height:420px"><table class="tbl"><thead><tr><th>Row</th><th>Date</th><th>No.</th><th>Particulars</th><th class="r">Qty</th><th>${view==="received"?"Donor / Supplier":"Issued to"}</th><th>Purpose</th>${view==="received"&&html`<th>Type</th>`}<th>Check</th></tr></thead><tbody>${res[view].map(x=>html`<tr style=${x.error?"background:var(--bad-bg)":""}><td class="num faint">${x.row}</td><td class="sm nowrap">${x.date?fmtD(x.date):"—"}</td><td class="sm">${x.no||"—"}</td><td><b>${x.name||"—"}</b></td><td class="r num">${x.qty>0?fmt(x.qty):"—"}</td><td class="sm">${x.party||"—"}</td><td class="sm">${x.purpose||"—"}</td>${view==="received"&&html`<td>${x.type?html`<${Tag} tone=${x.type==="GRN-P"?"info":"ok"}>${x.type}</${Tag}>`:html`<span class="xs faint">${defType} (default)</span>`}</td>`}<td>${chk(x)}</td></tr>`)}
+        ${!res[view].length&&html`<tr><td colspan="9"><div class="empty" style="padding:14px">No rows on this sheet.</div></td></tr>`}</tbody></table></div>`}
+      <div class="grid3">
+        <${Field} label="Store for these items"><${Pick} value=${store} options=${STORES} onChange=${setStore}/><//>
+        <${Field} label=${`Received rows without a Type (${untyped})`}><select class="select" value=${defType} onChange=${e=>setDefType(e.target.value)}>${Object.entries(RECEIPT_TYPES).map(([k,l])=>html`<option value=${k}>${l}</option>`)}</select><//>
+        <${Field} label="Opening stock date"><input class="input" type="date" value=${openDate} onInput=${e=>setOpenDate(e.target.value)}/><//>
+      </div>
+      ${state.stock.length>0&&html`<div class="import-mode">
+        <label class=${"im"+(mode==="replace"?" on bad":"")}><input type="radio" name="im" checked=${mode==="replace"} onChange=${()=>setMode("replace")}/><span><b>Replace all stock with this file</b><small>Removes the ${state.stock.length} current items (including demo items), their ledger and store documents not linked to a request. Use this the first time. A backup is downloaded first.</small></span></label>
+        <label class=${"im"+(mode==="add"?" on":"")}><input type="radio" name="im" checked=${mode==="add"} onChange=${()=>setMode("add")}/><span><b>Add to current stock</b><small>New items are created with their opening stock; existing items keep their balance. Received / issued rows already in the portal (same date, items and quantities) are skipped.</small></span></label>
+      </div>`}
+      <div class="row wrap"><span class="grow sm muted">${ok("items").length} items · ${ok("received").length} received rows · ${ok("issued").length} issued rows ready</span><button class="btn btn-ghost" onClick=${()=>setRes(null)}>Cancel</button><button class="btn btn-primary" disabled=${!mode||!(ok("items").length+ok("received").length+ok("issued").length)} onClick=${run}><${Icon} name="check"/>${mode?"Import stock register":"Choose replace or add"}</button></div>
+    </div></div>`}
+  </div>`;
+}
 function Imports({state,user,A}){
   const kinds=Object.keys(IMPORTS).filter(k=>IMPORTS[k].roles&&IMPORTS[k].roles.includes(user.role));
   const [kind,setKind]=useState(kinds[0]); const [res,setRes]=useState(null); const [busy,setBusy]=useState(false); const ref=useRef();
@@ -4654,11 +4975,11 @@ function Imports({state,user,A}){
   return html`<div class="stack page-body" style="gap:16px">
     <${Card} title="Import from Excel" desc="Step 1: download the template · Step 2: fill it in Excel · Step 3: upload it here, check the preview, and import.">
       <div class="seg">${kinds.map(k=>html`<button class=${kind===k?"active":""} onClick=${()=>{ setKind(k); setRes(null); }}>${IMPORTS[k].title}</button>`)}</div>
-      <div class="steps" style="margin-top:14px">
+      ${c.custom?html`<${RegisterImport} state=${state} A=${A}/>`:html`<div class="steps" style="margin-top:14px">
         <div class="stepcard"><span class="stepnum">1</span><b>Download the template</b><span class="sm muted">${c.cols.length} columns · includes an Instructions sheet</span><button class="btn btn-primary" onClick=${()=>downloadTemplate(kind)}><${Icon} name="download"/>Download ${c.title} template</button></div>
         <div class="stepcard"><span class="stepnum">2</span><b>Fill it in Excel</b><span class="sm muted">${c.cols.map(x=>x[0]).join(" · ")}</span></div>
         <div class="stepcard"><span class="stepnum">3</span><b>Upload the filled file</b><span class="sm muted">.xlsx, .xls or .csv</span><input type="file" class="hidden" accept=".xlsx,.xls,.csv" ref=${ref} onChange=${onFile}/><button class="btn btn-ghost" disabled=${busy} onClick=${()=>ref.current.click()}><${Icon} name="upload"/>${busy?"Reading…":"Choose file"}</button></div>
-      </div><//>
+      </div>`}<//>
     ${res&&html`<${Card} title=${`Preview · ${res.file}`} desc=${`${res.rows.length} rows · ${good.length} ready · ${res.rows.length-good.length} with errors`} right=${html`<button class="btn btn-primary" disabled=${!good.length||res.missing.length>0} onClick=${()=>{ A.importRows(kind,good.map(r=>r.data)); setRes(null); }}><${Icon} name="check"/>Import ${good.length} row${good.length===1?"":"s"}</button>`}>
       ${res.missing.length>0&&html`<div class="notice notice-bad"><${Icon} name="alert"/><span>This file does not match the ${c.title} template. Missing column${res.missing.length>1?"s":""}: <b>${res.missing.join(", ")}</b>. Download the template again and copy your data into it.</span></div>`}
       <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Row</th>${c.cols.map(x=>html`<th>${x[0]}</th>`)}<th>Check</th></tr></thead><tbody>${res.rows.map(r=>html`<tr style=${r.error?"background:var(--bad-bg)":""}><td class="num">${r.row}</td>${Object.values(r.data).map(v=>html`<td class="sm">${typeof v==="boolean"?(v?"Yes":"No"):kind==="users"&&v===r.data.password?"••••":String(v)}</td>`)}<td>${r.error?html`<${Tag} tone="bad">${r.error}</${Tag}>`:html`<${Tag} tone="ok">OK</${Tag}>`}</td></tr>`)}</tbody></table></div><//>`}
@@ -4672,7 +4993,8 @@ const BLANK_FORMS=[
   {id:"vr",title:"Vendor Registration Form",sub:"New supplier / service provider",fields:["Vendor / firm name","NTN","STRN (GST registration no.)","FBR status (Filer / Non-filer)","Supplies (Goods / Services / Other)","Main category","Address","Contact no.","E-mail","Bank, branch & account no."],table:null,signs:["Vendor (sign & stamp)","Admin Officer — verified","Manager Admin & HR"],checks:["NTN certificate","GST / STRN certificate","Bank account proof","Cancelled cheque copy","CNIC of proprietor"]},
   {id:"cs",title:"Comparative Statement",sub:"Purchase committee evaluation",fields:["RFQ no.","Request no.","Date opened"],table:["Vendor","Quoted amount","Tax included? (Y/N)","GST","Total incl. tax","Delivery days","Remarks"],signs:["Committee member","Committee member","Committee convener (Manager Admin & HR)"]},
   {id:"grn",title:"Goods Received Note (GRN-P)",sub:"Purchase receipt",fields:["PO no.","Vendor","Delivery challan no.","Receiving store","Date received"],table:["S#","Item","Unit","Qty ordered","Qty received","Unit price","Remarks / condition"],signs:["Store Officer — received","Inspected by","Admin Officer"]},
-  {id:"gin",title:"Goods Issuance Note (GIN)",sub:"Issue of goods to HOD / department",fields:["Request no.","Issued to (HOD / department)","Store","Vehicle / gate pass","Date"],table:["S#","Item code","Item","Unit","Qty issued","Remarks"],signs:["Store Officer — issued","Received by (HOD)","Approved by"]},
+  {id:"gdn",title:"Goods Donation Note (GDN-D)",sub:"Donation in kind received into store",fields:["Donor","Donation letter / reference","Receiving store","Purpose","Date received"],table:["S#","Particular","Unit","Qty received","Est. unit value","Remarks / condition"],signs:["Store Officer — received","Verified by","Manager Admin & HR"]},
+  {id:"gin",title:"Goods Issuance Note (GIN)",sub:"Issue of goods from store",fields:["Request no. / approval reference","Issued to (HOD / department / beneficiary)","Received by (name)","Store","Purpose","Vehicle / gate pass","Date"],table:["S#","Item code","Item","Unit","Qty issued","Remarks"],signs:["Store Officer — issued","Received by (HOD)","Approved by"]},
 ];
 function BlankForm({form}){
   return html`<div class="doc blankform"><${DocHeader} title=${form.title} sub=${form.sub+" · No. ____________ · Date ____________"}/>
