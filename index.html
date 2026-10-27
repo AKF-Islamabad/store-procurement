@@ -5411,7 +5411,7 @@ function App(){
         <button class="iconbtn" aria-label="Sign out" title="Sign out" onClick=${logout} style="display:none" id="mobile-logout"><${Icon} name="logout"/></button>
       </header>
       <main class="content"><div class="page-body"><div class="print-only"><${DocHeader} title=${titles[activeTab][0]} sub=${`${titles[activeTab][1]} · printed ${fmtDT(nowISO())} by ${user.name}`}/></div>${h(page,{key:activeTab,state,user,A,openReq,openDoc,setTab,readOnly,me:user,focusItem:modal&&modal.kind==="stock"?null:null,taskOpen,setTaskOpen})}</div>
-        <footer class="xs faint" style="text-align:center;padding-top:20px">Alkhidmat Foundation Islamabad Region · Procurement to Store · every step logged · signed in as ${user.username} · <button class="xs" style="color:var(--brand-2);font-weight:700" onClick=${logout}>sign out</button></footer></main>
+        <footer class="xs faint" style="text-align:center;padding-top:20px">Alkhidmat Foundation Islamabad Region · Procurement to Store · every step logged · signed in as ${user.username} · build ${BUILD} · <button class="xs" style="color:var(--brand-2);font-weight:700" onClick=${logout}>sign out</button></footer></main>
     </div>
     <nav class="mobilenav">${tabs.map(t=>html`<button class=${t.id===activeTab?"active":""} onClick=${()=>setTab(t.id)}><${Icon} name=${t.icon} cls="icon-lg icon"/>${t.label.split(" ")[0]}${counts[t.id]?html`<span class="count">${counts[t.id]}</span>`:""}</button>`)}</nav>
     ${modal&&modal.kind==="req"&&(()=>{ const r=state.requests.find(x=>x.id===modal.id); const allowed=r&&visibleRequests(user,[r]).length>0; return allowed?html`<${RequestModal} key=${r.id} req=${r} state=${state} user=${user} A=${A} readOnly=${readOnly} onClose=${()=>setModal(null)} openDoc=${openDoc}/>`:html`<${Modal} title="Request" sub=${modal.id} onClose=${()=>setModal(null)} narrow><${Empty} title=${r?"Not available to you":"Request not found"}>${r?"This request has not reached your step yet, or belongs to another department.":"Check the ID and try again."}<//><//>`; })()}
@@ -6074,6 +6074,10 @@ function VendorQuote({token}){
     </main><footer class="vq-f">${(data&&data.org)||"Alkhidmat Foundation"} · Procurement</footer></div>`;
 }
 
+/* Any unexpected error is shown as a red message, so a failure is never silent ("button does nothing"). */
+const BUILD="2026-10-27 tasks-3";
+(()=>{ let last=0; const show=m=>{ console.error(m); if(Date.now()-last<1500) return; last=Date.now(); if(window.__toast) window.__toast("Error: "+String(m).slice(0,180)+" (build "+BUILD+")","bad"); };
+  window.addEventListener("error",e=>show(e.message||e.error)); window.addEventListener("unhandledrejection",e=>show((e.reason&&e.reason.message)||e.reason)); })();
 const vendorToken=(/#rfq=([0-9a-f]{16,})/i.exec(location.hash||"")||[])[1];
 render(vendorToken?html`<${VendorQuote} token=${vendorToken}/>`:html`<${App}/>`, document.getElementById("app"));
 
