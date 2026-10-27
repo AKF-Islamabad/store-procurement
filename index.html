@@ -642,6 +642,14 @@ button.item:hover{border-left-color:var(--brand-2);background:var(--surface-2)}
 .tk-views .seg button{display:inline-flex;align-items:center;gap:6px}
 .tk-views .seg svg{width:14px;height:14px}
 .tk-page{min-width:0}
+.ua-box{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2);display:grid;gap:10px}
+.ua-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.ua-opt{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);cursor:pointer;font-size:13px;font-weight:600;color:var(--ink-2)}
+.ua-opt.on{border-color:var(--brand-3);color:var(--ink);box-shadow:0 0 0 2px var(--ice-2)}
+.ua-opt svg{width:15px;height:15px;color:var(--ink-3);flex:none}
+.ua-opt em{margin-left:auto;font-style:normal;font-size:10.5px;font-weight:800;color:var(--warn)}
+.ua-opt.wide{grid-column:1/-1}
+.ua-opt input{accent-color:var(--brand-2)}
 .tk-views .seg{max-width:100%;overflow-x:auto;scrollbar-width:none}
 .tk-views .seg::-webkit-scrollbar{display:none}
 .tk-views .seg button{flex:none}
@@ -3426,7 +3434,15 @@ const DB = {
   /* read everything and rebuild the in-memory state object */
   async load(){
     const authLoaded=!!(await sb.auth.getSession()).data.session;
-    let { data, error } = await sb.from("portal_rows").select("collection,id,data,created_at").order("created_at",{ascending:true}).limit(20000);
+    /* Supabase returns at most 1,000 rows per request, so read page by page. A single request silently
+       dropped the newest rows (new tasks, requests, stock moves) once the table passed 1,000 rows. */
+    let data=[], error=null;
+    for(let from=0;;from+=1000){
+      const res=await sb.from("portal_rows").select("collection,id,data,created_at").order("created_at",{ascending:true}).order("collection",{ascending:true}).order("id",{ascending:true}).range(from,from+999);
+      if(res.error){ error=res.error; break; }
+      data=data.concat(res.data||[]);
+      if(!res.data||res.data.length<1000) break;
+    }
     /* before sign-in the locked table refuses the public key: show the login screen, not an error */
     if(error && !authLoaded && (error.code==="42501" || /permission denied/i.test(error.message||""))){ data=[]; error=null; }
     if(error) throw error;
@@ -4880,18 +4896,28 @@ function Users({state,A,me}){
   const [show,setShow]=useState({}); const [signFor,setSignFor]=useState(null);
   const isNew=f&&!f.id;
   const dup=f&&state.users.some(u=>u.username===f.username.trim()&&u.id!==f.id);
-  const ok=f&&f.name.trim()&&f.username.trim().length>=3&&((f.password||"").length>=6||(!isNew&&!f.password))&&!dup&&f.dept&&(f.role!=="hod"||f.dept);
-  const save=async()=>{ const u={...f,username:f.username.trim()}; if(SB_MODE&&isNew&&u.password) await A.createLoginSB(u.username,u.password); A.saveUser(u); setF(null); };
+  const ok=f&&f.name.trim()&&f.username.trim().length>=3&&((f.password||"").length>=6||(!isNew&&!f.password))&&!dup&&f.dept&&(f.role!=="hod"||f.dept)&&(!Array.isArray(f.tabs)||f.tabs.length>0);
+  /* access: pages default to the role's set; the Super Admin can tick extra pages or untick some per person */
+  const roleTabs=f?(ROLE_TABS[f.role]||[]):[];
+  const curTabs=f?(Array.isArray(f.tabs)?f.tabs:roleTabs):[];
+  const toggleTab=id=>set("tabs",curTabs.includes(id)?curTabs.filter(x=>x!==id):TABS.map(t=>t.id).filter(x=>x===id||curTabs.includes(x)));
+  const custom=f&&Array.isArray(f.tabs)&&JSON.stringify([...f.tabs].sort())!==JSON.stringify([...roleTabs].sort());
+  const save=async()=>{ const u={...f,username:f.username.trim()}; if(!custom) u.tabs=null; u.taskAdmin=!!u.taskAdmin; /* explicit values so an edit can also remove earlier custom access */ if(SB_MODE&&isNew&&u.password) await A.createLoginSB(u.username,u.password); A.saveUser(u); setF(null); };
   return html`<div class="stack page-body" style="gap:16px">
     <div class="row between wrap"><div class="sm muted">${state.users.length} accounts · each role sees only its own modules and only the requests that have reached its step.${SB_MODE?html`<div class="notice notice-info" style="margin-top:8px"><${Icon} name="shield"/><span>New users get their login created automatically (Supabase → Authentication → Providers → Email → <b>Confirm email</b> must be OFF). The password you type is kept on the profile so the Super Admin can look it up. If a person later changes their password from the portal, the new one is recorded too. Passwords changed directly in Supabase are not visible here.</span></div>`:""}</div>${!f&&html`<button class="btn btn-primary" onClick=${()=>setF(blank)}><${Icon} name="plus"/>Add user</button>`}</div>
     ${f&&html`<${Card} title=${f.id?"Edit user":"New user"}><div class="grid3"><${Field} label="Full name"><input class="input" value=${f.name} onInput=${e=>set("name",e.target.value)}/><//><${Field} label="Username"><input class="input" value=${f.username} disabled=${SB_MODE&&!isNew} onInput=${e=>set("username",e.target.value.toLowerCase())}/><//>
       <${Field} label=${SB_MODE&&!isNew?"Password on record (change it in Supabase or by the user)":"Password (6+)"}><input class="input" value=${f.password||""} onInput=${e=>set("password",e.target.value)}/><//>
-      <${Field} label="Role"><select class="select" value=${f.role} onChange=${e=>set("role",e.target.value)}>${Object.entries(ROLES).map(([k,v])=>html`<option value=${k}>${v.label} — ${v.desc}</option>`)}</select><//><${Field} label="Designation"><input class="input" value=${f.designation} onInput=${e=>set("designation",e.target.value)} placeholder="HOD Health"/><//><${Field} label="Department"><${Pick} value=${f.dept} options=${DEPTS} onChange=${v=>set("dept",v)}/><//></div>
+      <${Field} label="Role"><select class="select" value=${f.role} onChange=${e=>setF(x=>({...x,role:e.target.value,tabs:undefined}))}>${Object.entries(ROLES).map(([k,v])=>html`<option value=${k}>${v.label} — ${v.desc}</option>`)}</select><//><${Field} label="Designation"><input class="input" value=${f.designation} onInput=${e=>set("designation",e.target.value)} placeholder="HOD Health"/><//><${Field} label="Department"><${Pick} value=${f.dept} options=${DEPTS} onChange=${v=>set("dept",v)}/><//></div>
       ${SB_MODE&&html`<div class="xs faint" style="margin-top:6px">Login e-mail: <b>${emailFor(f.username||"username")}</b></div>`}
+      <div class="ua-box"><div class="row between wrap"><div><b class="sm">Access — pages this person can open</b><div class="xs faint">Starts from the ${(ROLES[f.role]||{}).label||""} role. Tick or untick to fit the person's job. Approval steps still follow the role, so extra pages give viewing and working access, never someone else's approval.</div></div>${custom&&html`<button class="btn btn-ghost btn-sm" onClick=${()=>set("tabs",undefined)}><${Icon} name="refresh"/>Back to role default</button>`}</div>
+        <div class="ua-grid">${TABS.map(t=>html`<label class=${"ua-opt"+(curTabs.includes(t.id)?" on":"")}><input type="checkbox" checked=${curTabs.includes(t.id)} onChange=${()=>toggleTab(t.id)}/><${Icon} name=${t.icon}/><span>${t.label}</span>${roleTabs.includes(t.id)?"":html`<em>extra</em>`}</label>`)}</div>
+        ${(curTabs.includes("users")||curTabs.includes("settings"))&&f.role!=="super"&&html`<div class="notice notice-warn"><${Icon} name="alert"/><span>Users and Settings let this person change logins, roles and policies. Give them only to someone you trust as an administrator.</span></div>`}
+        ${!curTabs.length&&html`<div class="notice notice-bad"><${Icon} name="alert"/><span>Tick at least one page, or this person sees an empty portal.</span></div>`}
+        <label class="ua-opt wide"><input type="checkbox" checked=${!!f.taskAdmin||TASK_ADMIN.includes(f.role)} disabled=${TASK_ADMIN.includes(f.role)} onChange=${e=>set("taskAdmin",e.target.checked)}/><${Icon} name="tasks"/><span><b>Manage all tasks</b> — see, assign, approve and close tasks in every department (like the Regional Manager)</span></label></div>
       <div class="row" style="margin-top:12px"><button class="btn btn-ghost" onClick=${()=>setF(null)}>Cancel</button><span class="grow"/>${dup&&html`<span class="sm" style="color:var(--bad)">Username already taken</span>`}<button class="btn btn-primary" disabled=${!ok} onClick=${save}>Save user</button></div><//>`}
     <${Card} title="Accounts" desc="Only the Super Admin sees this page. Click the eye to reveal a password."><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Username</th><th>Password</th><th>Role</th><th>Department</th><th>Signature</th><th>Status</th><th/></tr></thead><tbody>${state.users.map(u=>html`<tr><td><b>${u.name}</b><div class="xs faint">${u.designation}</div></td><td class="sm">${u.username}</td>
       <td class="nowrap"><span class="num sm">${u.password?(show[u.id]?u.password:"••••••••"):html`<span class="faint xs">not recorded</span>`}</span>${u.password&&html`<button class="iconbtn" style="width:26px;height:26px;margin-left:6px;display:inline-grid;vertical-align:middle" title=${show[u.id]?"Hide":"Show password"} onClick=${()=>setShow(s=>({...s,[u.id]:!s[u.id]}))}><${Icon} name=${show[u.id]?"lock":"eye"}/></button>`}</td>
-      <td><${Tag} tone=${u.role==="super"?"violet":APPROVER_ROLES.includes(u.role)?"ok":"info"}>${(ROLES[u.role]||{label:u.role}).label}</${Tag}></td><td>${u.dept}</td>
+      <td><${Tag} tone=${u.role==="super"?"violet":APPROVER_ROLES.includes(u.role)?"ok":"info"}>${(ROLES[u.role]||{label:u.role}).label}</${Tag}>${Array.isArray(u.tabs)&&html` <${Tag} tone="warn">Custom access</${Tag}>`}${u.taskAdmin&&html` <${Tag} tone="info">All tasks</${Tag}>`}</td><td>${u.dept}</td>
       <td>${u.signature?html`<img src=${u.signature} alt="" style="height:28px;max-width:90px;object-fit:contain;background:#fff;border-radius:4px"/>`:html`<span class="faint xs">none</span>`}</td>
       <td>${u.active?html`<${Tag} tone="ok" dot>Active</${Tag}>`:html`<${Tag} tone="bad" dot>Deactivated</${Tag}>`}</td><td class="row" style="justify-content:flex-end"><button class="btn btn-ghost btn-sm" onClick=${()=>setSignFor(u)}><${Icon} name="pen"/>Sign</button><button class="btn btn-ghost btn-sm" onClick=${()=>setF({...u})}>Edit</button>${u.id!==me.id&&html`<button class="btn btn-ghost btn-sm" onClick=${()=>A.toggleUser(u.id)}>${u.active?"Deactivate":"Activate"}</button>`}</td></tr>`)}</tbody></table></div><//>
     <${Card} title="Approval matrix" desc="Every request follows its chain in order — nobody, including the Super Admin, can skip a step"><div class="grid2">${["procurement","store"].map(t=>html`<div><b class="sm">${t==="procurement"?"Procurement":"Store"}</b><ol class="matrix">${FLOW[t].map(s=>html`<li><b>${s.who}</b> — ${s.done}</li>`)}</ol></div>`)}</div><div class="xs faint">Above ${pkr(state.settings.directPurchaseLimit||100000)} the Admin Officer must collect vendor quotations and the purchase committee must approve one vendor (comparative statement); up to that limit a direct purchase is allowed.</div><//>
@@ -5338,7 +5364,9 @@ function App(){
   let user=null;
   if(SB_MODE){ if(authUser){ user=profileFor(state,authUser); if(!user&&state.users.length===0&&state.authLoaded){ /* first ever login on an empty portal becomes Super Admin */ const email=(authUser.email||"").toLowerCase(); user={id:authUser.id,name:email.split("@")[0].replace(/[._]/g," ").replace(/\b\w/g,c=>c.toUpperCase()),username:email.split("@")[0],email,role:"super",designation:"System Administrator",dept:"IT",active:true}; const u=user; setTimeout(()=>commit(d=>{ if(!d.users.length) d.users.push(u); }),0); } if(user&&!user.active) user=null; } }
   else user=state.users.find(u=>u.id===sessionId&&u.active)||null;
-  const tabs=user?TABS.filter(t=>ROLE_TABS[user.role].includes(t.id)):[];
+  /* pages: the Super Admin may give a person their own set (users → Access); otherwise the role's set */
+  const allowedTabs=user?(Array.isArray(user.tabs)&&user.tabs.length?user.tabs:(ROLE_TABS[user.role]||["tasks"])):[];
+  const tabs=TABS.filter(t=>allowedTabs.includes(t.id));
   const activeTab=tab&&tabs.some(t=>t.id===tab)?tab:(tabs[0]||{}).id;
   const setTab=id=>{ hideTip(); setTabRaw(id); window.scrollTo({top:0,behavior:"smooth"}); };
   const readOnly=user&&READ_ONLY_ROLES.includes(user.role);
@@ -5470,8 +5498,8 @@ const tNum=t=>{ const m=/(\d+)-(\d+)$/.exec(t.id||""); return m?(+m[1])*1e6+(+m[
 
 /* ---- who may do what ---- */
 const tUser=(state,id)=>state.users.find(u=>u.id===id);
-const tIsAdmin=u=>TASK_ADMIN.includes(u.role);
-function taskVisible(u,t){ return TASK_VIEW_ALL.includes(u.role)||t.assigneeId===u.id||t.creatorId===u.id||(u.role==="hod"&&t.dept===u.dept)||(t.watchers||[]).includes(u.id); }
+const tIsAdmin=u=>TASK_ADMIN.includes(u.role)||!!u.taskAdmin;   // taskAdmin: ticked by the Super Admin under Users → Access
+function taskVisible(u,t){ return TASK_VIEW_ALL.includes(u.role)||!!u.taskAdmin||t.assigneeId===u.id||t.creatorId===u.id||(u.role==="hod"&&t.dept===u.dept)||(t.watchers||[]).includes(u.id); }
 function tCanManage(u,t){ return tIsAdmin(u)||(u.role==="hod"&&t.dept===u.dept)||t.creatorId===u.id; }   // fields, dates, assignee
 function tCanWork(u,t){ return tCanManage(u,t)||t.assigneeId===u.id; }                                   // checklist, time, files
 function tIsApprover(u,t){ return (tIsAdmin(u)||(u.role==="hod"&&t.dept===u.dept))&&u.id!==t.assigneeId; }
