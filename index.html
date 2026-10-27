@@ -847,6 +847,62 @@ button.tk-row:hover{background:var(--surface-2)}
 .tk-timerbox b{font-size:18px}.tk-timerbox small{color:var(--ink-3);font-size:11.5px}
 .tk-timerbox.on{background:var(--warn-bg);border-color:var(--warn)}
 .modal .tag{white-space:normal;line-height:1.35}
+/* Tasks — events & tracking */
+.tk-evpill{display:inline-flex;align-items:center;gap:3px;padding:1px 7px;border-radius:999px;background:var(--info-bg);color:var(--info);font-size:10.5px;font-weight:800;vertical-align:middle;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tk-evpill svg{width:11px;height:11px;flex:none}
+.tk-pct{font-size:11.5px;font-weight:800;color:var(--brand-2);white-space:nowrap;min-width:34px;text-align:right}
+.tk-pct.done{color:var(--ok)}
+.tk-evdate{width:46px;height:46px;border-radius:12px;background:var(--ice);color:var(--brand-2);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;line-height:1}
+.tk-evdate b{font-size:18px}.tk-evdate small{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.tk-evdate.lg{width:64px;height:64px;border-radius:16px;background:var(--grad);color:#fff}
+.tk-evdate.lg b{font-size:24px}.tk-evdate.lg small{text-transform:none;letter-spacing:0;color:rgba(255,255,255,.85);margin-top:3px;white-space:nowrap}
+.tk-evcard{display:flex;gap:14px;padding:14px;border-radius:16px;border:1px solid var(--line);background:var(--surface);text-align:left;width:100%;color:var(--ink);transition:border-color .15s,box-shadow .15s}
+.tk-evcard:hover{border-color:var(--brand-3);box-shadow:var(--shadow)}
+.tk-evbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.tk-evtitle{font-size:15px}
+.tk-evstep{width:22px;height:6px;border-radius:3px;background:var(--line-2)}.tk-evstep.on{background:var(--ok)}
+.tk-ev-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:1000px){.tk-ev-grid{grid-template-columns:minmax(0,1fr)}}
+.tk-trk{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:8px 6px;border-radius:12px;color:var(--ink)}
+button.tk-trk:hover{background:var(--surface-2)}
+.tk-trk-l{flex:1;min-width:0;display:flex;flex-direction:column}.tk-trk-l b{font-size:13.5px;display:inline-flex;align-items:center;gap:5px}.tk-trk-l b svg{width:14px;height:14px;color:var(--info)}.tk-trk-l small{font-size:11.5px}
+.tk-pctwrap{display:flex;align-items:center;gap:8px;width:170px;flex:none}.tk-pctwrap.big{width:220px}
+@media (max-width:640px){.tk-pctwrap,.tk-pctwrap.big{width:110px}}
+.tk-trkgroup{border:1px solid var(--line);border-radius:14px;padding:6px 8px}
+.tk-trklist{border-top:1px dashed var(--line);margin-top:4px;padding-top:4px}
+.tk-evbanner{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--info-bg);border:1px solid var(--line)}
+.tk-evbanner b{display:block;font-size:13px}.tk-evbanner small{color:var(--ink-3);font-size:12px}
+.tk-ai-ico.sm{width:30px;height:30px;border-radius:9px}.tk-ai-ico.sm svg{width:15px;height:15px}
+.tk-evtabs{display:flex;align-items:center;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;margin-top:-4px}
+.tk-evtabs button{padding:8px 12px;font-weight:700;font-size:13px;color:var(--ink-3);border-bottom:2px solid transparent;white-space:nowrap}
+.tk-evtabs button.active{color:var(--brand-2);border-bottom-color:var(--brand-2)}
+.tk-evsec{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.tk-evsec-h{display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;text-align:left;background:var(--surface-2);color:var(--ink)}
+.tk-evsec-h b{font-size:13.5px}.tk-evsec-h>svg{width:16px;height:16px;color:var(--ink-3);transition:transform .15s}
+.tk-evsec.open .tk-evsec-h>svg{transform:rotate(90deg)}
+.tk-evsec-b{padding:6px 12px 10px;display:flex;flex-direction:column;gap:8px}
+.tk-evitem{padding:6px 0;border-bottom:1px dashed var(--line)}.tk-evitem:last-child{border-bottom:0}
+.tk-evitem-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px}.tk-evitem-h b{font-size:13px}
+.tk-evextra{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-3);font-weight:700}
+.tk-evextra input{width:90px;height:28px;border:1px solid var(--line);border-radius:7px;padding:0 8px;background:var(--surface);font:inherit;font-size:12.5px;color:var(--ink)}
+.tk-evsubs{display:flex;flex-direction:column;gap:3px}
+.tk-evsub{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:3px 6px;border-radius:8px}.tk-evsub.on{background:var(--ice)}
+.tk-evcheck{display:flex;align-items:center;gap:8px;min-width:180px;font-size:13px;font-weight:600;cursor:pointer}
+.tk-evcheck input{width:17px;height:17px;accent-color:var(--brand-2)}
+.tk-evqty{width:74px;height:30px;border:1px solid var(--line);border-radius:7px;padding:0 8px;background:var(--surface);font:inherit;font-size:12.5px;font-weight:700;color:var(--ink)}
+.tk-evrem{flex:1;min-width:140px;height:30px;border:1px solid var(--line);border-radius:7px;padding:0 8px;background:var(--surface);font:inherit;font-size:12.5px;color:var(--ink)}
+.tk-evassigned{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;background:var(--ok-bg);color:var(--ok);font-size:11.5px;font-weight:800}
+.tk-evassigned svg{width:12px;height:12px}
+.tk-evstep-card{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--line);border-radius:12px}
+.tk-evstep-card.on{border-color:var(--ok);background:var(--ok-bg)}.tk-evstep-card.on .tk-rank{background:var(--ok);color:#fff}
+.tk-evsign{display:flex;gap:18px;flex-wrap:wrap;padding:12px;border:1px dashed var(--line-2);border-radius:12px}
+.tk-evsign b{display:block;font-size:13px;margin:4px 0}.tk-evsign small{display:block}
+.tk-cal .ev.evt{background:var(--info-bg);color:var(--info);border-left-color:var(--info);display:flex;align-items:center;gap:4px}
+.tk-cal .ev.evt svg{width:11px;height:11px;flex:none}
+@media (max-width:700px){.tk-cal .ev.evt{display:none}.tk-cal .day{min-width:0;overflow:hidden}}
+.tk-page .card-h{flex-wrap:wrap;row-gap:6px}
+.tk-page .card-h>.grow{min-width:140px}
+@media (max-width:560px){.tk-page .card-h input[type=date]{width:128px!important}}
 </style>
 </head>
 <body>
@@ -3488,10 +3544,10 @@ const SB_READY = !!(SB_CONFIG && SB_CONFIG.url && SB_CONFIG.anonKey && !/YOUR-PR
 const SB_MODE = !!SB_CONFIG;
 const sb = SB_READY ? supabase.createClient(SB_CONFIG.url, SB_CONFIG.anonKey) : null;
 
-const COLLECTIONS = ["users","vendors","stock","ledger","docs","requests","rfqs","pos","audit","smsLog","budgets","invoices","assets","beneficiaries","tasks"];
-/* tasks use a random key as the row id, so two people creating a task at the same moment never overwrite each other */
-const KEY_FIELD = { assets:"tag", tasks:"key" };
-const NEWEST_FIRST = { ledger:"at", docs:"at", requests:"createdAt", rfqs:"at", pos:"at", audit:"at", smsLog:"at", beneficiaries:"at", assets:"at", invoices:"at", tasks:"createdAt" };
+const COLLECTIONS = ["users","vendors","stock","ledger","docs","requests","rfqs","pos","audit","smsLog","budgets","invoices","assets","beneficiaries","tasks","events"];
+/* tasks and events use a random key as the row id, so two people creating one at the same moment never overwrite each other */
+const KEY_FIELD = { assets:"tag", tasks:"key", events:"key" };
+const NEWEST_FIRST = { ledger:"at", docs:"at", requests:"createdAt", rfqs:"at", pos:"at", audit:"at", smsLog:"at", beneficiaries:"at", assets:"at", invoices:"at", tasks:"createdAt", events:"createdAt" };
 function rowKey(col,item){ const k=KEY_FIELD[col]||"id"; if(!item[k]) item[k]=(col==="budgets"&&item.code)?item.code:uid(); return String(item[k]); }
 function emailFor(username){ return username.includes("@")?username:`${username}@${(SB_CONFIG&&SB_CONFIG.emailDomain)||"akf.local"}`; }
 
@@ -4979,6 +5035,7 @@ function Users({state,A,me}){
         ${(curTabs.includes("users")||curTabs.includes("settings"))&&f.role!=="super"&&html`<div class="notice notice-warn"><${Icon} name="alert"/><span>Users and Settings let this person change logins, roles and policies. Give them only to someone you trust as an administrator.</span></div>`}
         ${!curTabs.length&&html`<div class="notice notice-bad"><${Icon} name="alert"/><span>Tick at least one page, or this person sees an empty portal.</span></div>`}
         <label class="ua-opt wide"><input type="checkbox" checked=${!!f.taskAdmin||TASK_ADMIN.includes(f.role)} disabled=${TASK_ADMIN.includes(f.role)} onChange=${e=>set("taskAdmin",e.target.checked)}/><${Icon} name="tasks"/><span><b>Manage all tasks</b> — see, assign, approve and close tasks in every department (like the Regional Manager)</span></label>
+        <label class="field" style="max-width:420px"><span>Task role (Tasks & Events)</span><select class="select" value=${f.taskRole||""} disabled=${TASK_ADMIN.includes(f.role)||!!f.taskAdmin} onChange=${e=>set("taskRole",e.target.value||null)}><option value="">Automatic from role — ${TASK_ROLES[tRole({...f,taskRole:null})]}</option>${Object.entries(TASK_ROLES).filter(([k])=>k!=="RM").map(([k,v])=>html`<option value=${k}>${v}</option>`)}</select></label>
         <label class="field" style="max-width:420px"><span>Task department (Tasks page — decides who this person's HOD is)</span><select class="select" value=${f.taskDept||PORTAL_TO_TASK_DEPT[f.dept]||"01"} onChange=${e=>set("taskDept",e.target.value)}>${((state.settings&&state.settings.taskDepts)||TASK_DEPTS_DEFAULT).map(x=>html`<option value=${x.id}>${x.code} · ${x.name}</option>`)}</select></label></div>
       <div class="row" style="margin-top:12px"><button class="btn btn-ghost" onClick=${()=>setF(null)}>Cancel</button><span class="grow"/>${dup&&html`<span class="sm" style="color:var(--bad)">Username already taken</span>`}<button class="btn btn-primary" disabled=${!ok} onClick=${save}>Save user</button></div><//>`}
     <${Card} title="Accounts" desc="Only the Super Admin sees this page. Click the eye to reveal a password."><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Username</th><th>Password</th><th>Role</th><th>Department</th><th>Signature</th><th>Status</th><th/></tr></thead><tbody>${state.users.map(u=>html`<tr><td><b>${u.name}</b><div class="xs faint">${u.designation}</div></td><td class="sm">${u.username}</td>
@@ -5450,7 +5507,7 @@ function App(){
   const notes=buildNotifications(state,user);
   if(readKeys.__uid!==user.id){ setTimeout(()=>{ loadRead(user.id); setReadKeys(r=>({...r,__uid:user.id})); },0); }
   const unread=notes.filter(n=>!readKeys[n.key]);
-  const openNote=n=>{ markRead(user.id,[n.key]); setBell(false); if(n.task){ setTab("tasks"); setTaskOpen(n.task); } else if(n.id) openReq(n.id); };
+  const openNote=n=>{ markRead(user.id,[n.key]); setBell(false); if(n.task||n.event||n.taskView){ setTab("tasks"); setTaskOpen(n.task||(n.event?"ev:"+n.event:"view:"+n.taskView)); } else if(n.id) openReq(n.id); };
   /* opening a request any other way also clears its notifications */
   if(modal&&modal.kind==="req"){ const ks=unread.filter(n=>n.id===modal.id).map(n=>n.key); if(ks.length) setTimeout(()=>markRead(user.id,ks),0); }
   const counts={}; visibleRequests(user,state.requests).forEach(r=>{ if(!canAct(user,r)) return; const t=APPROVER_ROLES.includes(ownerOf(r))?(tabs.some(t=>t.id==="approvals")?"approvals":"dashboard"):r.type==="store"?"store":(ownerOf(r)==="store_officer"?"store":"procurement"); counts[t]=(counts[t]||0)+1; });
@@ -5529,6 +5586,8 @@ Object.assign(PATHS,{
   approve:"M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11",
   repeat:"M17 2l4 4-4 4M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 0 1-4 4H3",
   left:"M15 18l-6-6 6-6", right:"M9 18l6-6-6-6",
+  flag:"M4 22V4a1 1 0 0 1 1-1h9l1 2h5v10h-6l-1-2H5",
+  log:"M12 8v4l3 3M3.05 11a9 9 0 1 0 .5-4M3 3v5h5",
 });
 
 /* ---------- reference data (as in the planner file) ---------- */
@@ -5554,8 +5613,61 @@ const TPRI_COLOR={Urgent:"#D23B3B",High:"#D98A14",Medium:"#2567CF",Low:"#7B8798"
 const TPRI_TONE={Urgent:"bad",High:"warn",Medium:"info",Low:"neutral"};
 const TPRI_RANK={Urgent:0,High:1,Medium:2,Low:3};
 const TSTAGE_TONE={"01":"neutral","02":"info","03":"warn","04":"violet","05":"ok","06":"ok","07":"bad"};
-const TROLE_LABEL={RM:"Regional Manager",HOD:"Head of Department",Staff:"Staff",President:"President",GS:"General Secretary"};
+const TROLE_LABEL={RM:"Regional Manager",HOD:"Head of Department",MA:"Manager Admin",HR:"HR Manager",Staff:"Staff",President:"President",GS:"General Secretary"};
 const TREC={none:"Does not repeat",daily:"Daily",weekly:"Weekly",monthly:"Monthly"};
+/* ---------- events (as in the planner file) ---------- */
+const EVENT_TYPES=["Seminar","Conference","Roundtable","Training","Meeting","Reception","Distribution","Camp","Other"];
+const EV_SECTIONS=[
+  {id:"S1",title:"1. Venue, stage & setting",cat:"Venue",items:[
+    {label:"Venue Approvals",subs:["Hall Booking","NOC","Permission Letter"]},
+    {label:"Stage, Podium & Backdrop Setup",subs:["Stage","Podium/Rostrum","Backdrop Banner","Frame","Stand"],extras:["Stage size","Backdrop size","Frame size"]},
+    {label:"Seating Setup",subs:["Sofas","Chairs","Floor Mats","Table"],extras:["Setting No"],qty:"No."},
+    {label:"Weather & Climate Cover",subs:["Canopy","Tent","Tarps","Fans","Chillers","Heaters","AC"]},
+    {label:"Floral & Decoration",subs:["Vase","Fresh Flowers","Rostrum Decoration"]},
+    {label:"Boards & Presentation Aids",subs:["White Board","Marker","Duster","Flip Chart"]},
+    {label:"Prayer, Parking & Security",subs:["Prayer Place","Parking","Security Protocol"]}]},
+  {id:"S2",title:"2. Audio visual & tech",cat:"AV Tech",items:[
+    {label:"Sound System",subs:["Speakers","Amplifier","Mixer","Mic Cables"],qty:"Qty"},
+    {label:"Microphones",subs:["Handheld Wireless","Lapel/Collar","Podium Mic"],qty:"Qty"},
+    {label:"Projection & Display",subs:["Projector","LED Screen","HDMI","Laptop","Extension"]},
+    {label:"Recording & Photography",subs:["Audio Digital Recording","Video Recording","Photography","Group Photo"],extras:["Group photo place"]},
+    {label:"Power Backup",subs:["Extension Boards","Cable Guards","Generator","UPS Backup"]},
+    {label:"Live & News Coverage",subs:["Live Transmission","Website Pre","Website Post","News Story Pre","News Story Post"]}]},
+  {id:"S3",title:"3. Registration, branding & protocol",cat:"Branding",items:[
+    {label:"Branding Materials",subs:["Banners","Standees","Directional Arrows","Media Backdrop"],qty:"Qty"},
+    {label:"Registration Setup",subs:["Desk","Guest List","Badges","Lanyards","Pens","Table Tags","Name Badges"],qty:"Qty"},
+    {label:"Invitation Via",subs:["Card","Email","Letter","Phone","WhatsApp","News Add"]},
+    {label:"Reception & Protocol",subs:["Reception Team","Male","Female","Info to All Depts"]},
+    {label:"Souvenirs & Awards",subs:["Souvenirs","Shields","Certificates","Gifts (Books)","Visitor Book"],qty:"Qty"},
+    {label:"Donation & Stall",subs:["Donation Books","Token Receipts","Cash Box","Book Stall"]}]},
+  {id:"S4",title:"4. Hospitality & guest management",cat:"Hospitality",items:[
+    {label:"Guest Pick & Drop",subs:["Pick","Drop"],extras:["Vehicle","From","To"]},
+    {label:"Guest Rooms",subs:["Rooms"],extras:["No. of persons"]},
+    {label:"Drinking Water",subs:["Bottles","Glasses","Podium Water"],qty:"Qty"},
+    {label:"Refreshment",subs:["Tea","Coffee","Water","Normal","Special","High Tea"],extras:["No"],qty:"No."},
+    {label:"Lunch / Dinner",subs:["Lunch","Dinner","Single Dish","Double Dish"],extras:["No"],qty:"No."},
+    {label:"Stationery & Utilities",subs:["Stationery","File Folder","Tissues","Dustbins"]}]},
+  {id:"S5",title:"5. Operations & departments",cat:"Operations",items:[
+    {label:"Volunteer Management",subs:["Duty Roster","ID Cards","Briefing"],extras:["No"],qty:"No."},
+    {label:"Media Coverage",subs:["Cameras","Tripods","Drones","Press Release","Live"]},
+    {label:"Collaboration",subs:[],extras:["Collaboration with"]},
+    {label:"Attendance & Reporting",subs:["Attendance Sheet","Event Report","Bills Submission"]},
+    {label:"Post-Event",subs:["Cleanup","Material Return"]}]},
+  {id:"S6",title:"6. Stationery",cat:"Stationery",items:[
+    {label:"File Folders / Envelopes",subs:["File Folder","Envelopes (A4)","Envelopes (Small)","Box File"],qty:"Qty"},
+    {label:"Writing Material",subs:["Ball Pens","Markers","Highlighters","Pencils","Sharpener","Eraser"],qty:"Qty"},
+    {label:"Paper & Notepads",subs:["A4 Paper Rim","Register","Notepads","Sticky Notes","Letter Pads"],qty:"Qty"},
+    {label:"Office Supplies",subs:["Stapler","Stapler Pins","Paper Clips","Punch Machine","Scissor","Tape / Glue"],qty:"Qty"},
+    {label:"Printing / Photocopy",subs:["Photocopy","Color Print","B/W Print","Binding","Lamination"],qty:"Qty"},
+    {label:"Boards & Display",subs:["White Board Marker","Duster","Flip Chart Paper","Chart Paper"],qty:"Qty"}]},
+];
+const EV_STEPS=[
+  {id:"requested",label:"Requested by",who:"Department Head / organiser",roles:["HOD","MA","HR","RM"]},
+  {id:"recommended",label:"Recommended by",who:"Manager Admin",roles:["MA","RM"]},
+  {id:"endorsed",label:"Endorsed by",who:"Regional Manager",roles:["RM"]},
+  {id:"approved",label:"Approved by",who:"GS / President",roles:["GS","President"]},
+];
+const EV_STATUS={draft:["Draft","neutral"],requested:["Requested","warn"],recommended:["Recommended","info"],endorsed:["Endorsed by RM","violet"],approved:["Approved","ok"],completed:["Completed","ok"],cancelled:["Cancelled","bad"]};
 const TASK_ADMIN=["super","regional_manager"];      // act as RM in Tasks (plus anyone ticked "Manage all tasks")
 /* portal department → planner department, used until the Super Admin sets a person's task department */
 const PORTAL_TO_TASK_DEPT={"Health":"06","Education":"05","Orphan Care":"08","WASH":"10","Mawakhat":"11","Finance":"02","Admin":"03","Volunteer":"09","Fundraising":"04","Qurbani":"04","Ramadan":"04"};
@@ -5593,32 +5705,60 @@ const tDueToday=t=>tOpen(t)&&t.plannedDate===tToday();
 const tByPri=(a,b)=>TPRI_RANK[a.priority]-TPRI_RANK[b.priority]||(a.plannedDate||"").localeCompare(b.plannedDate||"");
 const tNum=t=>+(String(t.id||"").replace(/\D/g,""))||0;
 function tBlockers(state,t){ return (t.dependencies||[]).map(k=>(state.tasks||[]).find(x=>x.key===k)).filter(x=>x&&tOpen(x)); }
+const tEventOf=(state,t)=>t&&t.eventId?(state.events||[]).find(e=>e.key===t.eventId):null;
+const tDaysUntil=iso=>{ const a=tDate(iso), b=tDate(tToday()); return a&&b?Math.round((a-b)/864e5):0; };
+const tEvStatus=e=>EV_STATUS[e.status]||EV_STATUS.draft;
+const tEvTasks=(state,e)=>(state.tasks||[]).filter(t=>t.v===2&&t.eventId===e.key);
+function tEvPct(state,e){ const et=tEvTasks(state,e).filter(t=>t.stage!=="07"); return et.length?Math.round(et.reduce((a,t)=>a+tProgress(t),0)/et.length):0; }
+function tEvProgress(state,e,uid_){ const et=tEvTasks(state,e); return {total:et.length,done:et.filter(t=>t.stage==="06").length,open:et.filter(tOpen),over:et.filter(tOverdue).length,mine:et.filter(t=>t.assigneeId===uid_&&tOpen(t)).length}; }
+const tVisibleEvents=(state,u)=>(state.events||[]).filter(e=>TR.canSeeEvent(e,u,state));
 function tProgress(t){ if(t.stage==="06") return 100; if(t.stage==="07") return 0; const s=t.subtasks||[]; if(s.length) return Math.round(s.filter(x=>x.done).length/s.length*100); return {"01":5,"02":40,"03":70,"04":85,"05":95}[t.stage]||0; }
 
 /* ---------- rights: exactly the planner's rules ---------- */
-const tRole=u=>!u?"Staff":(TASK_ADMIN.includes(u.role)||u.taskAdmin)?"RM":u.role==="hod"?"HOD":u.role==="president"?"President":u.role==="gen_sec"?"GS":"Staff";
+/* Role in Tasks: the Super Admin can set it per person under Users ("Task role"); otherwise it follows the portal role.
+   MA = Manager Admin, HR = HR Manager: they manage their own department like a HOD and handle event tasks across departments. */
+const TASK_ROLES={RM:"Regional Manager",HOD:"Head of Department",MA:"Manager Admin",HR:"HR Manager",Staff:"Staff",President:"President",GS:"General Secretary"};
+const tRole=u=>{ if(!u) return "Staff"; if(TASK_ADMIN.includes(u.role)||u.taskAdmin) return "RM"; if(u.taskRole&&TASK_ROLES[u.taskRole]) return u.taskRole;
+  return u.role==="hod"?"HOD":u.role==="manager_hr"?"MA":u.role==="president"?"President":u.role==="gen_sec"?"GS":"Staff"; };
 const tUDept=u=>(u&&(u.taskDept||PORTAL_TO_TASK_DEPT[u.dept]))||"01";
+const T_MGR=["HOD","MA","HR"];
+const T_EVMGR=["RM","MA","HR"];   // see and manage every event and event task
 const TR={
-  canSee(t,u){ const r=tRole(u); if(["RM","President","GS"].includes(r)) return true; if(r==="HOD") return t.dept===tUDept(u)||t.assigneeId===u.id||t.creatorId===u.id; return t.assigneeId===u.id||t.creatorId===u.id; },
+  canSee(t,u){ const r=tRole(u); if(["RM","President","GS"].includes(r)) return true; if(["MA","HR"].includes(r)&&t.eventId) return true; if(T_MGR.includes(r)) return t.dept===tUDept(u)||t.assigneeId===u.id||t.creatorId===u.id; return t.assigneeId===u.id||t.creatorId===u.id; },
   canCreate:u=>!["President","GS"].includes(tRole(u)),
   canComment:u=>tRole(u)!=="President",
-  canEdit(t,u){ const r=tRole(u); if(["President","GS"].includes(r)) return false; if(r==="RM") return true; if(r==="HOD") return t.dept===tUDept(u)||t.creatorId===u.id||t.assigneeId===u.id; return t.assigneeId===u.id||t.creatorId===u.id; },
-  canClose(t,u){ const r=tRole(u); if(["President","GS"].includes(r)) return false; if(r==="RM") return true; if(t.assigneeId===u.id) return false; if(r==="HOD") return t.dept===tUDept(u)||t.creatorId===u.id; return t.creatorId===u.id; },
-  canApprove(t,u){ const r=tRole(u); return r==="RM"||(r==="HOD"&&t.dept===tUDept(u)&&t.assigneeId!==u.id); },
-  canRate(t,u){ const r=tRole(u); return (r==="RM"||(r==="HOD"&&t.dept===tUDept(u)))&&t.assigneeId!==u.id; },
-  canDelete(t,u){ const r=tRole(u); return r==="RM"||(r==="HOD"&&t.dept===tUDept(u))||(t.creatorId===u.id&&t.stage==="01"); },
+  canEdit(t,u){ const r=tRole(u); if(["President","GS"].includes(r)) return false; if(r==="RM") return true; if(["MA","HR"].includes(r)&&t.eventId) return true; if(T_MGR.includes(r)) return t.dept===tUDept(u)||t.creatorId===u.id||t.assigneeId===u.id; return t.assigneeId===u.id||t.creatorId===u.id; },
+  canClose(t,u){ const r=tRole(u); if(["President","GS"].includes(r)) return false; if(r==="RM") return true; if(t.assigneeId===u.id) return false; if(["MA","HR"].includes(r)&&t.eventId) return true; if(T_MGR.includes(r)) return t.dept===tUDept(u)||t.creatorId===u.id; return t.creatorId===u.id; },
+  canApprove(t,u){ const r=tRole(u); return r==="RM"||(T_MGR.includes(r)&&(t.dept===tUDept(u)||(t.eventId&&r!=="HOD"))&&t.assigneeId!==u.id); },
+  canRate(t,u){ const r=tRole(u); return (r==="RM"||(T_MGR.includes(r)&&(t.dept===tUDept(u)||(t.eventId&&r!=="HOD"))))&&t.assigneeId!==u.id; },
+  canDelete(t,u){ const r=tRole(u); return r==="RM"||(T_MGR.includes(r)&&(t.dept===tUDept(u)||(t.eventId&&r!=="HOD")))||(t.creatorId===u.id&&t.stage==="01"); },
   canSettings:u=>tRole(u)==="RM",
+  /* events */
+  canSeeEvent(e,u,state){ const r=tRole(u); if(["RM","President","GS","MA","HR"].includes(r)) return true; if(e.createdBy===u.id||e.coordinator===u.id) return true; return ((state||TS||{}).tasks||[]).some(t=>t.eventId===e.key&&(t.assigneeId===u.id||t.creatorId===u.id)); },
+  canCreateEvent:u=>["RM","MA","HR","HOD"].includes(tRole(u)),
+  canEditEvent(e,u){ const r=tRole(u); if(T_EVMGR.includes(r)) return true; return r==="HOD"&&(e.createdBy===u.id||e.coordinator===u.id); },
+  canAssignEvent(e,u){ return TR.canEditEvent(e,u); },
+  canDeleteEvent:(e,u)=>["RM","MA"].includes(tRole(u)),
+  canSignEvent(e,stepId,u){ const st=EV_STEPS.find(x=>x.id===stepId); if(!st||!st.roles.includes(tRole(u))) return false; const idx=EV_STEPS.findIndex(x=>x.id===stepId);
+    return EV_STEPS.slice(0,idx).every(x=>e.approvals&&e.approvals[x.id])&&!(e.approvals&&e.approvals[stepId])&&!["cancelled","completed","draft"].includes(e.status); },
   whyNoClose(t,u,state){ const r=tRole(u);
     if(r==="President") return "President has view-only access.";
     if(r==="GS") return "General Secretary can view and comment only.";
     if(t.assigneeId===u.id) return t.creatorId===u.id?"Self-assigned tasks are closed by your HOD or the Regional Manager.":`Only ${tName(state,t.creatorId)} (who assigned it), the HOD or the Regional Manager can close this.`;
     return "Only the assigner, the department HOD or the Regional Manager can close this task."; },
 };
-function tAssignable(state,deptId,u){
-  const act=(state.users||[]).filter(x=>x.active!==false);
-  if(tRole(u)==="RM") return act.filter(x=>tRole(x)!=="President");
-  return act.filter(x=>(tUDept(x)===deptId||x.id===u.id)&&!["President","GS"].includes(tRole(x)));
+/* Only the Regional Manager, HODs, Manager Admin and HR assign work to other people; staff plan tasks for themselves.
+   Event tasks: RM, Manager Admin and HR can assign anyone in any department; a HOD assigns within their own department. */
+const tCanAssignOthers=u=>["RM",...T_MGR].includes(tRole(u));
+function tAssignable(state,deptId,u,eventId){
+  const act=(state.users||[]).filter(x=>x.active!==false); const r=tRole(u);
+  if(r==="RM"||(eventId&&["MA","HR"].includes(r))) return act.filter(x=>tRole(x)!=="President");
+  if(T_MGR.includes(r)) return act.filter(x=>(tUDept(x)===tUDept(u)||x.id===u.id)&&!["President","GS"].includes(tRole(x)));
+  return act.filter(x=>x.id===u.id);
 }
+const tAssignError=(state,u,c)=>!tCanAssignOthers(u)&&c.assigneeId!==u.id
+  ?"Only the HOD, Manager Admin, HR or the Regional Manager can assign tasks to other people. You can create tasks for yourself."
+  :`${tName(state,c.assigneeId)} is not in your department (${tDept(tUDept(tUser(state,u.id)||u)).name}).${["MA","HR"].includes(tRole(u))?" Manager Admin and HR can assign anyone only for event tasks.":""}`;
 /* why a stage change is not allowed (null = allowed) */
 function tMoveError(state,t,to,u){
   if(!TR.canEdit(t,u)) return "You can't change this task.";
@@ -5649,7 +5789,7 @@ function makeTaskActions(commit,user,toast){
   const spawn=(d,t,u)=>{
     if(!t.recurring||t.recurring==="none"||t.spawnedNext) return null;
     const next=t.recurring==="daily"?tAddDays(t.plannedDate,1):t.recurring==="weekly"?tAddDays(t.plannedDate,7):tAddMonths(t.plannedDate,1,t.repeatDay);
-    const n={...JSON.parse(JSON.stringify(t)),key:newKey(),id:nextNo(d),stage:"01",plannedDate:next,startDate:"",timeLogged:0,timeLog:[],attachments:[],comments:[],activity:[],rating:null,ratedBy:"",completedAt:"",spawnedNext:false,repeatOf:t.id,
+    const n={...JSON.parse(JSON.stringify(t)),key:newKey(),id:nextNo(d),stage:"01",plannedDate:next,startDate:"",timeLogged:0,timeLog:[],attachments:[],comments:[],activity:[],rating:null,ratedBy:"",completedAt:"",spawnedNext:false,repeatOf:t.id,eventId:null,checkItem:null,
       subtasks:(t.subtasks||[]).map(s=>({id:uid(),title:s.title,done:false})),createdAt:nowISO(),updatedAt:nowISO()};
     act(n,`created automatically as the next ${t.recurring} occurrence of ${t.id}`,u); d.tasks.unshift(n); t.spawnedNext=true; return n;
   };
@@ -5663,14 +5803,24 @@ function makeTaskActions(commit,user,toast){
     const est=typeof f.estimate==="number"?f.estimate:tParseMin(f.estimate); if(isNaN(est)) fail("Write the estimate like 45m, 2h or 1h 30m.");
     return {title:title.slice(0,200),description:String(f.description||"").slice(0,5000),dept:f.dept,assigneeId:f.assigneeId,plannedDate:f.plannedDate,startDate:f.startDate||"",
       priority:TPRI_LIST.includes(f.priority)?f.priority:"Medium",tags:(f.tags||[]).slice(0,20),estimate:Math.max(0,est),recurring:TREC[f.recurring]?f.recurring:"none",
-      subtasks:f.subtasks||[],dependencies:f.dependencies||[],customFields:(f.customFields||[]).filter(x=>x&&x.k),repeatDay:(tDate(f.plannedDate)||new Date()).getDate()};
+      subtasks:f.subtasks||[],dependencies:f.dependencies||[],customFields:(f.customFields||[]).filter(x=>x&&x.k),repeatDay:(tDate(f.plannedDate)||new Date()).getDate(),
+      eventId:f.eventId&&(d.events||[]).some(e=>e.key===f.eventId)?f.eventId:null,checkItem:f.eventId?(f.checkItem||null):null};
   };
+  const findEv=(d,key)=>{ d.events=d.events||[]; return d.events.find(e=>e.key===key); };
+  const nextEvNo=d=>"EV-"+(Math.max(0,...(d.events||[]).map(e=>+(String(e.id).replace(/\D/g,""))||0))+1);
+  const EV_FIELDS=["title","date","time","venue","type","expected","coordinator","topic","collab","checklist"];
+  const evClean=(d,f)=>{ const title=String(f.title||"").trim(); if(!title) fail("Give the event a title.");
+    if(!tDate(f.date)) fail("Choose the event date."); if(!String(f.venue||"").trim()) fail("Enter the venue.");
+    if(f.coordinator&&!tUser(d,f.coordinator)) fail("Choose a coordinator.");
+    return {title:title.slice(0,200),date:f.date,time:/^\d{2}:\d{2}$/.test(f.time||"")?f.time:"10:00",venue:String(f.venue).trim().slice(0,200),type:EVENT_TYPES.includes(f.type)?f.type:"Other",
+      expected:f.expected===""||f.expected==null?"":Math.max(0,Number(f.expected)||0),coordinator:f.coordinator||"",topic:String(f.topic||"").slice(0,500),collab:String(f.collab||"").slice(0,200),checklist:f.checklist||{}}; };
   return {
     tCreate(f){
       return run((d,u)=>{
         if(!TR.canCreate(u)) fail("Your role can view tasks but not create them.");
         const c=clean(d,f,u,true);
-        if(!tAssignable(d,c.dept,u).some(x=>x.id===c.assigneeId)) fail(`${tName(d,c.assigneeId)} is not in ${tDept(c.dept).name}. Choose someone from that department.`);
+        if(c.eventId&&c.assigneeId!==u.id){ const ev=findEv(d,c.eventId); if(!ev||!TR.canAssignEvent(ev,u)) fail("Only the event organiser, Manager Admin, HR or the Regional Manager can assign tasks for this event."); }
+        if(!tAssignable(d,c.dept,u,c.eventId).some(x=>x.id===c.assigneeId)) fail(tAssignError(d,u,c));
         const t={key:newKey(),v:2,id:nextNo(d),...c,stage:"01",creatorId:u.id,timeLogged:0,timeLog:[],attachments:[],comments:[],activity:[],rating:null,completedAt:"",createdAt:nowISO(),updatedAt:nowISO()};
         act(t,"created this task",u); if(t.assigneeId!==u.id) act(t,`assigned to ${tName(d,t.assigneeId)}`,u);
         d.tasks.unshift(t); audit(d,t,u,"Task created",`${t.title} → ${tName(d,t.assigneeId)}`); return t;
@@ -5681,8 +5831,8 @@ function makeTaskActions(commit,user,toast){
         const t=find(d,key); if(!t) fail("This task no longer exists.");
         if(!TR.canEdit(t,u)) fail("You can't edit this task.");
         const c=clean(d,f,u,false);
-        if(c.dept!==t.dept&&tRole(u)!=="RM") fail("Only the Regional Manager can move a task to another department.");
-        if(c.assigneeId!==t.assigneeId&&!tAssignable(d,c.dept,u).some(x=>x.id===c.assigneeId)) fail(`${tName(d,c.assigneeId)} is not in ${tDept(c.dept).name}.`);
+        if(c.dept!==t.dept&&!T_EVMGR.includes(tRole(u))) fail("Only the Regional Manager, Manager Admin or HR can move a task to another department.");
+        if(c.assigneeId!==t.assigneeId&&!tAssignable(d,c.dept,u,c.eventId).some(x=>x.id===c.assigneeId)) fail(tAssignError(d,u,c));
         if(depsLoop(d,t,c.dependencies)) fail("These tasks would wait for each other forever. Remove one of the dependencies.");
         const changes=[];
         if(c.assigneeId!==t.assigneeId) changes.push(`reassigned to ${tName(d,c.assigneeId)}`);
@@ -5731,6 +5881,37 @@ function makeTaskActions(commit,user,toast){
       return run((d,u)=>{ const t=find(d,key); if(!t) return; if(!TR.canDelete(t,u)) fail("You can't delete this task.");
         d.tasks=d.tasks.filter(x=>x.key!==key); d.tasks.forEach(x=>{ x.dependencies=(x.dependencies||[]).filter(k=>k!==key); }); audit(d,t,u,"Task deleted"); return t; },t=>`Deleted ${t.id}`);
     },
+    /* ---- events ---- */
+    eCreate(f){
+      return run((d,u)=>{ if(!TR.canCreateEvent(u)) fail("Your role cannot create events.");
+        const c=evClean(d,f); d.events=d.events||[];
+        const e={key:newKey(),id:nextEvNo(d),...c,coordinator:c.coordinator||u.id,status:"draft",approvals:{},createdBy:u.id,createdAt:nowISO(),updatedAt:nowISO()};
+        d.events.push(e); audit(d,{id:e.id,title:e.title,dept:tUDept(u)},u,"Event created"); return e; },e=>`Created ${e.id} — now tick the checklist`);
+    },
+    eSave(key,f,quiet){
+      return run((d,u)=>{ const e=findEv(d,key); if(!e) fail("This event no longer exists."); if(!TR.canEditEvent(e,u)) fail("You can't edit this event.");
+        Object.assign(e,evClean(d,f)); e.updatedAt=nowISO(); },quiet?null:"Event saved");
+    },
+    eSubmit(key,f){
+      return run((d,u)=>{ const e=findEv(d,key); if(!e||!TR.canEditEvent(e,u)) fail("You can't send this event for approval."); if(f) Object.assign(e,evClean(d,f));
+        e.approvals=e.approvals||{}; if(!e.approvals.requested) e.approvals.requested={who:u.id,at:nowISO()}; e.status="requested"; e.updatedAt=nowISO(); audit(d,{id:e.id,title:e.title,dept:tUDept(u)},u,"Event sent for approval"); },"Sent to Manager Admin for recommendation");
+    },
+    eSign(key,step){
+      return run((d,u)=>{ const e=findEv(d,key); if(!e||!TR.canSignEvent(e,step,u)) fail("You cannot sign this step.");
+        e.approvals=e.approvals||{}; e.approvals[step]={who:u.id,at:nowISO()}; e.status=step; e.updatedAt=nowISO(); audit(d,{id:e.id,title:e.title,dept:tUDept(u)},u,"Event "+step); return e; },
+        e=>e.status==="approved"?`${e.id} approved`:`Signed: ${EV_STEPS.find(x=>x.id===step).label.toLowerCase()} you`);
+    },
+    eStatus(key,status){
+      return run((d,u)=>{ const e=findEv(d,key); if(!e||!TR.canEditEvent(e,u)) fail("You can't change this event."); if(!["completed","cancelled"].includes(status)) fail("Unknown status.");
+        if(status==="completed"&&!(e.status==="approved"&&e.date<=tToday())) fail("An event can be marked completed only after it is approved and its date has come.");
+        e.status=status; e.updatedAt=nowISO();
+        if(status==="cancelled") d.tasks.forEach(t=>{ if(t.eventId===e.key&&tOpen(t)){ t.stage="07"; act(t,"cancelled with the event",u); } });
+        audit(d,{id:e.id,title:e.title,dept:tUDept(u)},u,"Event "+status); },`Event ${status}`);
+    },
+    eDelete(key){
+      return run((d,u)=>{ const e=findEv(d,key); if(!e) return; if(!TR.canDeleteEvent(e,u)) fail("Only the Regional Manager or Manager Admin can delete an event.");
+        d.events=d.events.filter(x=>x.key!==key); d.tasks.forEach(t=>{ if(t.eventId===key){ t.eventId=null; t.checkItem=null; } }); audit(d,{id:e.id,title:e.title,dept:tUDept(u)},u,"Event deleted"); return e; },e=>`Deleted ${e.id}`);
+    },
     tSettings(patch){
       return run((d,u)=>{ if(!TR.canSettings(u)) fail("Only the Regional Manager can change task settings."); d.settings={...d.settings,...patch}; },"Settings saved");
     },
@@ -5747,9 +5928,13 @@ function makeTaskActions(commit,user,toast){
 /* ---------- notifications (merged into the portal bell) ---------- */
 function taskNotifications(state,user){
   TS=state; const out=[]; const weekAgo=Date.now()-7*864e5; const r=tRole(user); const all=["RM","GS","President"].includes(r); const handle=(user.username||"").toLowerCase();
+  const groups={};
   (state.tasks||[]).filter(t=>t.v===2&&TR.canSee(t,user)).forEach(t=>{
-    const deptMine=all||(r==="HOD"&&t.dept===tUDept(user));
-    if(t.assigneeId===user.id&&t.creatorId!==user.id&&tTs(t.createdAt)>weekAgo&&tOpen(t)) out.push({tone:"info",icon:"user",t:`${tName(state,t.creatorId)} assigned you a task · ${t.id}`,d:t.title,at:t.createdAt,task:t.key,key:"tas|"+t.key});
+    const deptMine=all||(T_MGR.includes(r)&&t.dept===tUDept(user));
+    if(t.assigneeId===user.id&&t.creatorId!==user.id&&tTs(t.createdAt)>weekAgo&&tOpen(t)) (groups[t.creatorId]=groups[t.creatorId]||[]).push(t);
+    if(r==="HOD"&&t.dept===tUDept(user)&&t.creatorId!==user.id&&t.assigneeId!==user.id&&T_EVMGR.includes(tRole(tUser(state,t.creatorId)))&&tTs(t.createdAt)>weekAgo&&tOpen(t))
+      out.push({tone:"info",icon:"users",t:`${tName(state,t.creatorId)} assigned ${tName(state,t.assigneeId)} a task in your department`,d:`${t.title} · ${t.priority}${t.eventId?" · "+((tEventOf(state,t)||{}).title||""):""} · due ${tFmt(t.plannedDate)}`,at:t.createdAt,task:t.key,key:"thd|"+t.key});
+    if(t.creatorId===user.id&&t.assigneeId!==user.id&&t.stage==="06"&&tTs(t.completedAt)>weekAgo) out.push({tone:"info",icon:"check",t:`${tName(state,t.assigneeId)} completed a task you requested · ${t.id}`,d:t.title,at:t.completedAt,task:t.key,key:"trq|"+t.key});
     if(tOverdue(t)&&(t.assigneeId===user.id||deptMine)) out.push({tone:"bad",icon:"alert",t:`Overdue since ${tFmt(t.plannedDate)} · ${t.id}`,d:t.title,at:t.plannedDate+"T23:59:00",task:t.key,key:"tov|"+t.key+"|"+t.plannedDate});
     else if(tDueToday(t)&&t.assigneeId===user.id) out.push({tone:"warn",icon:"clock",t:`Due today · ${t.id}`,d:t.title,at:tToday()+"T07:00:00",task:t.key,key:"tdt|"+t.key+"|"+t.plannedDate});
     if(t.stage==="04"&&TR.canApprove(t,user)) out.push({tone:"info",icon:"approve",t:`Waiting for your approval · ${t.id}`,d:t.title,at:t.updatedAt,task:t.key,key:"tap|"+t.key+"|"+t.updatedAt});
@@ -5757,9 +5942,26 @@ function taskNotifications(state,user){
     (t.comments||[]).forEach(c=>{ if(c.uid===user.id||tTs(c.at)<=weekAgo) return; const m=(c.mentions||[]).includes(user.id)||(handle&&c.text.toLowerCase().includes("@"+handle));
       if(m||t.assigneeId===user.id||t.creatorId===user.id) out.push({tone:"info",icon:"msg",t:`${c.by} commented${m?" and mentioned you":""} · ${t.id}`,d:c.text.slice(0,90),at:c.at,task:t.key,key:"tcm|"+c.id}); });
   });
+  /* several tasks from the same person arrive as one notification */
+  Object.entries(groups).forEach(([cid,list])=>{
+    if(list.length===1){ const t=list[0]; const ev=tEventOf(state,t); out.push({tone:"info",icon:"user",t:`${tName(state,cid)} assigned you ${ev?"an event task":"a task"} (${t.priority}) · ${t.id}`,d:ev?`${t.title} · ${ev.title}`:t.title,at:t.createdAt,task:t.key,key:"tas|"+t.key}); return; }
+    const urgent=list.filter(t=>t.priority==="Urgent").length; const evs=[...new Set(list.map(t=>(tEventOf(state,t)||{}).title).filter(Boolean))];
+    out.push({tone:"info",icon:"list",t:`${tName(state,cid)} assigned you ${list.length} tasks`,d:`${urgent?urgent+" urgent · ":""}${evs.length?evs.join(", ")+" · ":""}${list.map(t=>t.id).join(", ")}`,at:list.map(t=>t.createdAt).sort().pop(),taskView:"tracking",key:"tasg|"+cid+"|"+list.map(t=>t.id).sort().join(",")});
+  });
+  /* events: reminders 7, 3 and 1 days before, sign-offs, coordinator */
+  tVisibleEvents(state,user).forEach(e=>{
+    if(["cancelled","completed"].includes(e.status)) return;
+    const involved=e.coordinator===user.id||e.createdBy===user.id||(state.tasks||[]).some(t=>t.eventId===e.key&&t.assigneeId===user.id)||all||["MA","HR"].includes(r);
+    const dd=tDaysUntil(e.date);
+    if(involved&&dd>=0&&dd<=7) out.push({tone:dd===0?"bad":dd<=3?"warn":"info",icon:"cal",t:dd===0?`Event today at ${e.time}: ${e.title}`:dd===1?`Event tomorrow: ${e.title}`:`Event in ${dd} days: ${e.title}`,d:`${e.venue} · ${(state.tasks||[]).filter(t=>t.eventId===e.key&&t.assigneeId===user.id&&tOpen(t)).length} of your tasks still open`,at:new Date(Date.now()-dd*3600e3).toISOString(),event:e.key,key:`tev|${e.key}|${dd<=1?dd:dd<=3?3:7}`});
+    const next=EV_STEPS.find(st=>!(e.approvals||{})[st.id]);
+    if(next&&TR.canSignEvent(e,next.id,user)) out.push({tone:"info",icon:"approve",t:`Event needs your sign-off (${next.label.toLowerCase()} ${next.who})`,d:e.title,at:e.updatedAt,event:e.key,key:`tevap|${e.key}|${next.id}`});
+    if(e.coordinator===user.id&&e.createdBy!==user.id&&tTs(e.createdAt)>weekAgo) out.push({tone:"info",icon:"user",t:"You are the coordinator of an event",d:e.title,at:e.createdAt,event:e.key,key:`tevco|${e.key}`});
+  });
   return out.sort((a,b)=>tTs(b.at)-tTs(a.at)).slice(0,40);
 }
-const tWaitingCount=(state,user)=>{ TS=state; return (state.tasks||[]).filter(t=>t.v===2&&TR.canSee(t,user)&&((t.stage==="04"&&TR.canApprove(t,user))||(t.assigneeId===user.id&&tOverdue(t)))).length; };
+const tWaitingCount=(state,user)=>{ TS=state; return (state.tasks||[]).filter(t=>t.v===2&&TR.canSee(t,user)&&((t.stage==="04"&&TR.canApprove(t,user))||(t.assigneeId===user.id&&tOverdue(t)))).length
+  +tVisibleEvents(state,user).filter(e=>{ const n=EV_STEPS.find(st=>!(e.approvals||{})[st.id]); return n&&TR.canSignEvent(e,n.id,user); }).length; };
 
 /* ---------- running timer: per user on this device, survives a reload ---------- */
 function useTaskTimer(user){
@@ -5806,7 +6008,8 @@ function TRow({t,state,user,A,open,who=true}){
   return html`<div class="tk-trow" role="button" tabindex="0" onClick=${()=>open(t.key)} onKeyDown=${e=>{ if(e.key==="Enter") open(t.key); }}>
     <span class="pri" style=${"background:"+TPRI_COLOR[t.priority]}/>
     <button class=${"tk-chk"+(done?" on":"")} aria-label=${done?"Reopen":"Mark done"} title=${done?"Reopen":TR.canClose(t,user)?"Mark done":TR.whyNoClose(t,user,state)} onClick=${toggle}>${done&&html`<${Icon} name="check"/>`}</button>
-    <span class="g"><b class=${done?"tk-strike":""}>${t.title}</b><small>${t.id} · ${tDept(t.dept).code}${who?" · "+tName(state,t.assigneeId):""} · ${tStage(t.stage).name}</small></span>
+    <span class="g"><b class=${done?"tk-strike":""}>${t.title}</b><small>${t.id}${t.eventId?html` · <span class="tk-evpill"><${Icon} name="flag"/>${((tEventOf(state,t)||{}).title||"Event").slice(0,22)}</span>`:""} · ${tDept(t.dept).code}${who?" · "+tName(state,t.assigneeId):""} · ${tStage(t.stage).name}</small></span>
+    <span class=${"tk-pct"+(done?" done":"")} title="Progress">${tProgress(t)}%</span>
     <span class=${"tk-due "+due}>${tFmt(t.plannedDate)}</span>
   </div>`;
 }
@@ -5817,7 +6020,7 @@ function Tasks({state,user,A,taskOpen,setTaskOpen}){
   const lsk="akf-tasks-"+user.id; const saved=(()=>{ try{ return JSON.parse(tLS.get(lsk)||"{}"); }catch(e){ return {}; } })();
   const [view,setView]=useState(saved.view||"home"); const [mode,setMode]=useState(saved.mode||"board");
   const [f,setF]=useState({q:"",dept:"",pri:"",who:"all",tag:"",...(saved.f||{}),q:""});
-  const [modal,setModal]=useState(null);   // {kind:"new",preset} — existing tasks open through taskOpen
+  const [modal,setModal]=useState(null);   // {kind:"new",preset,returnEvent} | {kind:"event",key,tab} — existing tasks open through taskOpen
   const [month,setMonth]=useState(tToday().slice(0,7)); const [selDay,setSelDay]=useState(tToday());
   const [range,setRange]=useState({from:tToday(),to:tAddDays(tToday(),6)}); const [perfMonth,setPerfMonth]=useState(tToday().slice(0,7));
   const timer=useTaskTimer(user);
@@ -5825,17 +6028,21 @@ function Tasks({state,user,A,taskOpen,setTaskOpen}){
   useEffect(()=>{ if((state.tasks||[]).some(t=>t.v!==2)) A.tMigrate(); },[(state.tasks||[]).length]);
   const vis=(state.tasks||[]).filter(t=>t.v===2&&TR.canSee(t,user));
   const setFilter=(k,v)=>setF(x=>({...x,[k]:v}));
-  const clearF=()=>setF({q:"",dept:"",pri:"",who:"all",tag:""});
+  const clearF=()=>setF({q:"",dept:"",pri:"",who:"all",tag:"",ev:""});
   const ql=f.q.trim().toLowerCase();
-  const filtered=vis.filter(t=>(!f.dept||t.dept===f.dept)&&(!f.pri||t.priority===f.pri)&&(!f.tag||(t.tags||[]).includes(f.tag))
+  const filtered=vis.filter(t=>(!f.dept||t.dept===f.dept)&&(!f.pri||t.priority===f.pri)&&(!f.tag||(t.tags||[]).includes(f.tag))&&(!f.ev||(f.ev==="any"?!!t.eventId:t.eventId===f.ev))
     &&(f.who==="all"||(f.who==="me"?t.assigneeId===user.id:t.assigneeId===f.who))
     &&(!ql||t.title.toLowerCase().includes(ql)||t.id.toLowerCase().includes(ql)||(t.tags||[]).some(x=>x.toLowerCase().includes(ql))||tName(state,t.assigneeId).toLowerCase().includes(ql)));
   const open=key=>{ const t=vis.find(x=>x.key===key); if(!t){ tToast("You don't have access to this task.","bad"); return; } setTaskOpen(key); };
-  const openNew=(preset={})=>{ if(!TR.canCreate(user)){ tToast("Your role can view tasks but not create them.","bad"); return; } setModal({kind:"new",preset}); };
+  const openNew=(preset={},returnEvent=null)=>{ if(!TR.canCreate(user)){ tToast("Your role can view tasks but not create them.","bad"); return; } setModal({kind:"new",preset,returnEvent}); };
+  const openEvent=(key,tab)=>{ const e=(state.events||[]).find(x=>x.key===key); if(!e||!TR.canSeeEvent(e,user,state)){ tToast("You don't have access to this event.","bad"); return; } setModal({kind:"event",key,tab:tab||"details"}); };
+  const newEvent=()=>{ if(!TR.canCreateEvent(user)){ tToast("Your role cannot create events.","bad"); return; } setModal({kind:"event",key:null,tab:"details"}); };
   const go=(v,patch)=>{ setView(v); if(patch) setF(x=>({...x,...patch})); };
+  /* notifications can ask to open an event ("ev:KEY") or a view ("view:tracking") */
+  useEffect(()=>{ if(!taskOpen) return; if(taskOpen.startsWith("ev:")){ const k=taskOpen.slice(3); setTaskOpen(null); openEvent(k); } else if(taskOpen.startsWith("view:")){ setView(taskOpen.slice(5)); setTaskOpen(null); } },[taskOpen]);
   const running=timer.tm&&vis.find(t=>t.key===timer.tm.key);
-  const VIEWS=[["home","Home","home"],["board","Board","board"],["planner","Planner","cal"],["workload","Workload","users"],["performance","Performance","chart"],["assistant","Assistant","zap"],["settings","Settings","settings"]];
-  const P={state,user,A,open,vis,filtered,f,setFilter,clearF,openNew,go,timer};
+  const VIEWS=[["home","Home","home"],["board","Board","board"],["events","Events","flag"],["tracking","Tracking","log"],["planner","Planner","cal"],["workload","Workload","users"],["performance","Performance","chart"],["assistant","Assistant","zap"],["settings","Settings","settings"]];
+  const P={state,user,A,open,vis,filtered,f,setFilter,clearF,openNew,go,timer,openEvent,newEvent};
   const migrating=(state.tasks||[]).some(t=>t.v!==2);
   return html`<${Fragment}><div class="tk-page">
     <div class="tk-views">
@@ -5853,13 +6060,19 @@ function Tasks({state,user,A,taskOpen,setTaskOpen}){
     ${view==="performance"&&html`<${TPerformance} ...${P} perfMonth=${perfMonth} setPerfMonth=${setPerfMonth}/>`}
     ${view==="assistant"&&html`<${TAssistant} ...${P}/>`}
     ${view==="settings"&&html`<${TSettings} ...${P}/>`}
+    ${view==="events"&&html`<${TEvents} ...${P}/>`}
+    ${view==="tracking"&&html`<${TTracking} ...${P}/>`}
   </div>
-  ${modal&&modal.kind==="new"&&html`<${TaskModal} isNew preset=${modal.preset} state=${state} user=${user} A=${A} timer=${timer} onClose=${()=>setModal(null)} open=${open} onCreated=${t=>{ setModal(null); clearF(); if(view==="home"||view==="settings"||view==="assistant") setView("board"); }}/>`}
-  ${taskOpen&&html`<${TaskModal} key=${taskOpen} tkey=${taskOpen} state=${state} user=${user} A=${A} timer=${timer} onClose=${()=>setTaskOpen(null)} open=${open}/>`}<//>`;
+  ${modal&&modal.kind==="new"&&html`<${TaskModal} isNew preset=${modal.preset} state=${state} user=${user} A=${A} timer=${timer} open=${open} openEvent=${openEvent}
+    onClose=${()=>{ const back=modal.returnEvent; setModal(null); if(back) openEvent(back,"checklist"); }}
+    onCreated=${t=>{ const back=modal.returnEvent; setModal(null); clearF(); if(back){ openEvent(back,"checklist"); return; } if(view==="home"||view==="settings"||view==="assistant") setView("board"); }}/>`}
+  ${modal&&modal.kind==="event"&&html`<${EventModal} key=${modal.key||"new"} ekey=${modal.key} tab=${modal.tab} setTab=${tb=>setModal(m=>({...m,tab:tb}))} state=${state} user=${user} A=${A} open=${open}
+    onClose=${()=>setModal(null)} onCreated=${e=>setModal({kind:"event",key:e.key,tab:"checklist"})} openNew=${(preset,evKey)=>{ setModal(null); setTimeout(()=>openNew(preset,evKey),0); }}/>`}
+  ${taskOpen&&!/^(ev|view):/.test(taskOpen)&&html`<${TaskModal} key=${taskOpen} tkey=${taskOpen} state=${state} user=${user} A=${A} timer=${timer} onClose=${()=>setTaskOpen(null)} open=${open} openEvent=${k=>{ setTaskOpen(null); openEvent(k); }}/>`}<//>`;
 }
 
 /* ---------- Home ---------- */
-function THome({state,user,A,open,vis,openNew,go}){
+function THome({state,user,A,open,vis,openNew,go,openEvent}){
   const t0=tToday(); const h=new Date().getHours(); const greet=h<12?"Good morning":h<17?"Good afternoon":"Good evening";
   const r=tRole(user); const mine=vis.filter(t=>t.assigneeId===user.id); const scope=r==="Staff"?mine:vis;
   const dueToday=scope.filter(tDueToday), overdue=scope.filter(tOverdue), openT=scope.filter(tOpen);
@@ -5890,6 +6103,7 @@ function THome({state,user,A,open,vis,openNew,go}){
     </section>
     ${TR.canCreate(user)&&html`<div><div class="tk-quick"><${Icon} name="plus"/><input value=${q} onInput=${e=>setQ(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter") add(); }} placeholder="Add a task… e.g. Call donors tomorrow !high #Donors @username" aria-label="Quick add task"/><button class="btn btn-primary btn-sm" onClick=${add}>Add</button></div>
       <div class="tk-hint" style="margin-top:6px">Shortcuts: <code>!urgent</code> <code>#tag</code> <code>@username</code> <code>tomorrow</code> <code>friday</code> <code>next week</code> <code>in 3 days</code> <code>15/11</code> <code>2026-11-05</code></div></div>`}
+    <${TTrackingHome} state=${state} user=${user} vis=${vis} go=${go}/>
     <button class="tk-ai-card" onClick=${()=>go("assistant")}><span class="tk-ai-ico"><${Icon} name="zap"/></span><span><b>${tAiHeadline(state,user,vis)}</b><small>Open your assistant for a plan, risks and a weekly digest.</small></span><${Icon} name="right"/></button>
     <div class="tk-kpis4">
       <${Kpi} label="Due today" value=${dueToday.length} tone="warn" onClick=${()=>go("planner")}/>
@@ -5900,6 +6114,8 @@ function THome({state,user,A,open,vis,openNew,go}){
     <div class="grid2">
       <${Card} title="Today" desc=${tFmt(t0,true)}>${todayAll.length?todayAll.sort(tByPri).map(RowP):html`<${TEmpty} title="No tasks planned for today">Use the quick-add bar above or the planner to schedule work.<//>`}<//>
       <${Card} title="Needs attention">${needs.length?needs.map(RowP):html`<${TEmpty} title="All clear">Nothing overdue and nothing waiting for you.<//>`}<//>
+      <${Card} title="Upcoming events" right=${html`<button class="btn btn-ghost btn-sm" onClick=${()=>go("events")}>All events<${Icon} name="right"/></button>`}>${(()=>{ const evs=tVisibleEvents(state,user).filter(e=>!["cancelled","completed"].includes(e.status)&&e.date>=t0).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,5);
+        return evs.length?evs.map(e=>html`<${TEventRow} e=${e} state=${state} user=${user} onOpen=${()=>openEvent(e.key)}/>`):html`<${TEmpty} title="No upcoming events"><//>`; })()}<//>
       <${Card} title="Next 7 days" right=${html`<button class="btn btn-ghost btn-sm" onClick=${()=>go("planner")}>Open planner<${Icon} name="right"/></button>`}>${upcoming.length?upcoming.slice(0,8).map(RowP):html`<${TEmpty} title="Nothing scheduled this week"><//>`}<//>
       <${Card} title="Recent activity">${activity.length?activity.map(a=>html`<div class="tk-act"><b>${a.by}</b> ${a.text} · <button class="link-like" onClick=${()=>open(a.task.key)}>${a.task.id}</button><span class="faint" style="float:right">${ago(a.at)}</span></div>`):html`<${TEmpty} title="No activity yet"><//>`}<//>
     </div></div>`;
@@ -5915,7 +6131,8 @@ function TToolbar({state,user,vis,f,setFilter,clearF,mode,setMode,noMode}){
     <select class="select" value=${f.pri} onChange=${e=>setFilter("pri",e.target.value)} aria-label="Priority"><option value="">Any priority</option>${TPRI_LIST.map(p=>html`<option value=${p}>${p}</option>`)}</select>
     <select class="select" value=${f.who} onChange=${e=>setFilter("who",e.target.value)} aria-label="Assignee"><option value="all">Everyone</option><option value="me">Assigned to me</option>${people.filter(p=>p.id!==user.id).map(p=>html`<option value=${p.id}>${p.name}</option>`)}</select>
     ${tags.length>0&&html`<select class="select" value=${f.tag} onChange=${e=>setFilter("tag",e.target.value)} aria-label="Tag"><option value="">Any tag</option>${tags.map(t=>html`<option value=${t}>${t}</option>`)}</select>`}
-    ${(f.q||f.dept||f.pri||f.tag||f.who!=="all")&&html`<button class="btn btn-ghost btn-sm" onClick=${clearF}><${Icon} name="x"/>Clear</button>`}
+    ${tVisibleEvents(state,user).length>0&&html`<select class="select" value=${f.ev||""} onChange=${e=>setFilter("ev",e.target.value)} aria-label="Event"><option value="">All work</option><option value="any">Event tasks only</option>${tVisibleEvents(state,user).map(e=>html`<option value=${e.key}>${e.title}</option>`)}</select>`}
+    ${(f.q||f.dept||f.pri||f.tag||f.ev||f.who!=="all")&&html`<button class="btn btn-ghost btn-sm" onClick=${clearF}><${Icon} name="x"/>Clear</button>`}
     <span class="grow"/>
     ${!noMode&&html`<div class="seg"><button class=${mode==="board"?"active":""} onClick=${()=>setMode("board")}><${Icon} name="board"/>Board</button><button class=${mode==="list"?"active":""} onClick=${()=>setMode("list")}><${Icon} name="list"/>List</button></div>`}
   </div>`;
@@ -5941,9 +6158,10 @@ const TCard=({t,state,onOpen,dragging,onDragStart,onDragEnd})=>{
   const s=t.subtasks||[]; const done=s.filter(x=>x.done).length; const blocked=tBlockers(state,t).length>0;
   return html`<div class=${"tk-card"+(tOverdue(t)?" od":"")+(dragging?" dragging":"")} style=${"--pri:"+TPRI_COLOR[t.priority]} role="button" tabindex="0" draggable="true"
     onDragStart=${e=>{ e.dataTransfer.effectAllowed="move"; try{ e.dataTransfer.setData("text/plain",t.key); }catch(_){} onDragStart(); }} onDragEnd=${onDragEnd} onClick=${onOpen} onKeyDown=${e=>{ if(e.key==="Enter") onOpen(); }}>
-    <div class="tk-card-top"><${TDeptPill} id=${t.dept}/><${TPriPill} p=${t.priority}/>${blocked&&html`<${Tag} tone="bad"><${Icon} name="dep"/>blocked</${Tag}>`}${t.recurring&&t.recurring!=="none"&&html`<span class="tk-rep" title=${"Repeats "+t.recurring}><${Icon} name="repeat"/></span>`}<span class="grow"/><span class="tk-id">${t.id}</span></div>
+    <div class="tk-card-top"><${TDeptPill} id=${t.dept}/><${TPriPill} p=${t.priority}/>${t.eventId&&html`<span class="tk-evpill" title=${(tEventOf(state,t)||{}).title||"Event task"}><${Icon} name="flag"/></span>`}${blocked&&html`<${Tag} tone="bad"><${Icon} name="dep"/>blocked</${Tag}>`}${t.recurring&&t.recurring!=="none"&&html`<span class="tk-rep" title=${"Repeats "+t.recurring}><${Icon} name="repeat"/></span>`}<span class="grow"/><span class="tk-id">${t.id}</span></div>
     <div class="tk-ttl">${t.title}</div>
     <div class="tk-meta">${s.length>0&&html`<span><${Icon} name="subtask"/>${done}/${s.length}</span>`}${(t.comments||[]).length>0&&html`<span><${Icon} name="msg"/>${t.comments.length}</span>`}${(t.attachments||[]).length>0&&html`<span><${Icon} name="clip"/>${t.attachments.length}</span>`}<span><${Icon} name="clock"/>${tMin(t.timeLogged)}/${tMin(t.estimate)}</span></div>
+    <div class="tk-bar" style="height:5px;margin-top:7px"><i style=${`width:${tProgress(t)}%;background:${t.stage==="06"?"var(--ok)":tOverdue(t)?"var(--bad)":"var(--brand-3)"}`}/></div>
     ${(t.tags||[]).length>0&&html`<div class="tk-tags">${t.tags.map(x=>html`<span class="tk-tag">${x}</span>`)}</div>`}
     <div class="tk-foot"><${TAvatar} state=${state} id=${t.assigneeId} sm/><span class="sm ellipsis" style="font-weight:600">${tName(state,t.assigneeId)}</span><span class="grow"/><span class=${"tk-date "+(tOverdue(t)?"bad":tDueToday(t)?"warn":"")}><${Icon} name="cal"/>${tFmt(t.plannedDate)}</span></div>
   </div>`;
@@ -5965,8 +6183,9 @@ function TList({state,open,filtered}){
 
 /* ---------- Planner: month, day agenda, weekly range ---------- */
 function TPlanner(P){
-  const {state,user,A,open,filtered,openNew,month,setMonth,selDay,setSelDay,range,setRange}=P;
+  const {state,user,A,open,filtered,openNew,month,setMonth,selDay,setSelDay,range,setRange,openEvent}=P;
   const [over,setOver]=useState(null); const drag=useRef(null);
+  const evByDay={}; tVisibleEvents(state,user).filter(e=>e.status!=="cancelled").forEach(e=>{ (evByDay[e.date]=evByDay[e.date]||[]).push(e); });
   const [y,m]=month.split("-").map(Number); const lead=(new Date(y,m-1,1).getDay()+6)%7;
   const cells=[]; for(let i=0;i<42;i++) cells.push(tISO(new Date(y,m-1,1-lead+i)));
   const byDay={}; filtered.forEach(t=>{ if(t.plannedDate) (byDay[t.plannedDate]=byDay[t.plannedDate]||[]).push(t); });
@@ -5985,6 +6204,7 @@ function TPlanner(P){
       ${cells.map(d=>{ const l=(byDay[d]||[]).slice().sort(tByPri); return html`<div role="button" tabindex="0" class=${"day"+(d.slice(0,7)!==month?" out":"")+(d===t0?" today":"")+(d===selDay?" sel":"")+(over===d?" over":"")} onClick=${()=>setSelDay(d)} onKeyDown=${e=>{ if(e.key==="Enter") setSelDay(d); }}
         onDragOver=${e=>{ if(!drag.current) return; e.preventDefault(); if(over!==d) setOver(d); }} onDrop=${e=>{ e.preventDefault(); dropOn(d); }}>
         <span class="dn">${+d.slice(8)}</span>
+        ${(evByDay[d]||[]).map(e=>html`<div class="ev evt" title=${e.title} onClick=${ev=>{ ev.stopPropagation(); openEvent(e.key); }}><${Icon} name="flag"/>${e.title}</div>`)}
         ${l.slice(0,3).map(t=>html`<div class=${"ev"+(t.stage==="06"?" done":"")+(tOverdue(t)?" od":"")} style=${"--pri:"+TPRI_COLOR[t.priority]} draggable="true" title=${t.title} onDragStart=${e=>{ drag.current=t; try{ e.dataTransfer.setData("text/plain",t.key); }catch(_){} }} onClick=${e=>{ e.stopPropagation(); open(t.key); }}>${t.title}</div>`)}
         ${l.length>3&&html`<span class="more">+${l.length-3} more</span>`}
         ${l.length>0&&html`<span class="dots">${l.slice(0,6).map(t=>html`<i style=${"--pri:"+TPRI_COLOR[t.priority]}/>`)}</span>`}
@@ -5999,10 +6219,10 @@ function TPlanner(P){
 /* ---------- Workload ---------- */
 function TWorkload(P){
   const {state,user,filtered,setFilter,go}=P; const r=tRole(user);
-  const people=(state.users||[]).filter(p=>p.active!==false&&!["President","GS"].includes(tRole(p))&&(r!=="HOD"||tUDept(p)===tUDept(user)||filtered.some(t=>t.assigneeId===p.id))&&(r!=="Staff"||p.id===user.id));
+  const people=(state.users||[]).filter(p=>p.active!==false&&!["President","GS"].includes(tRole(p))&&(!T_MGR.includes(r)||tUDept(p)===tUDept(user)||filtered.some(t=>t.assigneeId===p.id))&&(r!=="Staff"||p.id===user.id));
   const stats=l=>({total:l.length,prog:l.filter(t=>t.stage==="02").length,review:l.filter(t=>["03","04","05"].includes(t.stage)).length,newc:l.filter(t=>t.stage==="01").length,done:l.filter(t=>t.stage==="06").length,over:l.filter(tOverdue).length,hours:l.filter(tOpen).reduce((a,t)=>a+(t.estimate||0),0)});
   const rows=people.map(p=>({p,s:stats(filtered.filter(t=>t.assigneeId===p.id))})).sort((a,b)=>b.s.total-a.s.total);
-  const groups=[["RM","Regional Manager"],["HOD","Heads of Department"],["Staff","Staff"]].map(([k,l])=>({l,rows:rows.filter(x=>tRole(x.p)===k)})).filter(g=>g.rows.length);
+  const groups=[["RM","Regional Manager"],["MA","Manager Admin"],["HR","HR"],["HOD","Heads of Department"],["Staff","Staff"]].map(([k,l])=>({l,rows:rows.filter(x=>tRole(x.p)===k)})).filter(g=>g.rows.length);
   /* each task counted once: overdue first, then new / in progress / review / done */
   const bar=s=>{ const n=Math.max(1,s.total); const prog=Math.max(0,s.prog-Math.min(s.prog,s.over)); const rest=Math.max(0,s.over-Math.min(s.prog,s.over));
     return html`<div class="tk-bar"><i style=${`width:${Math.max(0,s.newc-Math.min(s.newc,rest))/n*100}%;background:#7B8798`}/><i style=${`width:${prog/n*100}%;background:#2567CF`}/><i style=${`width:${s.over/n*100}%;background:var(--bad)`}/><i style=${`width:${Math.max(0,s.review-Math.max(0,rest-s.newc))/n*100}%;background:#D98A14`}/><i style=${`width:${s.done/n*100}%;background:#1E9A5A`}/></div>`; };
@@ -6074,7 +6294,7 @@ function tAiHeadline(state,user,vis){
   if(today.length) return `${today.length} task${today.length>1?"s":""} due today, about ${tMin(today.reduce((a,t)=>a+Math.max(0,(t.estimate||0)-(t.timeLogged||0)),0))} of work left.`;
   return "Nothing urgent. A good moment to plan the week ahead.";
 }
-function TAssistant({state,user,A,open,vis}){
+function TAssistant({state,user,A,open,vis,openEvent}){
   const t0=tToday(); const r=tRole(user); const sc=tAiScope(user,vis); const rem=t=>Math.max(0,(t.estimate||0)-(t.timeLogged||0));
   const RowP=(t,who=true)=>html`<${TRow} t=${t} state=${state} user=${user} A=${A} open=${open} who=${who}/>`;
   const mine=(r==="Staff"?sc:vis.filter(t=>t.assigneeId===user.id)).filter(tOpen);
@@ -6097,8 +6317,11 @@ function TAssistant({state,user,A,open,vis}){
     <div class="grid2">
       ${mine.length>0&&html`<${Card} title="Your plan for today">${todayList.length?html`<p class="xs faint" style="margin:0 0 6px">${fit.length} task${fit.length!==1?"s":""} fit an 8-hour day (${tMin(used)} of work). ${spill.length?`${spill.length} won't fit — move them to tomorrow.`:"Everything due fits."}</p>${fit.map(t=>RowP(t,false))}${spill.length>0&&html`<div class="tk-spill"><b class="xs">Won't fit today</b>${spill.map(t=>html`<div class="row" style="gap:6px"><div style="flex:1;min-width:0">${RowP(t,false)}</div>${TR.canEdit(t,user)&&html`<button class="btn btn-ghost btn-sm" onClick=${()=>A.tReschedule(t.key,tAddDays(t0,1))}>Tomorrow</button>`}</div>`)}</div>`}`:html`<${TEmpty} title="Nothing due today">Pull something forward from the planner if you have capacity.<//>`}<//>`}
       <${Card} title="At risk">${risks.length?risks.slice(0,8).map(x=>html`<div class="tk-risk"><div style="flex:1;min-width:0">${RowP(x.t,r!=="Staff")}<span class="xs tk-bad">${x.why}</span></div>${x.fix&&html`<button class="btn btn-ghost btn-sm" onClick=${x.fix.fn}>${x.fix.label}</button>`}</div>`):html`<${TEmpty} title="No risks found">Nothing overdue, blocked or stalled in your scope.<//>`}<//>
-      ${["RM","HOD"].includes(r)&&html`<${Card} title="Waiting for your approval">${wait.length?wait.map(t=>html`<div class="row" style="gap:6px"><div style="flex:1;min-width:0">${RowP(t)}</div><button class="btn btn-ok btn-sm" onClick=${()=>A.tMove(t.key,"05")}>Approve</button></div>`):html`<${TEmpty} title="Nothing to approve"><//>`}<//>`}
+      ${["RM",...T_MGR].includes(r)&&html`<${Card} title="Waiting for your approval">${wait.length?wait.map(t=>html`<div class="row" style="gap:6px"><div style="flex:1;min-width:0">${RowP(t)}</div><button class="btn btn-ok btn-sm" onClick=${()=>A.tMove(t.key,"05")}>Approve</button></div>`):html`<${TEmpty} title="Nothing to approve"><//>`}<//>`}
       ${r!=="Staff"&&html`<${Card} title="Workload balance">${people.length?html`<p class="xs faint" style="margin:0 0 8px">Average open work per person: ${tMin(avg)}.</p>${heavy.length?heavy.map(x=>html`<div class="tk-row"><span class="avatar tk-av">${initials(x.p.name)}</span><span class="g"><b>${x.p.name}</b><small class="tk-bad">${tMin(x.h)} open · ${x.n} tasks${x.over?` · ${x.over} overdue`:""}</small></span>${light[0]&&html`<span class="xs faint">→ consider moving one to ${light[0].p.name.split(" ")[0]} (${tMin(light[0].h)})</span>`}</div>`):html`<div class="xs faint">No one is overloaded. Nice.</div>`}${!heavy.length&&light.length>0&&html`<div class="xs faint" style="margin-top:6px">Has capacity: ${light.map(x=>x.p.name).join(", ")}</div>`}`:html`<${TEmpty} title="No team data"><//>`}<//>`}
+      ${(()=>{ const evs=tVisibleEvents(state,user).filter(e=>!["cancelled","completed"].includes(e.status)&&tDaysUntil(e.date)>=-1).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,4); if(!evs.length) return "";
+        return html`<${Card} title="Upcoming events">${evs.map(e=>{ const et=tEvTasks(state,e); const op=et.filter(tOpen); const unassigned=Object.keys(e.checklist||{}).filter(k=>e.checklist[k].on&&!/:_x\d+$/.test(k)&&!et.some(t=>t.checkItem===k)).length; const dd=tDaysUntil(e.date);
+          return html`<button class="tk-row" style="width:100%" onClick=${()=>openEvent(e.key)}><span class="tk-evdate"><b>${+e.date.slice(8)}</b><small>${T_MONTHS[+e.date.slice(5,7)-1].slice(0,3)}</small></span><span class="g"><b>${e.title}</b><small>${dd===0?"Today":dd===1?"Tomorrow":dd>1?`In ${dd} days`:"Yesterday"} · ${op.length} open task${op.length===1?"":"s"}${et.filter(tOverdue).length?` · ${et.filter(tOverdue).length} overdue`:""}${unassigned?` · ${unassigned} checklist item${unassigned===1?"":"s"} not assigned`:""}</small></span><${Tag} tone=${tEvStatus(e)[1]}>${tEvStatus(e)[0]}</${Tag}></button>`; })}<//>`; })()}
       <${Card} title="Last 7 days"><div class="tk-digest"><div><b>${doneWk.length}</b><small>completed</small></div><div><b>${newWk.length}</b><small>created</small></div><div><b>${sc.filter(tOpen).length}</b><small>still open</small></div><div><b>${ratedWk.length?(ratedWk.reduce((a,t)=>a+t.rating,0)/ratedWk.length).toFixed(1):"—"}</b><small>avg rating</small></div></div>
         ${top&&r!=="Staff"&&html`<div class="xs faint" style="margin-top:8px">Most completions: ${tName(state,top[0])} (${top[1]}).</div>`}<div class="xs faint" style="margin-top:4px">${tSuggestion(state,sc)}</div><//>
     </div></div>`;
@@ -6122,14 +6345,166 @@ function TSettings({state,user,A}){
       <${Card} title="Workflow stages" right=${html`<span class="xs faint">7 global stages, used by every department</span>`}>
         ${stages.map(s=>html`<div class="tk-lrow"><input type="color" class="tk-color" value=${s.color} disabled=${!can} onChange=${e=>saveS(stages.map(x=>x.id===s.id?{...x,color:e.target.value}:x))} aria-label="Colour"/><span class="g"><input class="tk-inl" value=${s.name} disabled=${!can} onBlur=${e=>{ const v=e.target.value.trim(); if(v&&v!==s.name) saveS(stages.map(x=>x.id===s.id?{...x,name:v}:x)); }} aria-label="Stage name"/><small>Stage ${s.id}${s.id==="04"?" · approval needed from HOD / RM":s.id==="05"?" · only HOD / RM can approve":s.id==="06"||s.id==="07"?" · closing rule applies":""}</small></span><span class="xs faint">${count("stage",s.id)} tasks</span></div>`)}<//>
       <${Card} title="Rules"><div class="notice notice-info"><${Icon} name="shield"/><span><b>Closing rule.</b> Nobody can close a task assigned to themselves. The person who assigned it, the department HOD or the Regional Manager closes it, and HOD / RM give a quality rating from 1 to 5. Self-assigned tasks need HOD or RM sign-off. Tasks with unfinished dependencies can't be closed. Only the department HOD or the Regional Manager can approve.</span></div>
-        <div class="xs faint" style="margin-top:10px">Roles in Tasks: Super Admin and Regional Manager act as <b>RM</b>; Head of Department as <b>HOD</b>; President is view-only; General Secretary views and comments; everyone else is <b>Staff</b>. The Super Admin can tick <b>Manage all tasks</b> for anyone under Users to give them RM rights here.</div><//>
+        <div class="xs faint" style="margin-top:10px">Roles in Tasks: Super Admin and Regional Manager act as <b>RM</b>; Head of Department as <b>HOD</b>; Manager Admin & HR as <b>Manager Admin</b> (the Super Admin can set <b>HR Manager</b> or any other task role per person under Users); President is view-only; General Secretary views and comments; everyone else is <b>Staff</b>. Only RM, HOD, Manager Admin and HR assign tasks to other people. The Super Admin can tick <b>Manage all tasks</b> for anyone to give them RM rights here.</div>
+        <div class="notice notice-info" style="margin-top:10px"><${Icon} name="flag"/><span><b>Events.</b> RM, Manager Admin and HR see every event and can assign event tasks to anyone in any department; a HOD creates events and assigns within their own department for events they organise. Approval chain: ${EV_STEPS.map(s=>s.who).join(" → ")}.</span></div><//>
     </div></div>`;
 }
 
+/* ---------- Events view ---------- */
+function TEventRow({e,state,user,onOpen}){
+  const dd=tDaysUntil(e.date); const p=tEvProgress(state,e,user.id); const [label,tone]=tEvStatus(e);
+  const when=dd===0?"Today":dd===1?"Tomorrow":dd>1?`In ${dd} days`:dd===-1?"Yesterday":`${-dd} days ago`;
+  return html`<button class="tk-row" style="width:100%" onClick=${onOpen}><span class="tk-evdate"><b>${+e.date.slice(8)}</b><small>${T_MONTHS[+e.date.slice(5,7)-1].slice(0,3)}</small></span>
+    <span class="g"><b>${e.title}</b><small>${e.time} · ${e.venue}${p.total?` · ${p.done}/${p.total} tasks`:""}${p.mine?` · ${p.mine} yours`:""}${p.over?` · ${p.over} overdue`:""}</small></span>
+    <${Tag} tone=${tone}>${label}</${Tag}><span class=${"tk-due "+(dd===0?"tk-warn":dd<0?"tk-bad":"")}>${when}</span></button>`;
+}
+function TEventCard({e,state,user,onOpen}){
+  const p=tEvProgress(state,e,user.id); const [label,tone]=tEvStatus(e); const dd=tDaysUntil(e.date); const sel=Object.keys(e.checklist||{}).filter(k=>e.checklist[k].on&&!/:_x\d+$/.test(k)).length;
+  return html`<button class="tk-evcard" onClick=${onOpen}>
+    <span class="tk-evdate lg"><b>${+e.date.slice(8)}</b><small>${T_MONTHS[+e.date.slice(5,7)-1].slice(0,3)} · ${e.time}</small></span>
+    <span class="tk-evbody">
+      <span class="row wrap" style="gap:6px"><${Tag} tone=${tone}>${label}</${Tag}><${Tag}>${e.type}</${Tag}>${dd>=0&&dd<=7&&e.status!=="cancelled"&&html`<${Tag} tone=${dd<=1?"bad":"warn"}>${dd===0?"Today":dd===1?"Tomorrow":`In ${dd} days`}</${Tag}>`}</span>
+      <b class="tk-evtitle">${e.title}</b>
+      <small class="faint">${e.venue} · ${e.expected||"—"} expected · Coordinator ${tName(state,e.coordinator)}</small>
+      <span class="row" style="gap:10px;margin-top:6px"><span class="tk-bar" style="flex:1;height:7px"><i style=${`width:${p.total?p.done/p.total*100:0}%;background:var(--ok)`}/></span><small class="faint nowrap"><b style="color:var(--ink)">${tEvPct(state,e)}%</b> · ${p.done}/${p.total} tasks · ${sel} items</small></span>
+      <span class="row" style="gap:4px;margin-top:6px">${EV_STEPS.map(st=>html`<span class=${"tk-evstep"+((e.approvals||{})[st.id]?" on":"")} title=${`${st.label} ${st.who}${(e.approvals||{})[st.id]?" · "+tName(state,e.approvals[st.id].who):""}`}/>`)}<small class="faint" style="margin-left:6px">${Object.keys(e.approvals||{}).length}/4 signatures</small>${p.over>0&&html`<span style="margin-left:auto"><${Tag} tone="bad">${p.over} overdue</${Tag}></span>`}</span>
+    </span></button>`;
+}
+function TEvents({state,user,A,open,vis,openEvent,newEvent}){
+  const t0=tToday(); const all=tVisibleEvents(state,user); const [f,setF]=useState("upcoming");
+  const lists={upcoming:all.filter(e=>e.date>=t0&&!["cancelled","completed"].includes(e.status)).sort((a,b)=>a.date.localeCompare(b.date)),
+    pending:all.filter(e=>!["approved","cancelled","completed","draft"].includes(e.status)),
+    mine:all.filter(e=>e.coordinator===user.id||e.createdBy===user.id||(state.tasks||[]).some(t=>t.eventId===e.key&&t.assigneeId===user.id)),
+    past:all.filter(e=>e.date<t0||["completed","cancelled"].includes(e.status)).sort((a,b)=>b.date.localeCompare(a.date)),
+    all:all.slice().sort((a,b)=>b.date.localeCompare(a.date))};
+  const list=lists[f]||lists.upcoming;
+  const myTasks=vis.filter(t=>t.eventId&&t.assigneeId===user.id&&tOpen(t)).sort(tByPri);
+  const needSign=all.filter(e=>{ const n=EV_STEPS.find(st=>!(e.approvals||{})[st.id]); return n&&TR.canSignEvent(e,n.id,user); });
+  return html`<div class="stack" style="gap:14px">
+    <div class="row wrap" style="gap:8px"><div class="seg">${[["upcoming","Upcoming"],["pending","Awaiting approval"],["mine","Mine"],["past","Past"],["all","All"]].map(([k,l])=>html`<button class=${f===k?"active":""} onClick=${()=>setF(k)}>${l}${k==="pending"&&lists.pending.length?` (${lists.pending.length})`:""}</button>`)}</div>
+      <span class="grow"/>${TR.canCreateEvent(user)&&html`<button class="btn btn-primary" onClick=${newEvent}><${Icon} name="plus"/>New event</button>`}</div>
+    <div class="tk-kpis4">
+      <${Kpi} label="Upcoming events" value=${lists.upcoming.length} tone="info" onClick=${()=>setF("upcoming")}/>
+      <${Kpi} label="Need your sign-off" value=${needSign.length} tone="violet" onClick=${()=>setF("pending")}/>
+      <${Kpi} label="Your open event tasks" value=${myTasks.length} tone="warn"/>
+      <${Kpi} label="Overdue event tasks" value=${vis.filter(t=>t.eventId&&tOverdue(t)).length} tone="bad"/>
+    </div>
+    <div class="tk-ev-grid">
+      <${Card} title=${{upcoming:"Upcoming",pending:"Awaiting approval",mine:"My events",past:"Past events",all:"All events"}[f]} right=${html`<span class="xs faint">${list.length}</span>`}>
+        <div class="stack" style="gap:12px">${list.length?list.map(e=>html`<${TEventCard} e=${e} state=${state} user=${user} onOpen=${()=>openEvent(e.key)}/>`):html`<${TEmpty} title="No events here">${TR.canCreateEvent(user)?"Create one with the button above.":""}<//>`}</div><//>
+      <div class="stack" style="gap:14px">
+        <${Card} title="Your event tasks" right=${html`<span class="xs faint">by severity</span>`}>${myTasks.length?myTasks.map(t=>html`<${TRow} t=${t} state=${state} user=${user} A=${A} open=${open} who=${false}/>`):html`<${TEmpty} title="No event tasks assigned to you"><//>`}<//>
+        ${needSign.length>0&&html`<${Card} title="Needs your sign-off">${needSign.map(e=>html`<${TEventRow} e=${e} state=${state} user=${user} onOpen=${()=>openEvent(e.key,"approvals")}/>`)}<//>`}
+        <div class="notice notice-info"><${Icon} name="flag"/><span><b>How event tasks work.</b> The Regional Manager, Manager Admin and HR can assign event tasks to anyone in any department; a Department Head can assign within their own department for events they organise. Each assignee sees the task on their board with the event badge and priority, and gets reminders 7, 3 and 1 days before the event.</span></div>
+      </div>
+    </div></div>`;
+}
+
+/* ---------- Tracking: work you requested, work assigned to you ---------- */
+const tGroupPct=list=>{ const l=list.filter(t=>t.stage!=="07"); return l.length?Math.round(l.reduce((a,t)=>a+tProgress(t),0)/l.length):0; };
+function tTrackGroups(list,keyFn,labelFn){ const g={}; list.forEach(t=>{ const k=keyFn(t); (g[k]=g[k]||{key:k,list:[]}).list.push(t); });
+  return Object.values(g).map(x=>({...x,label:labelFn(x.key,x.list),pct:tGroupPct(x.list),done:x.list.filter(t=>t.stage==="06").length,open:x.list.filter(tOpen).length,over:x.list.filter(tOverdue).length})).sort((a,b)=>a.pct-b.pct); }
+const TPctBar=({pct,big})=>html`<span class=${"tk-pctwrap"+(big?" big":"")}><span class="tk-bar" style=${`height:${big?10:7}px;flex:1`}><i style=${`width:${pct}%;background:${pct>=100?"var(--ok)":"var(--brand-3)"}`}/></span><b class=${"tk-pct"+(pct>=100?" done":"")}>${pct}%</b></span>`;
+function TTrackingHome({state,user,vis,go}){
+  const req=vis.filter(t=>t.creatorId===user.id&&t.assigneeId!==user.id&&t.stage!=="07");
+  const myEvents=tVisibleEvents(state,user).filter(e=>(e.createdBy===user.id||e.coordinator===user.id)&&!["cancelled","completed"].includes(e.status));
+  if(!req.length&&!myEvents.length) return "";
+  const groups=tTrackGroups(req.filter(tOpen),t=>t.eventId||"task:"+t.assigneeId,(k,l)=>k.startsWith("task:")?`Tasks for ${tName(state,l[0].assigneeId)}`:((tEventOf(state,l[0])||{}).title||"Event")).slice(0,4);
+  return html`<${Card} title="Tracking — work you requested" right=${html`<span class="row" style="gap:8px"><b class="tk-pct">${tGroupPct(req)}% overall</b><button class="btn btn-ghost btn-sm" onClick=${()=>go("tracking")}>Open tracking<${Icon} name="right"/></button></span>`}>
+    <div class="stack" style="gap:8px">${groups.length?groups.map(g=>html`<button class="tk-trk" onClick=${()=>go("tracking")}><span class="tk-trk-l"><b>${g.label}</b><small class="faint">${g.done} done · ${g.open} open${g.over?html` · <span class="tk-bad">${g.over} overdue</span>`:""}</small></span><${TPctBar} pct=${g.pct}/></button>`):html`<div class="xs faint">Everything you requested is done.</div>`}</div><//>`;
+}
+function TTracking({state,user,vis,open,openEvent}){
+  const req=vis.filter(t=>t.creatorId===user.id&&t.assigneeId!==user.id&&t.stage!=="07");
+  const mine=vis.filter(t=>t.assigneeId===user.id&&t.creatorId!==user.id&&t.stage!=="07");
+  const [f,setF]=useState(req.length?"requested":"assigned");
+  const myEvents=tVisibleEvents(state,user).filter(e=>(e.createdBy===user.id||e.coordinator===user.id)&&e.status!=="cancelled");
+  const section=(title,groups,who)=>html`<${Card} title=${title} right=${html`<span class="xs faint">${groups.reduce((a,g)=>a+g.list.length,0)} tasks</span>`}>
+    <div class="stack" style="gap:14px">${groups.length?groups.map(g=>html`<div class="tk-trkgroup"><div class="tk-trk" style="cursor:default"><span class="tk-trk-l"><b>${!g.key.startsWith("task:")&&!g.key.startsWith("by:")?html`<${Icon} name="flag"/> `:""}${g.label}</b><small class="faint">${g.done} of ${g.list.length} done${g.over?html` · <span class="tk-bad">${g.over} overdue</span>`:""}${g.list.some(t=>Date.now()-tTs(t.updatedAt)<864e5)?" · updated today":""}</small></span><${TPctBar} pct=${g.pct} big/></div>
+      <div class="tk-trklist">${g.list.slice().sort((a,b)=>(a.plannedDate||"").localeCompare(b.plannedDate||"")).map(t=>html`<div class="tk-trow" role="button" tabindex="0" onClick=${()=>open(t.key)}><span class="pri" style=${"background:"+TPRI_COLOR[t.priority]}/><span class="g"><b>${t.title}</b><small>${t.id} · ${who==="assignee"?tName(state,t.assigneeId):"from "+tName(state,t.creatorId)} · ${t.priority} · ${tStage(t.stage).name}${(t.subtasks||[]).length?` · ${t.subtasks.filter(s=>s.done).length}/${t.subtasks.length} subtasks`:""} · ${tMin(t.timeLogged)}/${tMin(t.estimate)} · updated ${ago(t.updatedAt)}</small></span><${TPctBar} pct=${tProgress(t)}/><span class=${"tk-due "+(tOverdue(t)?"tk-bad":tDueToday(t)?"tk-warn":"")}>${tFmt(t.plannedDate)}</span></div>`)}</div></div>`)
+      :html`<${TEmpty} title="Nothing here yet"><//>`}</div><//>`;
+  const reqGroups=tTrackGroups(req,t=>t.eventId||"task:"+t.assigneeId,(k,l)=>k.startsWith("task:")?`${tName(state,l[0].assigneeId)} · ${tDept(tUDept(tUser(state,l[0].assigneeId))).code}`:((tEventOf(state,l[0])||{}).title||"Event"));
+  const mineGroups=tTrackGroups(mine,t=>t.eventId?"ev:"+t.eventId:"by:"+t.creatorId,(k,l)=>k.startsWith("ev:")?`${(tEventOf(state,l[0])||{}).title||"Event"} · assigned by ${[...new Set(l.map(t=>tName(state,t.creatorId)))].join(", ")}`:`Assigned by ${tName(state,l[0].creatorId)}`);
+  return html`<div class="stack" style="gap:14px">
+    <div class="row wrap" style="gap:8px"><div class="seg"><button class=${f==="requested"?"active":""} onClick=${()=>setF("requested")}>Requested by me (${req.length})</button><button class=${f==="assigned"?"active":""} onClick=${()=>setF("assigned")}>Assigned to me (${mine.length})</button></div><span class="grow"/><span class="xs faint">Progress updates the moment the assignee moves a stage, ticks a subtask or logs time.</span></div>
+    ${f==="requested"?html`<div class="tk-kpis4"><${Kpi} label="Overall progress" value=${tGroupPct(req)+"%"} tone="info"/><${Kpi} label="Done" value=${req.filter(t=>t.stage==="06").length} tone="ok"/><${Kpi} label="In progress / open" value=${req.filter(tOpen).length} tone="warn"/><${Kpi} label="Overdue" value=${req.filter(tOverdue).length} tone="bad"/></div>
+      ${myEvents.length>0&&html`<${Card} title="Your events"><div class="stack" style="gap:8px">${myEvents.map(e=>{ const p=tEvProgress(state,e,user.id); const dd=tDaysUntil(e.date); return html`<button class="tk-trk" onClick=${()=>openEvent(e.key)}><span class="tk-evdate"><b>${+e.date.slice(8)}</b><small>${T_MONTHS[+e.date.slice(5,7)-1].slice(0,3)}</small></span><span class="tk-trk-l"><b>${e.title}</b><small class="faint">${tEvStatus(e)[0]} · ${p.done}/${p.total} tasks · ${dd>=0?`in ${dd} days`:"past"}</small></span><${TPctBar} pct=${tEvPct(state,e)} big/></button>`; })}</div><//>`}
+      ${section("Tasks you requested, by event and person",reqGroups,"assignee")}`
+    :html`<div class="tk-kpis4"><${Kpi} label="Your overall progress" value=${tGroupPct(mine)+"%"} tone="info"/><${Kpi} label="Urgent open" value=${mine.filter(t=>t.priority==="Urgent"&&tOpen(t)).length} tone="bad"/><${Kpi} label="Due today" value=${mine.filter(tDueToday).length} tone="warn"/><${Kpi} label="Open" value=${mine.filter(tOpen).length} tone="ok"/></div>
+      ${section("Assigned to you, grouped so nothing gets mixed up",mineGroups,"creator")}`}
+  </div>`;
+}
+
+/* ---------- event dialog: details, checklist, tasks, approvals, summary ---------- */
+function EventModal({ekey,tab,setTab,state,user,A,open,onClose,onCreated,openNew}){
+  const isNew=!ekey; const orig=isNew?null:(state.events||[]).find(x=>x.key===ekey);
+  const [d,setD]=useState(()=>isNew?{title:"",date:tAddDays(tToday(),14),time:"10:00",venue:"Alkhidmat Complex",type:"Seminar",expected:"",coordinator:user.id,topic:"",collab:"",checklist:{}}:JSON.parse(JSON.stringify(orig||{})));
+  const [openSec,setOpenSec]=useState({});
+  if(!isNew&&(!orig||!TR.canSeeEvent(orig,user,state))) return html`<${Modal} title="Event" onClose=${onClose} narrow><${TEmpty} title=${orig?"You don't have access to this event":"Event not found"}><//><//>`;
+  const live=isNew?d:orig;
+  const set=(k,v)=>setD(x=>({...x,[k]:v}));
+  const setCk=(k,patch)=>setD(x=>({...x,checklist:{...x.checklist,[k]:{on:false,qty:"",remarks:"",...(x.checklist[k]||{}),...patch}}}));
+  const editable=isNew||TR.canEditEvent(orig,user); const canAssign=!isNew&&TR.canAssignEvent(orig,user);
+  const et=isNew?[]:tEvTasks(state,orig).sort(tByPri); const [label,tone]=tEvStatus(live);
+  const sel=Object.keys(d.checklist||{}).filter(k=>d.checklist[k].on&&!/:_x\d+$/.test(k));
+  const tabs=[["details","Details"],["checklist",`Checklist (${sel.length})`],["tasks",`Tasks (${et.length})`],["approvals","Approvals"],["summary","Summary"]];
+  const people=(state.users||[]).filter(x=>x.active!==false&&tRole(x)!=="President");
+  const fields=()=>({title:d.title,date:d.date,time:d.time,venue:d.venue,type:d.type,expected:d.expected,coordinator:d.coordinator,topic:d.topic,collab:d.collab,checklist:d.checklist});
+  const save=()=>{ if(isNew){ const e=A.eCreate(fields()); if(e) onCreated(e); return; } if(A.eSave(orig.key,fields())) onClose(); };
+  const assign=k=>{ if(!canAssign){ tToast("Your role cannot assign event tasks.","bad"); return; }
+    if(editable&&!A.eSave(orig.key,fields(),true)) return;
+    const parts=k?k.split(":"):[]; const item=parts.length?`${parts[1]}${parts[2]&&parts[2]!=="_"?" — "+parts[2]:""}`:""; const c=k?(d.checklist[k]||{}):{}; const dd=tDaysUntil(orig.date);
+    openNew({title:item?`${d.title.length>28?d.title.slice(0,26)+"…":d.title} — ${item}${c.qty?` (${c.qty})`:""}`:`${d.title} — `,
+      description:`Event: ${d.title}\n${tFmt(d.date,true)} ${d.time} · ${d.venue}${c.remarks?"\nRemarks: "+c.remarks:""}${d.topic?"\nTopic: "+d.topic:""}`,
+      eventId:orig.key,checkItem:k||null,plannedDate:dd>1?tAddDays(orig.date,-1):orig.date,priority:dd<=3?"Urgent":dd<=10?"High":"Medium",tags:["Event",d.type],dept:tUDept(user),assigneeId:user.id,estimate:60},orig.key); };
+  const secCount=sec=>sec.items.reduce((a,it)=>a+(it.subs.length?it.subs:["_"]).filter(sb=>(d.checklist[`${sec.id}:${it.label}:${sb}`]||{}).on).length,0);
+  let body;
+  if(tab==="details"||isNew) body=html`<div class="grid2">
+      <label class="field" style="grid-column:1/-1"><span>Event title <b class="tk-bad">*</b></span><input class="input" autofocus value=${d.title} placeholder="e.g. Annual Donor Appreciation Dinner" disabled=${!editable} onInput=${e=>set("title",e.target.value)}/></label>
+      <${Field} label="Date"><input type="date" class="input" value=${d.date} disabled=${!editable} onInput=${e=>set("date",e.target.value)}/><//>
+      <${Field} label="Time"><input type="time" class="input" value=${d.time} disabled=${!editable} onInput=${e=>set("time",e.target.value)}/><//>
+      <${Field} label="Venue"><input class="input" value=${d.venue} placeholder="Alkhidmat Complex" disabled=${!editable} onInput=${e=>set("venue",e.target.value)}/><//>
+      <${Field} label="Type"><select class="select" value=${d.type} disabled=${!editable} onChange=${e=>set("type",e.target.value)}>${EVENT_TYPES.map(t=>html`<option value=${t}>${t}</option>`)}</select><//>
+      <${Field} label="Expected audience"><input type="number" min="0" class="input" value=${d.expected} disabled=${!editable} onInput=${e=>set("expected",e.target.value)}/><//>
+      <${Field} label="Coordinator (name / dept)"><select class="select" value=${d.coordinator} disabled=${!editable} onChange=${e=>set("coordinator",e.target.value)}>${people.map(x=>html`<option value=${x.id}>${x.name} · ${tDept(tUDept(x)).code}</option>`)}</select><//>
+      <label class="field" style="grid-column:1/-1"><span>Topic — main theme / subject</span><input class="input" value=${d.topic} disabled=${!editable} onInput=${e=>set("topic",e.target.value)}/></label>
+      <label class="field" style="grid-column:1/-1"><span>Collaboration with (optional)</span><input class="input" value=${d.collab} placeholder="Partner organisation, school, hospital…" disabled=${!editable} onInput=${e=>set("collab",e.target.value)}/></label>
+    </div>
+    ${isNew?html`<div class="notice notice-info"><${Icon} name="flag"/><span>After creating the event you can tick the checklist, assign each item as a task to a person, and send it for approval.</span></div>`
+      :html`<div class="row wrap" style="gap:8px"><${Tag} tone=${tone}>${label}</${Tag}><span class="xs faint">Created by ${tName(state,orig.createdBy)} · ${ago(orig.createdAt)} · updated ${ago(orig.updatedAt)}</span></div>`}`;
+  else if(tab==="checklist") body=html`<div class="xs faint">Tick what this event needs. Add a quantity or remark where it matters${canAssign?", then assign an item to a person — it becomes a task with the event badge":""}.</div>
+    ${EV_SECTIONS.map(sec=>{ const n=secCount(sec); const isOpen=openSec[sec.id]!==undefined?openSec[sec.id]:n>0;
+      return html`<div class=${"tk-evsec"+(isOpen?" open":"")}><button class="tk-evsec-h" onClick=${()=>setOpenSec(o=>({...o,[sec.id]:!isOpen}))}><${Tag} tone="info">${sec.cat}</${Tag}><b>${sec.title}</b><span class="grow"/><span class="xs faint">${n} selected</span><${Icon} name="right"/></button>
+        ${isOpen&&html`<div class="tk-evsec-b">${sec.items.map(it=>{ const subs=it.subs.length?it.subs:["_"]; return html`<div class="tk-evitem"><div class="tk-evitem-h"><b>${it.label}</b>${(it.extras||[]).map((ex,i)=>{ const k=`${sec.id}:${it.label}:_x${i}`; return html`<label class="tk-evextra"><span>${ex}</span><input value=${(d.checklist[k]||{}).remarks||""} placeholder="___" disabled=${!editable} onInput=${e=>setCk(k,{remarks:e.target.value,on:true})}/></label>`; })}</div>
+          <div class="tk-evsubs">${subs.map(sb=>{ const k=`${sec.id}:${it.label}:${sb}`; const c=d.checklist[k]||{}; const task=et.find(t=>t.checkItem===k);
+            return html`<div class=${"tk-evsub"+(c.on?" on":"")}><label class="tk-evcheck"><input type="checkbox" checked=${!!c.on} disabled=${!editable} onChange=${e=>setCk(k,{on:e.target.checked})}/><span>${sb==="_"?"Required":sb}</span></label>
+              ${c.on&&html`<input class="tk-evqty" value=${c.qty||""} placeholder=${it.qty||"Qty"} disabled=${!editable} onInput=${e=>setCk(k,{qty:e.target.value})}/><input class="tk-evrem" value=${c.remarks||""} placeholder="Remarks" disabled=${!editable} onInput=${e=>setCk(k,{remarks:e.target.value})}/>
+                ${task?html`<button type="button" class="tk-evassigned" onClick=${()=>{ onClose(); open(task.key); }} title=${task.title}><${Icon} name=${task.stage==="06"?"check":"user"}/>${tName(state,task.assigneeId).split(" ")[0]} · ${tStage(task.stage).name}</button>`:canAssign&&html`<button type="button" class="btn btn-ghost btn-sm" onClick=${()=>assign(k)}><${Icon} name="user"/>Assign</button>`}`}</div>`; })}</div></div>`; })}</div>`}</div>`; })}`;
+  else if(tab==="tasks") body=html`<div class="row wrap"><span class="xs faint">${et.filter(tOpen).length} open · ${et.filter(t=>t.stage==="06").length} done · ${et.filter(tOverdue).length} overdue</span><span class="grow"/>${canAssign&&html`<button class="btn btn-primary btn-sm" onClick=${()=>assign("")}><${Icon} name="plus"/>Assign event task</button>`}</div>
+    <div>${et.length?et.map(t=>html`<${TRow} t=${t} state=${state} user=${user} A=${A} open=${k=>{ onClose(); open(k); }}/>`):html`<${TEmpty} title="No tasks yet">${canAssign?"Assign checklist items from the Checklist tab, or add a free task here.":""}<//>`}</div>
+    ${et.length>0&&html`<div class="tk-sec"><h4><${Icon} name="users"/>Who is doing what</h4>${[...new Set(et.map(t=>t.assigneeId))].map(id=>{ const l=et.filter(t=>t.assigneeId===id); return html`<div class="tk-sub"><${TAvatar} state=${state} id=${id} sm/><span>${tName(state,id)} <span class="xs faint">· ${tDept(tUDept(tUser(state,id))).code}</span></span><${Tag}>${l.filter(t=>t.stage==="06").length}/${l.length} done</${Tag}>${l.some(tOverdue)&&html`<${Tag} tone="bad">${l.filter(tOverdue).length} overdue</${Tag}>`}</div>`; })}</div>`}`;
+  else if(tab==="approvals") body=html`<div class="xs faint">The chain follows the Master Event checklist: ${EV_STEPS.map(st=>st.who).join(" → ")}.</div>
+    <div class="stack" style="gap:8px">${EV_STEPS.map((st,i)=>{ const a=(orig.approvals||{})[st.id]; const can=TR.canSignEvent(orig,st.id,user);
+      return html`<div class=${"tk-evstep-card"+(a?" on":"")}><span class="tk-rank">${i+1}</span><span style="flex:1;min-width:0"><b>${st.label} ${st.who}</b><small class="faint" style="display:block">${a?`${tName(state,a.who)} · ${fmtD(a.at)}`:can?"Waiting for you":"Pending"}</small></span>${a?html`<${Tag} tone="ok"><${Icon} name="check"/>Signed</${Tag}>`:can&&html`<button class="btn btn-primary btn-sm" onClick=${()=>A.eSign(orig.key,st.id)}><${Icon} name="approve"/>Sign</button>`}</div>`; })}</div>
+    ${orig.status==="draft"&&editable&&html`<button class="btn btn-primary" onClick=${()=>A.eSubmit(orig.key,fields())}><${Icon} name="send"/>Send for approval</button>`}
+    ${editable&&!["cancelled","completed"].includes(orig.status)&&html`<div class="row wrap" style="gap:8px">${orig.date<=tToday()&&orig.status==="approved"&&html`<button class="btn btn-ok" onClick=${()=>A.eStatus(orig.key,"completed")}><${Icon} name="check"/>Mark completed</button>`}<button class="btn btn-bad" onClick=${()=>{ if(confirm("Cancel this event? Open event tasks will be cancelled too.")) A.eStatus(orig.key,"cancelled"); }}><${Icon} name="x"/>Cancel event</button></div>`}`;
+  else if(tab==="summary"){ const bySec=EV_SECTIONS.map(sec=>({sec,keys:sel.filter(k=>k.startsWith(sec.id+":"))})).filter(x=>x.keys.length);
+    body=html`<div class="tk-digest"><div><b>${sel.length}</b><small>items selected</small></div><div><b>${et.length}</b><small>tasks assigned</small></div><div><b>${et.filter(t=>t.stage==="06").length}</b><small>done</small></div><div><b>${d.expected||"—"}</b><small>expected</small></div></div>
+    ${bySec.length?bySec.map(({sec,keys})=>html`<div class="tk-sec"><h4>${sec.title}<span class="grow"/><span class="xs faint">${keys.length}</span></h4><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Item</th><th>Qty / Req</th><th>Remarks</th><th>Assigned</th></tr></thead><tbody>${keys.map(k=>{ const [,it,sb]=k.split(":"); const c=d.checklist[k]; const t=et.find(x=>x.checkItem===k);
+      return html`<tr><td><b>${it}</b>${sb!=="_"?` › ${sb}`:""}</td><td>${c.qty||"—"}</td><td>${c.remarks||""}</td><td>${t?html`<span class="row" style="gap:6px"><${TAvatar} state=${state} id=${t.assigneeId} sm/>${tName(state,t.assigneeId)} <${TStagePill} id=${t.stage}/></span>`:html`<span class="faint">—</span>`}</td></tr>`; })}</tbody></table></div></div>`):html`<${TEmpty} title="Nothing selected yet">Tick items in the Checklist tab.<//>`}
+    <div class="tk-evsign">${EV_STEPS.map(st=>{ const a=(orig.approvals||{})[st.id]; return html`<div><small class="faint">${st.label} ${st.who}</small><b>${a?tName(state,a.who):"____________"}</b><small class="faint">${a?fmtD(a.at):""}</small></div>`; })}</div>
+    <button class="btn btn-ghost no-print" onClick=${printOpenArea}><${Icon} name="print"/>Print checklist</button>`; }
+  const footer=html`<div class="tk-moves">${canAssign&&html`<button class="btn btn-ghost" onClick=${()=>assign("")}><${Icon} name="user"/>Assign task</button>`}${!isNew&&TR.canDeleteEvent(orig,user)&&html`<button class="btn btn-ghost" onClick=${()=>{ if(confirm(`Delete ${orig.id} “${orig.title}”? Its tasks stay but lose the event link.`)&&A.eDelete(orig.key)) onClose(); }}><${Icon} name="trash"/>Delete</button>`}<span class="grow"/>
+    <button class="btn btn-ghost" onClick=${onClose}>${editable?"Cancel":"Close"}</button>${editable&&html`<button class="btn btn-primary" onClick=${save}><${Icon} name="check"/>${isNew?"Create event":"Save"}</button>`}</div>`;
+  return html`<${Modal} title=${isNew?"New event":`${orig.id} · ${d.title||"Untitled event"}`} sub=${isNew?"Details first — the checklist opens after you create it":`${tFmt(orig.date,true)} · ${orig.time} · ${orig.venue} · coordinator ${tName(state,orig.coordinator)}`} onClose=${onClose} footer=${footer}>
+    ${!isNew&&html`<div class="tk-evtabs">${tabs.map(([k,l])=>html`<button class=${tab===k?"active":""} onClick=${()=>setTab(k)}>${l}</button>`)}<span class="grow"/><${Tag} tone=${tone}>${label}</${Tag}></div>`}
+    ${body}
+  <//>`;
+}
+
 /* ---------- task dialog: draft + Save, like the planner ---------- */
-function TaskModal({isNew,preset,tkey,state,user,A,timer,onClose,open,onCreated}){
+function TaskModal({isNew,preset,tkey,state,user,A,timer,onClose,open,onCreated,openEvent}){
   const orig=isNew?null:(state.tasks||[]).find(x=>x.key===tkey);
-  const blank=()=>({title:"",description:"",dept:tUDept(user),stage:"01",assigneeId:user.id,creatorId:user.id,plannedDate:tToday(),startDate:"",priority:"Medium",tags:[],estimate:60,subtasks:[],dependencies:[],customFields:[],recurring:"none",...(preset||{})});
+  const blank=()=>({title:"",description:"",dept:tUDept(user),stage:"01",assigneeId:user.id,creatorId:user.id,plannedDate:tToday(),startDate:"",priority:"Medium",tags:[],estimate:60,subtasks:[],dependencies:[],customFields:[],recurring:"none",eventId:null,checkItem:null,...(preset||{})});
   const [d,setD]=useState(()=>isNew?blank():orig?JSON.parse(JSON.stringify(orig)):null);
   const [est,setEst]=useState(()=>tMin((isNew?blank():orig||{}).estimate));
   const [sub,setSub]=useState(""); const [tag,setTag]=useState(""); const [cfk,setCfk]=useState(""); const [cfv,setCfv]=useState("");
@@ -6141,10 +6516,11 @@ function TaskModal({isNew,preset,tkey,state,user,A,timer,onClose,open,onCreated}
   const set=(k,v)=>setD(x=>({...x,[k]:v}));
   const editable=isNew||TR.canEdit(orig,user);
   const canClose=!isNew&&TR.canClose(orig,user); const canApprove=!isNew&&TR.canApprove(orig,user)&&orig.stage==="04";
-  const people=tAssignable(state,d.dept,user); const cur=tUser(state,d.assigneeId); if(cur&&!people.some(p=>p.id===cur.id)) people.push(cur);
+  const people=tAssignable(state,d.dept,user,d.eventId); const cur=tUser(state,d.assigneeId); if(cur&&!people.some(p=>p.id===cur.id)) people.push(cur);
+  const ev=tEventOf(state,d);
   const deps=(d.dependencies||[]).map(k=>(state.tasks||[]).find(x=>x.key===k)).filter(Boolean);
   const depOptions=(state.tasks||[]).filter(t=>t.v===2&&TR.canSee(t,user)&&t.key!==(orig&&orig.key)&&!(d.dependencies||[]).includes(t.key)&&tOpen(t));
-  const deptLocked=!editable||(!isNew&&tRole(user)!=="RM");
+  const deptLocked=!editable||(!isNew&&!T_EVMGR.includes(tRole(user)));
   const mine=!isNew&&timer.tm&&timer.tm.key===orig.key;
   const save=()=>{
     if(!String(d.title||"").trim()){ tToast("Give the task a title — type it in the first box (\"What needs to be done?\").","bad"); if(titleRef.current) titleRef.current.focus(); return; }
@@ -6182,6 +6558,7 @@ function TaskModal({isNew,preset,tkey,state,user,A,timer,onClose,open,onCreated}
     ${editable&&html`<button class="btn btn-primary" onClick=${save}><${Icon} name="check"/>${isNew?"Create task":"Save changes"}</button>`}</div>`;
   return html`<${Modal} title=${isNew?"New task":orig.id} sub=${isNew?"Fill in the title, then Create task":`${tDept(orig.dept).code} · ${tDept(orig.dept).name} · created by ${tName(state,orig.creatorId)} · ${TROLE_LABEL[tRole(user)]} view`} onClose=${onClose} footer=${footer}>
     <label class="tk-title-wrap"><span>Task title <b class="tk-bad">*</b></span><input ref=${titleRef} class="tk-title" value=${d.title} placeholder="What needs to be done?" disabled=${!editable} onInput=${e=>set("title",e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter") save(); }}/></label>
+    ${ev&&html`<div class="tk-evbanner"><span class="tk-ai-ico sm"><${Icon} name="flag"/></span><span style="flex:1;min-width:0"><b>Event task · ${ev.title}</b><small>${tFmt(ev.date,true)} at ${ev.time} · ${ev.venue}${d.checkItem?` · checklist: ${d.checkItem.split(":").slice(1).filter(x=>x!=="_").join(" › ")}`:""}</small></span>${!isNew&&openEvent&&html`<button type="button" class="btn btn-ghost btn-sm" onClick=${()=>openEvent(ev.key)}>Open event</button>`}</div>`}
     ${!isNew&&html`<div class="row wrap" style="gap:6px">
       <${Tag} tone=${editable?"ok":"neutral"}>${editable?"You can edit":"Read only for you"}</${Tag}>
       <span title=${canClose?"":why}><${Tag} tone=${canClose?"ok":"neutral"}>${canClose?"You can close":"Can't close: "+why}</${Tag}></span>
@@ -6192,7 +6569,7 @@ function TaskModal({isNew,preset,tkey,state,user,A,timer,onClose,open,onCreated}
       <${Field} label="Stage"><select class="select" value=${d.stage} disabled=${!editable||isNew} onChange=${e=>set("stage",e.target.value)}>${tStages().map(s=>html`<option value=${s.id}>${s.name}</option>`)}</select><//>
       <${Field} label="Priority"><select class="select" value=${d.priority} disabled=${!editable} onChange=${e=>set("priority",e.target.value)}>${TPRI_LIST.map(p=>html`<option value=${p}>${p}</option>`)}</select><//>
       <${Field} label="Department"><select class="select" value=${d.dept} disabled=${deptLocked} onChange=${e=>{ const v=e.target.value; const p=tAssignable(state,v,user); setD(x=>({...x,dept:v,assigneeId:p.some(z=>z.id===x.assigneeId)?x.assigneeId:(p.find(z=>z.id===user.id)||p[0]||{}).id})); }}>${tDepts().map(x=>html`<option value=${x.id}>${x.code} · ${x.name}</option>`)}</select><//>
-      <${Field} label="Assigned to"><select class="select" value=${d.assigneeId} disabled=${!editable} onChange=${e=>set("assigneeId",e.target.value)}>${people.map(p=>html`<option value=${p.id}>${p.name}${p.id===user.id?" (me)":""}</option>`)}</select><//>
+      <${Field} label=${tCanAssignOthers(user)?"Assigned to":"Assigned to (only HOD, Manager Admin, HR or RM assign to others)"}><select class="select" value=${d.assigneeId} disabled=${!editable||!tCanAssignOthers(user)} onChange=${e=>set("assigneeId",e.target.value)}>${people.map(p=>html`<option value=${p.id}>${p.name}${p.id===user.id?" (me)":""}</option>`)}</select><//>
       <${Field} label="Planned date"><input type="date" class="input" value=${d.plannedDate} disabled=${!editable} onInput=${e=>set("plannedDate",e.target.value)}/><//>
       <${Field} label="Start date (optional)"><input type="date" class="input" value=${d.startDate||""} disabled=${!editable} onInput=${e=>set("startDate",e.target.value)}/><//>
       <${Field} label="Estimated effort (e.g. 2h 30m, 45m)"><input class="input" value=${est} placeholder="e.g. 2h 30m" disabled=${!editable} onInput=${e=>setEst(e.target.value)} style=${isNaN(tParseMin(est))?"border-color:var(--bad)":""}/><//>
@@ -6270,7 +6647,7 @@ function VendorQuote({token}){
 }
 
 /* Any unexpected error is shown as a red message, so a failure is never silent ("button does nothing"). */
-const BUILD="2026-10-27 planner-5";
+const BUILD="2026-10-28 events-7";
 (()=>{ let last=0; const show=m=>{ console.error(m); if(Date.now()-last<1500) return; last=Date.now(); if(window.__toast) window.__toast("Error: "+String(m).slice(0,180)+" (build "+BUILD+")","bad"); };
   window.addEventListener("error",e=>show(e.message||e.error)); window.addEventListener("unhandledrejection",e=>show((e.reason&&e.reason.message)||e.reason)); })();
 const vendorToken=(/#rfq=([0-9a-f]{16,})/i.exec(location.hash||"")||[])[1];
