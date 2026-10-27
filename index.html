@@ -3452,13 +3452,39 @@ function parseAnyDate(v){
   const t=new Date(s); return isNaN(t)?"":t.toISOString().slice(0,10);
 }
 const itemKey=s=>String(s||"").toLowerCase().replace(/\s+/g," ").trim();
-function findOrCreateItem(d,{name,category,uom,price,store,rack,bin,expiry,batch,min}){
+/* Product nature (condition). The same particular in a different condition is kept as its own stock line. */
+const CONDITIONS=["New","Used – good","Used – needs repair","Damaged / not working"];
+const condOf=s=>(s&&s.condition)||"New";
+function normCondition(text,name){
+  const t=String(text||"").trim(), probe=t||String(name||"");
+  if(/damag|not\s*work|broken|scrap|expired/i.test(probe)) return CONDITIONS[3];
+  if(/repair/i.test(probe)) return CONDITIONS[2];
+  if(/\bused\b|\bold\b|second|refurb/i.test(probe)) return CONDITIONS[1];
+  if(/\bnew\b|unused|fresh/i.test(probe)||!t) return "New";
+  return t;
+}
+function findOrCreateItem(d,{name,category,uom,price,store,rack,bin,expiry,batch,min,condition}){
   store=store||STORES[0]; name=String(name||"").replace(/\s+/g," ").trim();
-  let s=d.stock.find(x=>itemKey(x.name)===itemKey(name)&&x.store===store);
+  const same=x=>itemKey(x.name)===itemKey(name)&&x.store===store;
+  let s=condition?d.stock.find(x=>same(x)&&condOf(x)===condition):(d.stock.find(x=>same(x)&&condOf(x)==="New")||d.stock.find(same));
   if(!s){ const cat=String(category||"OTHER").toUpperCase().replace(/[^A-Z0-9]/g,"")||"OTHER"; const code=store.split(" ")[0];
-    s={id:nextNumber(d,`AKF-ISB-${code}-${cat}-${YEAR}-`,5),name,category:cat,uom:uom||"Pcs",qty:0,price:Number(price)||0,store,rack:rack||"",bin:bin||"",expiry:expiry||"",batch:batch||"",min:Number(min)||0}; d.stock.push(s); }
+    s={id:nextNumber(d,`AKF-ISB-${code}-${cat}-${YEAR}-`,5),name,category:cat,uom:uom||"Pcs",qty:0,price:Number(price)||0,store,rack:rack||"",bin:bin||"",expiry:expiry||"",batch:batch||"",min:Number(min)||0,condition:condition||normCondition("",name)}; d.stock.push(s); }
   return s;
 }
+/* Auto document number for a dated receipt / issue: AKF-GRN-P-2024-03-0001, AKF-GDN-D-…, AKF-GIN-2024-0001.
+   A number already written in the portal's own format (e.g. from an exported register) is kept if free. */
+function autoDocId(d,type,date,given){
+  if(given&&new RegExp(`^AKF-${type}-\\d{4}-`).test(given)&&!d.docs.some(x=>x.id===given)) return given;
+  return nextNumber(d,type==="GIN"?`AKF-GIN-${date.slice(0,4)}-`:`AKF-${type}-${date.slice(0,4)}-${date.slice(5,7)}-`);
+}
+/* Shared by the register import and its preview: rows become one document per date + Excel number, numbered in date order */
+function groupMoves(rows,keyOf){ const m=new Map(); rows.forEach(r=>{ const k=keyOf(r); if(!m.has(k)) m.set(k,[]); m.get(k).push(r); }); return [...m.values()].sort((a,b)=>a[0].date<b[0].date?-1:a[0].date>b[0].date?1:a[0].row-b[0].row); }
+const recvKey=(r,defaultType)=>[r.type||defaultType,r.date,r.no||r.from].join("|"), issKey=r=>[r.date,r.no||"",r.to].join("|");
+const STOCK_DOC_TYPES=["GRN-P","GDN-D","GRN-D","GIN","GDN","BEN","ST","RTN","DIS","PSV"];
+const linkedToRequest=(d,x)=>!!(x.ref&&(d.requests.some(r=>r.id===x.ref)||d.pos.some(p=>p.id===x.ref)));
+const docsAfterReplace=d=>d.docs.filter(x=>!STOCK_DOC_TYPES.includes(x.type)||linkedToRequest(d,x));
+/* "Wheel Chair" / "Wheelchair" / "wheelchairs" — names that are probably the same particular */
+const looseKey=n=>itemKey(n).replace(/[^a-z0-9؀-ۿ]/g,"").replace(/(es|s)$/,"");
 const atOfDate=date=>!date||date===nowISO().slice(0,10)?nowISO():new Date(date+"T12:00:00").toISOString();
 /* Fiscal year runs 1 July – 30 June */
 function fiscalYears(state){ const ys=new Set(); const fy=iso=>{ const d=new Date(iso); return d.getMonth()>=6?d.getFullYear():d.getFullYear()-1; }; ys.add(fy(nowISO())); (state.ledger||[]).forEach(l=>ys.add(fy(l.at))); for(let y=Math.min(...ys);y<Math.max(...ys);y++) ys.add(y); return [...ys].sort((a,b)=>b-a).map(y=>({key:String(y),label:`FY ${y}-${String(y+1).slice(2)}`,from:`${y}-07-01`,to:`${y+1}-06-30`})); }
@@ -3733,54 +3759,54 @@ function makeActions(commit, user, toast){
       }); toast(`${n} ${kind} rows imported`,"ok"); return n;
     },
     /* Stock received outside a procurement request: purchased (GRN-P) or donation in kind (GDN-D) */
+    /* Stock received outside a procurement request: purchased (GRN-P) or donation in kind (GDN-D) */
     receiveStock({kind,date,store,from,ref,purpose,lines,note}){
-      let id; commit(d=>{ id=nextNumber(d,`AKF-${kind}-${YEAR}-${MONTH()}-`); const at=atOfDate(date); let amount=0;
-        const out=lines.map(l=>{ amount+=l.qty*l.price; const s=findOrCreateItem(d,{name:l.item,category:l.category,uom:l.uom,price:l.price,store,rack:l.rack,bin:l.bin,expiry:l.expiry,min:l.min});
+      let id; commit(d=>{ id=autoDocId(d,kind,date||nowISO().slice(0,10)); const at=atOfDate(date); let amount=0;
+        const out=lines.map(l=>{ amount+=l.qty*l.price; const s=findOrCreateItem(d,{name:l.item,category:l.category,uom:l.uom,price:l.price,store,rack:l.rack,bin:l.bin,expiry:l.expiry,min:l.min,condition:l.condition||"New"});
           s.qty+=l.qty; if(l.price) s.price=l.price; if(l.expiry) s.expiry=l.expiry; if(l.rack) s.rack=l.rack; if(l.bin) s.bin=l.bin;
           d.ledger.unshift({id:uid(),at,itemId:s.id,type:"in",qty:l.qty,ref:id,note:(kind==="GRN-P"?"Purchase · ":"Donation in kind · ")+from});
-          return {item:s.name,qty:l.qty,uom:s.uom,price:l.price,expiry:l.expiry||""}; });
+          return {item:s.name,qty:l.qty,uom:s.uom,price:l.price,condition:condOf(s),expiry:l.expiry||""}; });
         d.docs.unshift({id,type:kind,title:kind==="GRN-P"?"Goods Received Note (purchase)":"Goods Donation Note (donation in kind)",at,by:user.name,byId:user.id,amount,ref:ref||"",from,purpose,store,lines:out,note});
         log(d,id,kind==="GRN-P"?"Stock received (purchase)":"Stock received (donation in kind)",`${from} · ${lines.length} item${lines.length>1?"s":""} · ${pkr(amount)}`);
       }); toast(`${id} created · stock updated`,"ok");
     },
     /* Direct issue (GIN) — distributions and dispatches approved outside a store request; the approval reference is mandatory */
     issueStock({date,store,to,purpose,receiver,approval,lines,note}){
-      let id; commit(d=>{ id=nextNumber(d,`AKF-GIN-${YEAR}-`); const at=atOfDate(date); let amount=0; const out=[];
-        lines.forEach(l=>{ const s=d.stock.find(x=>x.id===l.itemId); if(!s||l.qty<=0) return; s.qty=Math.max(0,s.qty-l.qty); amount+=l.qty*s.price; out.push({item:s.name,qty:l.qty,uom:s.uom,price:s.price});
+      let id; commit(d=>{ id=autoDocId(d,"GIN",date||nowISO().slice(0,10)); const at=atOfDate(date); let amount=0; const out=[];
+        lines.forEach(l=>{ const s=d.stock.find(x=>x.id===l.itemId); if(!s||l.qty<=0) return; s.qty=Math.max(0,s.qty-l.qty); amount+=l.qty*s.price; out.push({item:s.name,qty:l.qty,uom:s.uom,price:s.price,condition:condOf(s)});
           d.ledger.unshift({id:uid(),at,itemId:s.id,type:"out",qty:l.qty,ref:id,note:"Issued to "+to}); });
         d.docs.unshift({id,type:"GIN",title:"Goods Issuance Note",at,by:user.name,byId:user.id,amount,ref:approval,approval,store,lines:out,to:to+(receiver?" · received by "+receiver:""),purpose,note});
         log(d,id,"Stock issued (GIN)",`${to} · ${out.length} item${out.length>1?"s":""} · approval ${approval}`);
       }); toast(`GIN ${id} issued · stock updated`,"ok");
     },
-    /* Excel import of the AKF stock register workbook (Home + Received + Dispatched sheets) */
+    /* Excel import of the AKF stock register workbook (Home + Received + Dispatched sheets).
+       Every receipt and issue gets an automatic document number in date order; the number written in Excel is kept as a reference. */
     importRegister({items,received,issued,store,replace,openingDate,defaultType}){
       let res={items:0,received:0,issued:0,skipped:0}; commit(d=>{
-        if(replace){ const keep=x=>(x.ref&&(d.requests.some(r=>r.id===x.ref)||d.pos.some(p=>p.id===x.ref)));
-          d.stock=[]; d.ledger=[]; d.docs=d.docs.filter(x=>!["GRN-P","GDN-D","GRN-D","GIN","GDN","BEN","ST","RTN","DIS","PSV"].includes(x.type)||keep(x)); }
+        if(replace){ d.stock=[]; d.ledger=[]; d.docs=docsAfterReplace(d); }
         const fresh=new Set(); const openAt=atOfDate(openingDate);
         items.forEach(it=>{ const before=d.stock.length; const s=findOrCreateItem(d,{...it,store:it.store||store}); if(d.stock.length>before) fresh.add(s.id);
           if(it.min) s.min=it.min; if(it.price) s.price=it.price;
           if(it.opening>0&&fresh.has(s.id)){ s.qty+=it.opening; d.ledger.unshift({id:uid(),at:openAt,itemId:s.id,type:"in",qty:it.opening,ref:"AKF-OPENING-"+openingDate,note:"Opening stock (stock register import)"}); }
           res.items++; });
-        const groups=(rows,keyOf)=>{ const m=new Map(); rows.forEach(r=>{ const k=keyOf(r); if(!m.has(k)) m.set(k,[]); m.get(k).push(r); }); return [...m.values()]; };
-        const uniqueId=base=>{ let id=base,k=2; while(d.docs.some(x=>x.id===id)) id=base+"-"+(k++); return id; };
         /* "Add" mode skips rows already in the portal: same document type, same date and the same items and quantities */
         const sig=(type,date,lines)=>[type,date,lines.map(l=>itemKey(l.item||l.name)+":"+l.qty).sort().join(",")].join("|");
         const have=new Set(replace?[]:d.docs.filter(x=>x.lines).map(x=>sig(x.type==="GRN-D"?"GDN-D":x.type,new Date(x.at).toLocaleDateString("en-CA"),x.lines)));
-        groups(received,r=>[r.type||defaultType,r.date,r.no].join("|")).forEach(g=>{ const f=g[0], type=f.type||defaultType; const xkey=sig(type,f.date,g);
-          if(have.has(xkey)){ res.skipped+=g.length; return; }
-          const id=uniqueId(`AKF-${type}-${f.date.slice(0,4)}-${f.date.slice(5,7)}-${pad(f.no||0,4)}`); const at=atOfDate(f.date); let amount=0;
-          const lines=g.map(r=>{ const s=findOrCreateItem(d,{name:r.name,store:r.store||store}); s.qty+=r.qty; amount+=r.qty*(s.price||0);
+        const excelRef=no=>no&&!/^AKF-/.test(no)?"Excel no. "+no:"";
+        groupMoves(received,r=>recvKey(r,defaultType)).forEach(g=>{ const f=g[0], type=f.type||defaultType;
+          if(have.has(sig(type,f.date,g))){ res.skipped+=g.length; return; }
+          const id=autoDocId(d,type,f.date,f.no); const at=atOfDate(f.date); let amount=0;
+          const lines=g.map(r=>{ const s=findOrCreateItem(d,{name:r.name,store:r.store||store,condition:r.condition||undefined}); s.qty+=r.qty; amount+=r.qty*(s.price||0);
             d.ledger.unshift({id:uid(),at,itemId:s.id,type:"in",qty:r.qty,ref:id,note:(type==="GRN-P"?"Purchase · ":"Donation in kind · ")+(r.from||"—")+(r.purpose?" · "+r.purpose:"")}); res.received++;
-            return {item:s.name,qty:r.qty,uom:s.uom,price:s.price||0}; });
-          d.docs.unshift({id,type,title:type==="GRN-P"?"Goods Received Note (purchase)":"Goods Donation Note (donation in kind)",at,by:user.name,byId:user.id,amount,ref:f.no?"Register no. "+f.no:"",from:g.map(r=>r.from).find(Boolean)||"",purpose:[...new Set(g.map(r=>r.purpose).filter(Boolean))].join(" · "),store:f.store||store,lines,note:"Imported from stock register (Excel)",xkey}); });
-        groups(issued,r=>[r.date,r.no,r.to].join("|")).forEach(g=>{ const f=g[0]; const xkey=sig("GIN",f.date,g);
-          if(have.has(xkey)){ res.skipped+=g.length; return; }
-          const id=uniqueId(`AKF-GIN-${f.date.slice(0,4)}-${pad(f.no||0,4)}`); const at=atOfDate(f.date); let amount=0;
-          const lines=g.map(r=>{ const s=findOrCreateItem(d,{name:r.name,store:r.store||store}); s.qty-=r.qty; amount+=r.qty*(s.price||0);
+            return {item:s.name,qty:r.qty,uom:s.uom,price:s.price||0,condition:condOf(s)}; });
+          d.docs.unshift({id,type,title:type==="GRN-P"?"Goods Received Note (purchase)":"Goods Donation Note (donation in kind)",at,by:user.name,byId:user.id,amount,ref:excelRef(f.no),from:g.map(r=>r.from).find(Boolean)||"",purpose:[...new Set(g.map(r=>r.purpose).filter(Boolean))].join(" · "),store:f.store||store,lines,note:"Imported from stock register (Excel)"}); });
+        groupMoves(issued,issKey).forEach(g=>{ const f=g[0];
+          if(have.has(sig("GIN",f.date,g))){ res.skipped+=g.length; return; }
+          const id=autoDocId(d,"GIN",f.date,f.no); const at=atOfDate(f.date); let amount=0;
+          const lines=g.map(r=>{ const s=findOrCreateItem(d,{name:r.name,store:r.store||store,condition:r.condition||undefined}); s.qty-=r.qty; amount+=r.qty*(s.price||0);
             d.ledger.unshift({id:uid(),at,itemId:s.id,type:"out",qty:r.qty,ref:id,note:"Issued to "+(r.to||"—")+(r.purpose?" · "+r.purpose:"")}); res.issued++;
-            return {item:s.name,qty:r.qty,uom:s.uom,price:s.price||0}; });
-          d.docs.unshift({id,type:"GIN",title:"Goods Issuance Note",at,by:user.name,byId:user.id,amount,ref:f.no?"Register no. "+f.no:"",store:f.store||store,lines,to:f.to||"",purpose:[...new Set(g.map(r=>r.purpose).filter(Boolean))].join(" · "),note:"Imported from stock register (Excel)",xkey}); });
+            return {item:s.name,qty:r.qty,uom:s.uom,price:s.price||0,condition:condOf(s)}; });
+          d.docs.unshift({id,type:"GIN",title:"Goods Issuance Note",at,by:user.name,byId:user.id,amount,ref:excelRef(f.no),store:f.store||store,lines,to:f.to||"",purpose:[...new Set(g.map(r=>r.purpose).filter(Boolean))].join(" · "),note:"Imported from stock register (Excel)"}); });
         d.stock.forEach(s=>{ if(s.qty<0) s.qty=0; });
         log(d,"EXCEL-IMPORT",replace?"Stock register imported (replaced all stock)":"Stock register imported",`${res.items} items · ${res.received} received rows · ${res.issued} issued rows${res.skipped?` · ${res.skipped} already imported, skipped`:""}`);
       }); toast(`Stock register imported · ${res.items} items, ${res.received} received, ${res.issued} issued`,"ok"); return res;
@@ -3791,7 +3817,7 @@ function makeActions(commit, user, toast){
         let type="out", q=qty;
         if(kind==="return"){ type="in"; s.qty+=qty; }
         else if(kind==="psv"){ const diff=qty-s.qty; type=diff>=0?"in":"out"; q=Math.abs(diff); s.qty=qty; }
-        else if(kind==="transfer"){ s.qty=Math.max(0,s.qty-qty); const code=toStore.split(" ")[0]; let t=d.stock.find(x=>x.name===s.name&&x.store===toStore); if(!t){ t={...s,id:nextNumber(d,`AKF-ISB-${code}-${s.category}-${YEAR}-`,5),store:toStore,qty:0,rack:"",bin:""}; d.stock.push(t);} t.qty+=qty; d.ledger.unshift({id:uid(),at:nowISO(),itemId:t.id,type:"in",qty,ref:id,note:"Transfer in from "+s.store.split(" ")[0]}); }
+        else if(kind==="transfer"){ s.qty=Math.max(0,s.qty-qty); const code=toStore.split(" ")[0]; let t=d.stock.find(x=>x.name===s.name&&x.store===toStore&&condOf(x)===condOf(s)); if(!t){ t={...s,id:nextNumber(d,`AKF-ISB-${code}-${s.category}-${YEAR}-`,5),store:toStore,qty:0,rack:"",bin:""}; d.stock.push(t);} t.qty+=qty; d.ledger.unshift({id:uid(),at:nowISO(),itemId:t.id,type:"in",qty,ref:id,note:"Transfer in from "+s.store.split(" ")[0]}); }
         else { s.qty=Math.max(0,s.qty-qty); }
         if(q>0) d.ledger.unshift({id:uid(),at:nowISO(),itemId:s.id,type,qty:q,ref:id,note:map[kind][1]+(note?" · "+note:"")});
         d.docs.unshift({id,type:map[kind][0].replace("AKF-",""),title:map[kind][1],at:nowISO(),by:user.name,amount:q*s.price,ref:s.id,store:s.store,lines:[{item:s.name,qty:q,uom:s.uom,price:s.price}],note:(kind==="transfer"?"To "+toStore+" · ":"")+(note||"")});
@@ -4136,7 +4162,7 @@ function DocModal({id,state,onClose,openReq}){
     body=html`<div class="doc">${header(doc.type==="GDN"?"Goods dispatch note":doc.title,`${doc.store||""} · ${fmtDT(doc.at)}`)}
       ${doc.beneficiary&&html`<div class="kv"><dt>Beneficiary</dt><dd>${doc.beneficiary.name} s/o·d/o ${doc.beneficiary.father}</dd><dt>CNIC</dt><dd class="num">${doc.beneficiary.cnic}</dd><dt>Phone</dt><dd>${doc.beneficiary.phone||"—"}</dd><dt>Village</dt><dd>${doc.beneficiary.village}</dd><dt>Family size</dt><dd>${doc.beneficiary.family}</dd><dt>Purpose</dt><dd>${doc.beneficiary.purpose}</dd></div>`}
       <div class="kv">${RECEIPT_TYPES[doc.type]&&html`<dt>Receipt type</dt><dd><b>${RECEIPT_TYPES[doc.type]}</b></dd>`}${doc.from&&html`<dt>${doc.type==="GDN-D"?"Donor":"Supplier"}</dt><dd>${doc.from}</dd>`}<dt>${doc.approval?"Approval reference":"Reference"}</dt><dd>${req?html`<button class="btn btn-soft btn-sm id" onClick=${()=>openReq(doc.ref)}>${doc.ref}</button>`:doc.ref||"—"}</dd>${doc.to&&html`<dt>Issued to</dt><dd>${doc.to}</dd>`}${doc.purpose&&html`<dt>Purpose</dt><dd>${doc.purpose}</dd>`}${doc.gatePass&&html`<dt>Gate pass</dt><dd class="id">${doc.gatePass} · Vehicle ${doc.vehicle} · Driver ${doc.driver}</dd>`}<dt>Prepared by</dt><dd>${doc.by} · Store Officer</dd>${doc.note&&html`<dt>Note</dt><dd>${doc.note}</dd>`}</div>
-      <div class="tbl-wrap"><table class="tbl" style="min-width:420px"><thead><tr><th>Item</th><th class="r">Qty</th><th class="r">Unit price</th><th class="r">Amount</th></tr></thead><tbody>${doc.lines.map(l=>html`<tr><td>${l.item}${l.batch?html`<div class="xs faint">Batch ${l.batch}${l.expiry?" · exp "+l.expiry:""}</div>`:""}</td><td class="r num">${l.qty} ${l.uom}</td><td class="r num">${fmt(l.price)}</td><td class="r num bold">${fmt(l.qty*l.price)}</td></tr>`)}<tr><td colspan="3" class="r bold">Total</td><td class="r num bold">${pkr(doc.amount)}</td></tr></tbody></table></div>
+      <div class="tbl-wrap"><table class="tbl" style="min-width:420px"><thead><tr><th>Item</th><th class="r">Qty</th><th class="r">Unit price</th><th class="r">Amount</th></tr></thead><tbody>${doc.lines.map(l=>html`<tr><td>${l.item}${l.condition?html`<div class="xs faint">Condition: ${l.condition}</div>`:""}${l.batch?html`<div class="xs faint">Batch ${l.batch}${l.expiry?" · exp "+l.expiry:""}</div>`:""}</td><td class="r num">${l.qty} ${l.uom}</td><td class="r num">${fmt(l.price)}</td><td class="r num bold">${fmt(l.qty*l.price)}</td></tr>`)}<tr><td colspan="3" class="r bold">Total</td><td class="r num bold">${pkr(doc.amount)}</td></tr></tbody></table></div>
       <div class="split" style="align-items:center"><div class="signs">
         ${sign(doc.byId?{uid:doc.byId,by:doc.by,at:doc.at}:{by:doc.by,at:doc.at},"Prepared by","store_officer")}
         ${doc.type==="BEN"?html`<${SignBox} state=${state} name=${doc.beneficiary&&doc.beneficiary.name} designation="Beneficiary" label="thumb impression"/>`
@@ -4410,6 +4436,7 @@ function Ledger({itemId,state,openDoc}){
 }
 /* ---------- Stock received (GRN-P / GDN-D), stock issued (GIN), stock register ---------- */
 const dedupeCI=a=>{ const seen=new Set(); return a.filter(x=>{ const k=String(x).toLowerCase(); if(!x||seen.has(k)) return false; seen.add(k); return true; }); };
+const CondTag=({c})=>html`<${Tag} tone=${c==="New"?"info":/damag|not work/i.test(c)?"bad":/repair/i.test(c)?"warn":"violet"}>${c}</${Tag}>`;
 function StockReceiveForm({state,onCancel,onSave}){
   const today=nowISO().slice(0,10);
   const vendors=state.vendors.map(v=>v.name);
@@ -4417,7 +4444,7 @@ function StockReceiveForm({state,onCancel,onSave}){
   const optsFor=k=>k==="GRN-P"?vendors:donors;
   const [kind,setKind]=useState("GDN-D"); const [date,setDate]=useState(today); const [store,setStore]=useState(STORES[0]);
   const [from,setFrom]=useState(donors[0]||""); const [ref,setRef]=useState(""); const [purpose,setPurpose]=useState(""); const [note,setNote]=useState("");
-  const blank={item:"",category:"OTHER",uom:"Unit",qty:1,price:0,rack:"",bin:"",expiry:""};
+  const blank={item:"",condition:"New",category:"OTHER",uom:"Unit",qty:1,price:0,rack:"",bin:"",expiry:""};
   const [lines,setLines]=useState([{...blank}]);
   const names=dedupeCI(state.stock.map(s=>s.name)).sort();
   const uoms=dedupeCI(["Unit",...UOMS,...state.stock.map(s=>s.uom)]);
@@ -4433,11 +4460,13 @@ function StockReceiveForm({state,onCancel,onSave}){
       <${Field} label=${kind==="GRN-P"?"Supplier":"Donor"}><${Pick} value=${from} options=${optsFor(kind)} onChange=${setFrom} placeholder=${kind==="GRN-P"?"Supplier name":"Donor name"}/><//>
       <${Field} label=${kind==="GRN-P"?"Bill / challan / PO no.":"Donation letter / reference"}><input class="input" value=${ref} onInput=${e=>setRef(e.target.value)} placeholder="Optional"/><//>
       <${Field} label="Purpose"><input class="input" value=${purpose} onInput=${e=>setPurpose(e.target.value)} placeholder="Flood, Ramadan, Winter package…"/><//>
-      <${Field} label="Note"><input class="input" value=${note} onInput=${e=>setNote(e.target.value)} placeholder="Vehicle, condition, photos ref…"/><//>
+      <${Field} label="Note"><input class="input" value=${note} onInput=${e=>setNote(e.target.value)} placeholder="Vehicle, photos ref…"/><//>
     </div>
+    <div class="row wrap sm muted"><span>Document no. <b class="id">${autoDocId(state,kind,date||today)}</b> — given automatically when you save</span></div>
     <datalist id="stock-names">${names.map(n=>html`<option value=${n}/>`)}</datalist>
-    <div class="tbl-wrap"><table class="tbl" style="min-width:860px"><thead><tr><th>Particular</th><th>Category</th><th>Unit</th><th class="r">Qty</th><th class="r">${kind==="GRN-P"?"Unit price":"Est. unit value"}</th><th class="r">Amount</th><th>Rack</th><th>Bin</th><th>Expiry</th><th/></tr></thead><tbody>${lines.map((l,i)=>html`<tr>
-      <td><input class="input" list="stock-names" placeholder="Item name" value=${l.item} onInput=${e=>set(i,"item",e.target.value)} style="min-width:180px"/>${l.item&&!state.stock.some(s=>itemKey(s.name)===itemKey(l.item))&&html`<div class="xs faint">New item — added to the register</div>`}</td>
+    <div class="tbl-wrap"><table class="tbl" style="min-width:1020px"><thead><tr><th>Particular</th><th>Condition</th><th>Category</th><th>Unit</th><th class="r">Qty</th><th class="r">${kind==="GRN-P"?"Unit price":"Est. unit value"}</th><th class="r">Amount</th><th>Rack</th><th>Bin</th><th>Expiry</th><th/></tr></thead><tbody>${lines.map((l,i)=>html`<tr>
+      <td><input class="input" list="stock-names" placeholder="Item name" value=${l.item} onInput=${e=>set(i,"item",e.target.value)} style="min-width:180px"/>${l.item&&!state.stock.some(s=>itemKey(s.name)===itemKey(l.item))?html`<div class="xs faint">New item — added to the register</div>`:l.item&&!state.stock.some(s=>itemKey(s.name)===itemKey(l.item)&&condOf(s)===l.condition)?html`<div class="xs faint">New stock line for “${l.condition}”</div>`:""}</td>
+      <td><${Pick} value=${l.condition} options=${CONDITIONS} onChange=${v=>set(i,"condition",v)} style="min-width:170px" placeholder="Describe the condition"/></td>
       <td><select class="select" style="min-width:110px" value=${l.category} onChange=${e=>set(i,"category",e.target.value)}>${cats.map(c=>html`<option>${c}</option>`)}</select></td>
       <td><${Pick} value=${l.uom} options=${uoms} onChange=${v=>set(i,"uom",v)} style="min-width:110px"/></td>
       <td><input class="input" type="number" min="1" style="width:84px" value=${l.qty} onInput=${e=>set(i,"qty",Number(e.target.value))}/></td>
@@ -4471,8 +4500,10 @@ function StockIssueForm({state,onCancel,onSave}){
       <${Field} label="Purpose"><input class="input" value=${purpose} onInput=${e=>setPurpose(e.target.value)} placeholder="Flood relief, Ramadan, Sindh…"/><//>
       <${Field} label="Approval reference (required)"><input class="input" value=${approval} onInput=${e=>setApproval(e.target.value)} placeholder="Approved by President · letter no. / date"/><//>
     </div>
-    <div class="tbl-wrap"><table class="tbl" style="min-width:620px"><thead><tr><th>Particular</th><th class="r">In stock</th><th class="r">Qty to issue</th><th class="r">Balance after</th><th/></tr></thead><tbody>${lines.map((l,i)=>{ const s=avail.find(x=>x.id===l.itemId); return html`<tr style=${over(l)&&l.itemId?"background:var(--bad-bg)":""}>
-      <td><select class="select" value=${l.itemId} onChange=${e=>set(i,"itemId",e.target.value)}>${avail.map(x=>html`<option value=${x.id}>${x.name}</option>`)}</select></td>
+    <div class="row wrap sm muted"><span>Document no. <b class="id">${autoDocId(state,"GIN",date||today)}</b> — given automatically when you save</span></div>
+    <div class="tbl-wrap"><table class="tbl" style="min-width:720px"><thead><tr><th>Particular</th><th>Condition</th><th class="r">In stock</th><th class="r">Qty to issue</th><th class="r">Balance after</th><th/></tr></thead><tbody>${lines.map((l,i)=>{ const s=avail.find(x=>x.id===l.itemId); return html`<tr style=${over(l)&&l.itemId?"background:var(--bad-bg)":""}>
+      <td><select class="select" value=${l.itemId} onChange=${e=>set(i,"itemId",e.target.value)}>${avail.map(x=>html`<option value=${x.id}>${x.name}${condOf(x)!=="New"?" · "+condOf(x):""}</option>`)}</select></td>
+      <td>${s&&html`<${CondTag} c=${condOf(s)}/>`}</td>
       <td class="r num">${s?`${s.qty} ${s.uom}`:"—"}</td>
       <td class="r"><input class="input" type="number" min="1" max=${s?s.qty:0} style="width:96px" value=${l.qty} onInput=${e=>set(i,"qty",Number(e.target.value))}/></td>
       <td class="r num bold" style=${over(l)?"color:var(--bad)":""}>${s?s.qty-want[l.itemId]:"—"}${over(l)&&s?html`<div class="xs">More than in stock</div>`:""}</td>
@@ -4491,15 +4522,16 @@ function registerRows(state,{from,to},store){
 function periodPicker(state,period,setPeriod){ const fys=fiscalYears(state); return html`<select class="select" style="max-width:150px" value=${period} onChange=${e=>setPeriod(e.target.value)}>${fys.map(f=>html`<option value=${f.key}>${f.label}</option>`)}<option value="all">All dates</option></select>`; }
 const periodRange=(state,period)=>period==="all"?{from:"",to:"",label:"All dates"}:(fiscalYears(state).find(f=>f.key===period)||fiscalYears(state)[0]);
 function StockRegister({state,openItem}){
-  const [period,setPeriod]=useState(fiscalYears(state)[0].key); const [store,setStore]=useState("all"); const [q,setQ]=useState(""); const [only,setOnly]=useState("all");
+  const [period,setPeriod]=useState(fiscalYears(state)[0].key); const [store,setStore]=useState("all"); const [q,setQ]=useState(""); const [only,setOnly]=useState("all"); const [cond,setCond]=useState("all");
   const range=periodRange(state,period);
   const all=useMemo(()=>registerRows(state,range,store),[state,period,store]);
-  const rows=all.filter(r=>(!q||itemKey(r.s.name+" "+r.s.category).includes(itemKey(q)))&&(only==="all"||(only==="stock"?r.balance>0:r.order!=="OK")));
+  const conds=dedupeCI([...CONDITIONS,...state.stock.map(condOf)]).filter(c=>state.stock.some(s=>condOf(s)===c));
+  const rows=all.filter(r=>(!q||itemKey(r.s.name+" "+r.s.category+" "+condOf(r.s)).includes(itemKey(q)))&&(cond==="all"||condOf(r.s)===cond)&&(only==="all"||(only==="stock"?r.balance>0:r.order!=="OK")));
   const hasAdj=all.some(r=>r.adj!==0); const T=k=>rows.reduce((s,r)=>s+r[k],0);
   const value=rows.reduce((s,r)=>s+r.balance*(r.s.price||0),0);
   const stores=[...new Set(state.stock.map(s=>s.store))];
   const need=all.filter(r=>r.order!=="OK").length;
-  return html`<${Card} title="Stock register" desc=${`${range.label}${range.from?` · ${fmtD(range.from)} – ${fmtD(range.to)}`:""} · opening + received − issued = balance`} right=${html`<div class="row wrap no-print">${periodPicker(state,period,setPeriod)}${stores.length>1&&html`<select class="select" style="max-width:170px" value=${store} onChange=${e=>setStore(e.target.value)}><option value="all">All stores</option>${stores.map(s=>html`<option>${s}</option>`)}</select>`}<input class="input" placeholder="Search particulars…" value=${q} onInput=${e=>setQ(e.target.value)} style="max-width:180px"/><button class="btn btn-ghost btn-sm" onClick=${()=>exportRegisterXlsx(state,range)}><${Icon} name="download"/>Excel</button><button class="btn btn-ghost btn-sm" onClick=${e=>printNode(e.currentTarget.closest(".card"))}><${Icon} name="print"/>Print</button></div>`}>
+  return html`<${Card} title="Stock register" desc=${`${range.label}${range.from?` · ${fmtD(range.from)} – ${fmtD(range.to)}`:""} · opening + received − issued = balance`} right=${html`<div class="row wrap no-print">${periodPicker(state,period,setPeriod)}${stores.length>1&&html`<select class="select" style="max-width:170px" value=${store} onChange=${e=>setStore(e.target.value)}><option value="all">All stores</option>${stores.map(s=>html`<option>${s}</option>`)}</select>`}${conds.length>1&&html`<select class="select" style="max-width:190px" value=${cond} onChange=${e=>setCond(e.target.value)}><option value="all">Any condition</option>${conds.map(c=>html`<option>${c}</option>`)}</select>`}<input class="input" placeholder="Search particulars…" value=${q} onInput=${e=>setQ(e.target.value)} style="max-width:180px"/><button class="btn btn-ghost btn-sm" onClick=${()=>exportRegisterXlsx(state,range)}><${Icon} name="download"/>Excel</button><button class="btn btn-ghost btn-sm" onClick=${e=>printNode(e.currentTarget.closest(".card"))}><${Icon} name="print"/>Print</button></div>`}>
     <div class="reg-kpis">
       <button class=${"rk"+(only==="all"?" on":"")} onClick=${()=>setOnly("all")}><span>Items</span><b class="num">${all.length}</b></button>
       <div class="rk rk-p"><span>Received · GRN-P</span><b class="num">${fmt(all.reduce((s,r)=>s+r.p,0))}</b></div>
@@ -4508,35 +4540,35 @@ function StockRegister({state,openItem}){
       <button class=${"rk"+(only==="stock"?" on":"")} onClick=${()=>setOnly(only==="stock"?"all":"stock")}><span>In stock</span><b class="num">${all.filter(r=>r.balance>0).length}</b></button>
       <button class=${"rk rk-bad"+(only==="need"?" on":"")} onClick=${()=>setOnly(only==="need"?"all":"need")}><span>Item needed / reorder</span><b class="num">${need}</b></button>
     </div>
-    <div class="tbl-wrap"><table class="tbl reg-tbl"><thead><tr><th>#</th><th>Category</th><th>Particular</th><th>Unit</th><th class="r">Opening</th><th class="r">Received<br/><small>GRN-P</small></th><th class="r">Received<br/><small>GDN-D</small></th><th class="r">Issued<br/><small>GIN</small></th>${hasAdj&&html`<th class="r">Adj. ±<br/><small>transfer / count</small></th>`}<th class="r">Balance</th><th class="r">Min level</th><th>Place order</th><th class="r">Each</th><th class="r">Net value</th></tr></thead>
-      <tbody>${rows.map((r,i)=>html`<tr class="click" onClick=${()=>openItem(r.s.id)}><td class="num faint">${i+1}</td><td class="sm">${r.s.category}</td><td><b>${r.s.name}</b>${stores.length>1&&html`<div class="xs faint">${r.s.store.split(" ")[0]}</div>`}</td><td class="sm">${r.s.uom}</td><td class="r num">${fmt(r.opening)}</td><td class="r num c-p">${r.p?fmt(r.p):"—"}</td><td class="r num c-d">${r.d?fmt(r.d):"—"}</td><td class="r num c-i">${r.issued?fmt(r.issued):"—"}</td>${hasAdj&&html`<td class="r num">${r.adj?(r.adj>0?"+":"")+fmt(r.adj):"—"}</td>`}<td class="r num bold">${fmt(r.balance)}</td><td class="r num">${r.s.min||"—"}</td><td>${r.order==="OK"?html`<${Tag} tone="ok">OK</${Tag}>`:html`<${Tag} tone=${r.order==="Reorder"?"warn":"bad"}>${r.order}</${Tag}>`}</td><td class="r num">${r.s.price?fmt(r.s.price):"—"}</td><td class="r num">${r.s.price?fmt(r.balance*r.s.price):"—"}</td></tr>`)}
-      ${!rows.length&&html`<tr><td colspan="14"><div class="empty" style="padding:16px">No items match.</div></td></tr>`}</tbody>
-      ${rows.length>0&&html`<tfoot><tr><td/><td/><td><b>Totals</b></td><td/><td class="r num bold">${fmt(T("opening"))}</td><td class="r num bold c-p">${fmt(T("p"))}</td><td class="r num bold c-d">${fmt(T("d"))}</td><td class="r num bold c-i">${fmt(T("issued"))}</td>${hasAdj&&html`<td class="r num bold">${fmt(T("adj"))}</td>`}<td class="r num bold">${fmt(T("balance"))}</td><td/><td/><td/><td class="r num bold">${fmt(value)}</td></tr></tfoot>`}
+    <div class="tbl-wrap"><table class="tbl reg-tbl"><thead><tr><th>#</th><th>Category</th><th>Particular</th><th>Condition</th><th>Unit</th><th class="r">Opening</th><th class="r">Received<br/><small>GRN-P</small></th><th class="r">Received<br/><small>GDN-D</small></th><th class="r">Issued<br/><small>GIN</small></th>${hasAdj&&html`<th class="r">Adj. ±<br/><small>transfer / count</small></th>`}<th class="r">Balance</th><th class="r">Min level</th><th>Place order</th><th class="r">Each</th><th class="r">Net value</th></tr></thead>
+      <tbody>${rows.map((r,i)=>html`<tr class="click" onClick=${()=>openItem(r.s.id)}><td class="num faint">${i+1}</td><td class="sm">${r.s.category}</td><td><b>${r.s.name}</b>${stores.length>1&&html`<div class="xs faint">${r.s.store.split(" ")[0]}</div>`}</td><td><${CondTag} c=${condOf(r.s)}/></td><td class="sm">${r.s.uom}</td><td class="r num">${fmt(r.opening)}</td><td class="r num c-p">${r.p?fmt(r.p):"—"}</td><td class="r num c-d">${r.d?fmt(r.d):"—"}</td><td class="r num c-i">${r.issued?fmt(r.issued):"—"}</td>${hasAdj&&html`<td class="r num">${r.adj?(r.adj>0?"+":"")+fmt(r.adj):"—"}</td>`}<td class="r num bold">${fmt(r.balance)}</td><td class="r num">${r.s.min||"—"}</td><td>${r.order==="OK"?html`<${Tag} tone="ok">OK</${Tag}>`:html`<${Tag} tone=${r.order==="Reorder"?"warn":"bad"}>${r.order}</${Tag}>`}</td><td class="r num">${r.s.price?fmt(r.s.price):"—"}</td><td class="r num">${r.s.price?fmt(r.balance*r.s.price):"—"}</td></tr>`)}
+      ${!rows.length&&html`<tr><td colspan="15"><div class="empty" style="padding:16px">No items match.</div></td></tr>`}</tbody>
+      ${rows.length>0&&html`<tfoot><tr><td/><td/><td><b>Totals</b></td><td/><td/><td class="r num bold">${fmt(T("opening"))}</td><td class="r num bold c-p">${fmt(T("p"))}</td><td class="r num bold c-d">${fmt(T("d"))}</td><td class="r num bold c-i">${fmt(T("issued"))}</td>${hasAdj&&html`<td class="r num bold">${fmt(T("adj"))}</td>`}<td class="r num bold">${fmt(T("balance"))}</td><td/><td/><td/><td class="r num bold">${fmt(value)}</td></tr></tfoot>`}
     </table></div><//>`;
 }
 /* Received / Issued registers — the portal's version of the Received and Dispatched sheets */
 function movementRows(state,kind,range){
   const inRange=iso=>{ const d=new Date(iso).toLocaleDateString("en-CA"); return (!range.from||d>=range.from)&&(!range.to||d<=range.to); };
-  const regNo=d=>{ const m=/Register no\. (\S+)/.exec(d.ref||""); if(m) return m[1]; const n=/-(\d{4,5})(?:-\d{1,2})?$/.exec(d.id); return n?String(Number(n[1])):""; };
+  const excelNo=d=>{ const m=/(?:Register|Excel) no\. (\S+)/.exec(d.ref||""); return m?m[1]:""; };
   const vendorOf=d=>{ const po=state.pos.find(p=>p.id===d.ref); return po?(state.vendors.find(v=>v.id===po.vendorId)||{}).name:""; };
   const reqOf=id=>state.requests.find(r=>r.id===id);
   const posted=new Set(state.ledger.map(l=>l.ref)); /* only documents that moved stock, so the lists agree with the register */
   const docs=state.docs.filter(d=>posted.has(d.id)&&inRange(d.at)&&(kind==="received"?["GRN-P","GDN-D"].includes(d.type):(d.type==="BEN"||(d.type==="GIN"&&!/placed in store/i.test(d.title)))));
   return docs.flatMap(d=>d.lines.map(l=>{ const r=reqOf(d.ref);
     return kind==="received"
-      ?{doc:d,date:d.at,no:regNo(d),type:d.type,item:l.item,qty:l.qty,uom:l.uom,party:d.from||vendorOf(d)||(d.ref||"").replace(/^Donor: /,""),purpose:d.purpose||(r?r.purpose:"")}
-      :{doc:d,date:d.at,no:regNo(d),type:d.type,item:l.item,qty:l.qty,uom:l.uom,party:d.to||(d.beneficiary?d.beneficiary.name+" · "+d.beneficiary.village:r?r.dept:""),purpose:d.purpose||(d.beneficiary?d.beneficiary.purpose:r?r.purpose:"")}; }))
+      ?{doc:d,date:d.at,excel:excelNo(d),type:d.type,item:l.item,cond:l.condition||"",qty:l.qty,uom:l.uom,party:d.from||vendorOf(d)||(d.ref||"").replace(/^Donor: /,""),purpose:d.purpose||(r?r.purpose:"")}
+      :{doc:d,date:d.at,excel:excelNo(d),type:d.type,item:l.item,cond:l.condition||"",qty:l.qty,uom:l.uom,party:d.to||(d.beneficiary?d.beneficiary.name+" · "+d.beneficiary.village:r?r.dept:""),purpose:d.purpose||(d.beneficiary?d.beneficiary.purpose:r?r.purpose:"")}; }))
     .sort((a,b)=>a.date<b.date?1:-1);
 }
 function StockMovements({kind,state,openDoc}){
   const [period,setPeriod]=useState(fiscalYears(state)[0].key); const [type,setType]=useState("all"); const [q,setQ]=useState("");
   const range=periodRange(state,period);
-  const rows=movementRows(state,kind,range).filter(r=>(type==="all"||r.type===type)&&(!q||itemKey([r.item,r.party,r.purpose,r.doc.id].join(" ")).includes(itemKey(q))));
+  const rows=movementRows(state,kind,range).filter(r=>(type==="all"||r.type===type)&&(!q||itemKey([r.item,r.cond,r.party,r.purpose,r.doc.id,r.excel].join(" ")).includes(itemKey(q))));
   const isR=kind==="received";
   return html`<${Card} title=${isR?"Stock received":"Stock issued"} desc=${`${range.label} · ${rows.length} line${rows.length===1?"":"s"} · ${fmt(rows.reduce((s,r)=>s+r.qty,0))} units`} right=${html`<div class="row wrap no-print">${periodPicker(state,period,setPeriod)}${isR&&html`<select class="select" style="max-width:190px" value=${type} onChange=${e=>setType(e.target.value)}><option value="all">GRN-P and GDN-D</option><option value="GRN-P">Purchased (GRN-P)</option><option value="GDN-D">Donation in kind (GDN-D)</option></select>`}<input class="input" placeholder="Search…" value=${q} onInput=${e=>setQ(e.target.value)} style="max-width:170px"/><button class="btn btn-ghost btn-sm" onClick=${()=>exportRegisterXlsx(state,range)}><${Icon} name="download"/>Excel</button></div>`}>
-    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>${isR?"Document":"GIN"}</th>${isR&&html`<th>Type</th>`}<th>Particulars</th><th class="r">${isR?"Received qty":"Issued qty"}</th><th>${isR?"Donor / Supplier":"Issued to"}</th><th>Purpose</th></tr></thead>
-      <tbody>${rows.map(r=>html`<tr class="click" onClick=${()=>openDoc(r.doc.id)}><td class="sm nowrap">${fmtD(r.date)}</td><td><b class="id xs">${r.doc.id}</b>${r.no&&html`<div class="xs faint">No. ${r.no}</div>`}</td>${isR&&html`<td><${Tag} tone=${r.type==="GRN-P"?"info":"ok"}>${r.type}</${Tag}></td>`}<td><b>${r.item}</b></td><td class="r num bold">${fmt(r.qty)} <span class="faint" style="font-weight:600">${r.uom||""}</span></td><td class="sm">${r.party||"—"}</td><td class="sm">${r.purpose||"—"}</td></tr>`)}
-      ${!rows.length&&html`<tr><td colspan="7"><div class="empty" style="padding:16px">Nothing ${isR?"received":"issued"} in this period.</div></td></tr>`}</tbody></table></div><//>`;
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Date</th><th>${isR?"Document":"GIN"}</th>${isR&&html`<th>Type</th>`}<th>Particulars</th><th>Condition</th><th class="r">${isR?"Received qty":"Issued qty"}</th><th>${isR?"Donor / Supplier":"Issued to"}</th><th>Purpose</th></tr></thead>
+      <tbody>${rows.map(r=>html`<tr class="click" onClick=${()=>openDoc(r.doc.id)}><td class="sm nowrap">${fmtD(r.date)}</td><td><b class="id xs">${r.doc.id}</b>${r.excel&&html`<div class="xs faint">Excel no. ${r.excel}</div>`}</td>${isR&&html`<td><${Tag} tone=${r.type==="GRN-P"?"info":"ok"}>${r.type}</${Tag}></td>`}<td><b>${r.item}</b></td><td>${r.cond?html`<${CondTag} c=${r.cond}/>`:"—"}</td><td class="r num bold">${fmt(r.qty)} <span class="faint" style="font-weight:600">${r.uom||""}</span></td><td class="sm">${r.party||"—"}</td><td class="sm">${r.purpose||"—"}</td></tr>`)}
+      ${!rows.length&&html`<tr><td colspan="8"><div class="empty" style="padding:16px">Nothing ${isR?"received":"issued"} in this period.</div></td></tr>`}</tbody></table></div><//>`;
 }
 function MoveForm({kind,stock,preset,onCancel,onSave}){
   const titles={transfer:["Stock transfer (AKF-ST)","Move quantity between stores."],return:["Return to store (AKF-RTN)","Returnable items coming back, e.g. tents."],disposal:["Disposal (AKF-DIS)","Expired or damaged items. Requires photo and approval reference."],psv:["Physical stock verification (AKF-PSV)","Enter the counted quantity; the variance is posted automatically."]};
@@ -4544,7 +4576,7 @@ function MoveForm({kind,stock,preset,onCancel,onSave}){
   const [toStore,setToStore]=useState(STORES.find(x=>x!==(s||{}).store)||STORES[1]);
   const ok=s&&qty>=0&&(kind==="psv"||qty>0)&&(kind!=="disposal"||note.trim());
   return html`<${Card} title=${titles[kind][0]} desc=${titles[kind][1]}><div class="grid3">
-    <${Field} label="Item"><select class="select" value=${itemId} onChange=${e=>setItemId(e.target.value)}>${stock.map(x=>html`<option value=${x.id}>${x.name} · ${x.qty} ${x.uom} · ${x.store.split(" ")[0]}</option>`)}</select><//>
+    <${Field} label="Item"><select class="select" value=${itemId} onChange=${e=>setItemId(e.target.value)}>${stock.map(x=>html`<option value=${x.id}>${x.name}${condOf(x)!=="New"?" ("+condOf(x)+")":""} · ${x.qty} ${x.uom} · ${x.store.split(" ")[0]}</option>`)}</select><//>
     <${Field} label=${kind==="psv"?"Counted quantity":"Quantity"}><input class="input" type="number" min="0" value=${qty} onInput=${e=>setQty(Number(e.target.value))}/><//>
     ${kind==="transfer"?html`<${Field} label="To store"><select class="select" value=${toStore} onChange=${e=>setToStore(e.target.value)}>${STORES.filter(x=>x!==s.store).map(x=>html`<option>${x}</option>`)}</select><//>`:html`<${Field} label=${kind==="disposal"?"Reason & approval ref (required)":"Note"}><input class="input" value=${note} onInput=${e=>setNote(e.target.value)} placeholder=${kind==="disposal"?"Expired · photo DIS-07 · approved by President":"Optional"}/><//>`}
     </div>${kind==="psv"&&s&&html`<div class="notice notice-info" style="margin-top:10px"><${Icon} name="shield"/><span>System balance ${s.qty} ${s.uom} · counted ${qty} · variance <b class="num">${qty-s.qty>0?"+":""}${qty-s.qty}</b></span></div>`}
@@ -4864,7 +4896,7 @@ function parseRegisterWorkbook(wb){
   if(home){
     const R=home.rows, h=findHeader(R,/^particulars?$/i), H=R[h], H2=R[h+1]||[];
     const both=re=>{ const i=col(H,re); return i>=0?i:col(H2,re); };
-    const ci={cat:col(H,/^category$/i),name:col(H,/^particulars?$/i),uom:both(/^(unit|units|uom)$/i),open:both(/^opening/i),min:both(/^minimum/i),price:both(/^(each|unit price|rate)$/i),bal:both(/^balance/i),store:both(/^store$/i)};
+    const ci={cat:col(H,/^category$/i),name:col(H,/^particulars?$/i),uom:both(/^(unit|units|uom)$/i),open:both(/^opening/i),min:both(/^minimum/i),price:both(/^(each|unit price|rate)$/i),bal:both(/^balance/i),store:both(/^store$/i),cond:both(/^(condition|nature|product nature)/i)};
     R.slice(0,h).forEach(r=>r.forEach((c,i)=>{ const k=norm(c).toLowerCase(); if(k==="from"||k==="to"){ const d=parseAnyDate(r.slice(i+1).find(x=>x!==""&&x!=null)); if(d) out[k==="from"?"fyFrom":"fyTo"]=d; } }));
     const seen=new Map();
     for(let i=h+1;i<R.length;i++){ const r=R[i], name=norm(r[ci.name]);
@@ -4872,17 +4904,19 @@ function parseRegisterWorkbook(wb){
       if(!name||/^particulars?$/i.test(name)) continue;
       const num=k=>ci[k]>=0?Number(String(r[ci[k]]).replace(/,/g,""))||0:0;
       const it={row:i+1,name,category:ci.cat>=0?norm(r[ci.cat]):"",uom:(ci.uom>=0&&norm(r[ci.uom]))||"Unit",opening:num("open"),min:num("min"),price:num("price"),excelBal:ci.bal>=0&&r[ci.bal]!==""?num("bal"):null,store:ci.store>=0?norm(r[ci.store]):""};
+      const rawCond=ci.cond>=0?norm(r[ci.cond]):""; it.condition=normCondition(rawCond,name); it.condFromName=!rawCond;
       it.error=it.opening<0?"Opening stock is negative":"";
-      const k=itemKey(name); if(seen.has(k)){ const f=seen.get(k); f.opening+=it.opening; f.merged=(f.merged||1)+1; continue; }
+      const k=itemKey(name)+"|"+it.condition; if(seen.has(k)){ const f=seen.get(k); f.opening+=it.opening; f.merged=(f.merged||1)+1; continue; }
       seen.set(k,it); out.items.push(it); }
   }
   const moves=(s,qtyRe,isRecv)=>{ if(!s) return []; const R=s.rows, h=findHeader(R,qtyRe), H=R[h];
-    const ci={date:col(H,/^date$/i),no:col(H,isRecv?/^(grn|gdn|no\.?|doc|receipt)/i:/^(gin|gdn|no\.?|doc|issue)/i),name:col(H,/^particulars?$/i),qty:col(H,qtyRe),party:col(H,isRecv?/donor|supplier|^from/i:/issued\s*to|^to$/i),purpose:col(H,/^pu\w*pose$/i),type:col(H,/^type/i),store:col(H,/^store$/i)};
+    const ci={date:col(H,/^date$/i),no:col(H,isRecv?/^(grn|gdn|no\.?|doc|receipt)/i:/^(gin|gdn|no\.?|doc|issue)/i),name:col(H,/^particulars?$/i),qty:col(H,qtyRe),party:col(H,isRecv?/donor|supplier|^from/i:/issued\s*to|^to$/i),purpose:col(H,/^pu\w*pose$/i),type:col(H,/^type/i),store:col(H,/^store$/i),cond:col(H,/^(condition|nature|product nature)/i)};
     const list=[], today=nowISO().slice(0,10);
     for(let i=h+1;i<R.length;i++){ const r=R[i], name=norm(r[ci.name]), rawQty=ci.qty>=0?r[ci.qty]:"";
       if(!name&&(rawQty===""||rawQty==null)) continue;
       const qty=Number(String(rawQty).replace(/,/g,"")), date=ci.date>=0?parseAnyDate(r[ci.date]):"", t=ci.type>=0?norm(r[ci.type]):"";
       const m={row:i+1,date,no:ci.no>=0?norm(r[ci.no]):"",name,qty,party:ci.party>=0?norm(r[ci.party]):"",purpose:ci.purpose>=0?norm(r[ci.purpose]):"",type:/grn|purch/i.test(t)?"GRN-P":/gdn|don/i.test(t)?"GDN-D":"",store:ci.store>=0?norm(r[ci.store]):""};
+      const rawCond=ci.cond>=0?norm(r[ci.cond]):""; m.condition=rawCond?normCondition(rawCond,name):"";
       m.error=!name?"Particular missing":!(qty>0)?"Quantity missing":!date?"Date not readable":date>today?"Date is in the future":"";
       list.push(m); }
     return list; };
@@ -4898,20 +4932,22 @@ async function exportRegisterXlsx(state,range,blank){
     const dmy=iso=>{ const d=new Date(iso); return `${pad(d.getDate(),2)}-${pad(d.getMonth()+1,2)}-${d.getFullYear()}`; };
     const rows=blank?[]:registerRows(state,r,"all");
     const home=[["Stock Maintenance Sheet"],[SETTINGS.orgName||"Alkhidmat Foundation Islamabad"],["Stock Taking Report","","","Fiscal Year","","From",r.from?dmy(r.from):"","","","Estimated Stock Value in PKR"],["","","",fy,"","To",r.to?dmy(r.to):""],
-      ["Category","Particular","Unit","Quantity","","","","","","Each","Consumed","Available","Net Value"],["","","","Opening Stock","Received Stock","Issued Stock","Balance Stock","Minimum Level of Stock","Place Order"],
-      ...rows.map(x=>{ const p=x.s.price||0, rec=x.p+x.d+Math.max(0,x.adj), iss=x.issued+Math.max(0,-x.adj); return [x.s.category,x.s.name,x.s.uom,x.opening,rec,iss,x.balance,x.s.min||"",x.order==="OK"?"":x.order,p||"",p?p*iss:"",p?p*x.balance:"",p?p*(iss+x.balance):""]; })];
+      ["Category","Particular","Unit","Quantity","","","","","","Each","Consumed","Available","Net Value","Condition"],["","","","Opening Stock","Received Stock","Issued Stock","Balance Stock","Minimum Level of Stock","Place Order","","","","","(New / Used – good / Used – needs repair / Damaged / not working)"],
+      ...rows.map(x=>{ const p=x.s.price||0, rec=x.p+x.d+Math.max(0,x.adj), iss=x.issued+Math.max(0,-x.adj); return [x.s.category,x.s.name,x.s.uom,x.opening,rec,iss,x.balance,x.s.min||"",x.order==="OK"?"":x.order,p||"",p?p*iss:"",p?p*x.balance:"",p?p*(iss+x.balance):"",condOf(x.s)]; })];
     const rec=blank?[]:movementRows(state,"received",r).reverse(), iss=blank?[]:movementRows(state,"issued",r).reverse();
     const wb=XLSX.utils.book_new();
     const add=(aoa,name,widths,merges)=>{ const ws=XLSX.utils.aoa_to_sheet(aoa); ws["!cols"]=widths.map(w=>({wch:w})); if(merges) ws["!merges"]=merges; XLSX.utils.book_append_sheet(wb,ws,name); };
     const M=(r1,c1,r2,c2)=>({s:{r:r1,c:c1},e:{r:r2,c:c2}});
-    add(home,"Home",[12,32,9,13,14,13,13,12,13,10,12,12,12],[M(0,0,0,12),M(1,0,1,12),M(4,3,4,8)]);
-    add([[""],["Stock Received"],["Date","GRN","Particulars","Received QTY","Donor/Supplier","Purpose","Type (GRN-P / GDN-D)"],...rec.map(m=>[dmy(m.date),m.no,m.item,m.qty,m.party,m.purpose,m.type])],"Received",[12,8,30,13,28,28,20],[M(1,0,1,6)]);
-    add([[""],["","Stock Issued"],["","Date","GIN","Particular","Issued QTY","Issued To","Purpose"],...iss.map(m=>["",dmy(m.date),m.no,m.item,m.qty,m.party,m.purpose])],"Dispatched",[3,12,8,30,12,30,28],[M(1,1,1,6)]);
+    add(home,"Home",[12,32,9,13,14,13,13,12,13,10,12,12,12,22],[M(0,0,0,13),M(1,0,1,13),M(4,3,4,8)]);
+    add([[""],["Stock Received"],["Date","GRN","Particulars","Received QTY","Donor/Supplier","Purpose","Type (GRN-P / GDN-D)","Condition"],...rec.map(m=>[dmy(m.date),m.doc.id,m.item,m.qty,m.party,m.purpose,m.type,m.cond])],"Received",[12,24,30,13,28,28,20,20],[M(1,0,1,7)]);
+    add([[""],["","Stock Issued"],["","Date","GIN","Particular","Issued QTY","Issued To","Purpose","Condition"],...iss.map(m=>["",dmy(m.date),m.doc.id,m.item,m.qty,m.party,m.purpose,m.cond])],"Dispatched",[3,12,22,30,12,30,28,20],[M(1,1,1,7)]);
     add([["How to use this stock register workbook"],[""],
-      ["Home","One row per item from row 7: Category, Particular, Unit, Opening Stock, Minimum Level of Stock, Each (unit price). Received / Issued / Balance are calculated by the portal."],
-      ["Received","One row per item received: Date (dd-mm-yyyy), GRN no., Particulars, Received QTY, Donor/Supplier, Purpose, Type."],
+      ["Home","One row per item from row 7: Category, Particular, Unit, Opening Stock, Minimum Level of Stock, Each (unit price), Condition. Received / Issued / Balance are calculated by the portal."],
+      ["Condition","Product nature: New · Used – good · Used – needs repair · Damaged / not working (or your own words). Left blank: read from the name (e.g. “Shoes (Used)”), otherwise New. The same Particular in two conditions is kept as two stock lines."],
+      ["Received","One row per item received: Date (dd-mm-yyyy), GRN no., Particulars, Received QTY, Donor/Supplier, Purpose, Type, Condition."],
       ["Type","GRN-P = purchased · GDN-D = donation in kind. If left blank, you choose the type when importing."],
-      ["Dispatched","One row per item issued: Date, GIN no., Particular, Issued QTY, Issued To, Purpose."],
+      ["Numbers","The portal gives every receipt and issue its own number automatically (AKF-GRN-P-…, AKF-GDN-D-…, AKF-GIN-…) in date order. A number you write in the GRN / GIN column is kept on the document as “Excel no.”; a portal number (as exported) is kept as it is."],
+      ["Dispatched","One row per item issued: Date, GIN no., Particular, Issued QTY, Issued To, Purpose, Condition."],
       ["Names","Write each Particular exactly as on the Home sheet (capital letters do not matter). A new name becomes a new item."],
       ["Import","Portal → Excel Import → Stock register (AKF format) → choose this file → check the preview → Import."]],"Instructions",[14,110]);
     XLSX.writeFile(wb,blank?"AKF-Stock-Register-template.xlsx":`AKF-Stock-Register-${fy.replace(/\s+/g,"-")}.xlsx`);
@@ -4926,10 +4962,21 @@ function RegisterImport({state,A}){
       else { setRes({file:f.name,...r}); setOpenDate(r.fyFrom||fiscalYears(state)[0].from); setMode(state.stock.length?"":"add"); setView(r.items.length?"items":r.received.length?"received":"issued"); } }
     catch(x){ window.__toast(x.message,"bad"); } setBusy(false); };
   const ok=k=>res?res[k].filter(x=>!x.error):[];
-  const flow=useMemo(()=>{ const m={}; if(!res) return m; const get=n=>m[itemKey(n)]=m[itemKey(n)]||{rec:0,iss:0};
-    ok("received").forEach(r=>get(r.name).rec+=r.qty); ok("issued").forEach(r=>get(r.name).iss+=r.qty); return m; },[res]);
+  /* which Home line a received / issued row lands on: same name and condition, or the New line when no condition is given */
+  const lineKey=(name,cond)=>{ if(cond) return itemKey(name)+"|"+cond; const it=res.items.find(i=>itemKey(i.name)===itemKey(name)&&i.condition==="New")||res.items.find(i=>itemKey(i.name)===itemKey(name)); return itemKey(name)+"|"+(it?it.condition:normCondition("",name)); };
+  const flow=useMemo(()=>{ const m={}; if(!res) return m; const get=(n,c)=>{ const k=lineKey(n,c); return m[k]=m[k]||{rec:0,iss:0}; };
+    ok("received").forEach(r=>get(r.name,r.condition).rec+=r.qty); ok("issued").forEach(r=>get(r.name,r.condition).iss+=r.qty); return m; },[res]);
+  /* the document numbers the import will give, in date order */
+  const numbers=useMemo(()=>{ const out={}; if(!res) return out; const d={...state,docs:mode==="replace"?docsAfterReplace(state):[...state.docs],stock:mode==="replace"?[]:state.stock};
+    groupMoves(ok("received"),r=>recvKey(r,defType)).forEach(g=>{ const id=autoDocId(d,g[0].type||defType,g[0].date,g[0].no); d.docs.push({id}); g.forEach(r=>out["received"+r.row]=id); });
+    groupMoves(ok("issued"),issKey).forEach(g=>{ const id=autoDocId(d,"GIN",g[0].date,g[0].no); d.docs.push({id}); g.forEach(r=>out["issued"+r.row]=id); });
+    return out; },[res,defType,mode]);
   const known=res?new Set(res.items.map(i=>itemKey(i.name))):new Set();
   const newNames=res?dedupeCI([...ok("received"),...ok("issued")].map(r=>r.name).filter(n=>!known.has(itemKey(n)))):[];
+  const similar=useMemo(()=>{ if(!res) return []; const m=new Map(); [...res.items.map(i=>i.name),...ok("received").map(r=>r.name),...ok("issued").map(r=>r.name)].forEach(n=>{ const k=looseKey(n); if(!k) return; if(!m.has(k)) m.set(k,new Set()); m.get(k).add(n.replace(/\s+/g," ").trim()); });
+    return [...m.values()].map(s=>dedupeCI([...s])).filter(a=>a.length>1); },[res]);
+  const overIssued=res?res.items.filter(x=>{ const fl=flow[itemKey(x.name)+"|"+x.condition]; return fl&&x.opening+fl.rec-fl.iss<0; }).length:0;
+  const docCount=res?new Set(Object.values(numbers)).size:0;
   const errors=res?["items","received","issued"].reduce((s,k)=>s+res[k].filter(x=>x.error).length,0):0;
   const untyped=res?ok("received").filter(r=>!r.type).length:0;
   const run=()=>{ if(mode==="replace"){ if(!confirm(`Replace all stock?\n\nThis removes the ${state.stock.length} current items, their ledger and the store documents that are not linked to a request, then loads this file.\nA backup file is downloaded first.`)) return;
@@ -4940,7 +4987,7 @@ function RegisterImport({state,A}){
   return html`<div class="stack" style="margin-top:14px">
     <div class="steps">
       <div class="stepcard"><span class="stepnum">1</span><b>Use your stock register workbook</b><span class="sm muted">The same file you keep today, with the <b>Home</b>, <b>Received</b> and <b>Dispatched</b> sheets. Or start from the blank template.</span><div class="row wrap"><button class="btn btn-ghost btn-sm" onClick=${()=>exportRegisterXlsx(state,null,true)}><${Icon} name="download"/>Blank template</button>${state.stock.length>0&&html`<button class="btn btn-ghost btn-sm" onClick=${()=>exportRegisterXlsx(state)}><${Icon} name="download"/>Current register</button>`}</div></div>
-      <div class="stepcard"><span class="stepnum">2</span><b>What is read</b><span class="sm muted">Home: Category · Particular · Unit · Opening Stock · Minimum Level · Each.<br/>Received: Date · GRN · Particulars · Received QTY · Donor/Supplier · Purpose · Type (GRN-P / GDN-D).<br/>Dispatched: Date · GDN/GIN · Particular · Issued QTY · Issued To · Purpose.</span></div>
+      <div class="stepcard"><span class="stepnum">2</span><b>What is read</b><span class="sm muted">Home: Category · Particular · Unit · Opening Stock · Minimum Level · Each · Condition.<br/>Received: Date · GRN · Particulars · Received QTY · Donor/Supplier · Purpose · Type (GRN-P / GDN-D) · Condition.<br/>Dispatched: Date · GDN/GIN · Particular · Issued QTY · Issued To · Purpose · Condition.<br/>Condition and Type are optional. Document numbers are given automatically.</span></div>
       <div class="stepcard"><span class="stepnum">3</span><b>Upload the workbook</b><span class="sm muted">.xlsx or .xls — check the preview, then import</span><input type="file" class="hidden" accept=".xlsx,.xls" ref=${ref} onChange=${onFile}/><button class="btn btn-primary" disabled=${busy} onClick=${()=>ref.current.click()}><${Icon} name="upload"/>${busy?"Reading…":"Choose workbook"}</button></div>
     </div>
     ${done&&html`<div class="notice notice-ok"><${Icon} name="check"/><span><b>${done.file} imported.</b> ${done.items} items · ${done.received} received rows · ${done.issued} issued rows${done.skipped?` · ${done.skipped} rows were already in the portal and were skipped`:""}. Open <b>Store → Stock register</b> to see the balances.</span></div>`}
@@ -4949,10 +4996,13 @@ function RegisterImport({state,A}){
         <div class="seg">${[["items",`Items (${res.items.length})`],["received",`Received (${res.received.length})`],["issued",`Issued (${res.issued.length})`]].map(([k,l])=>html`<button class=${view===k?"active":""} onClick=${()=>setView(k)}>${l}</button>`)}</div></div>
       ${errors>0&&html`<div class="notice notice-warn"><${Icon} name="alert"/><span><b>${errors} row${errors>1?"s":""} will be skipped</b> (marked in red). Fix them in Excel and import again with “Add”, or import now and enter them by hand.</span></div>`}
       ${newNames.length>0&&html`<div class="notice notice-info"><${Icon} name="plus"/><span><b>${newNames.length} particular${newNames.length>1?"s are":" is"} not on the Home sheet</b> and will be added as new item${newNames.length>1?"s":""}: ${newNames.join(", ")}.</span></div>`}
-      ${view==="items"&&html`<div class="tbl-wrap" style="max-height:420px"><table class="tbl"><thead><tr><th>Row</th><th>Category</th><th>Particular</th><th>Unit</th><th class="r">Opening</th><th class="r">+ Received</th><th class="r">− Issued</th><th class="r">= Balance</th><th class="r">Excel balance</th><th>Check</th></tr></thead><tbody>${res.items.map(x=>{ const fl=flow[itemKey(x.name)]||{rec:0,iss:0}; const bal=x.opening+fl.rec-fl.iss; const diff=x.excelBal!==null&&x.excelBal!==bal;
-        return html`<tr style=${x.error?"background:var(--bad-bg)":""}><td class="num faint">${x.row}</td><td class="sm">${x.category||html`<span class="faint">OTHER</span>`}</td><td><b>${x.name}</b>${x.merged&&html`<div class="xs faint">${x.merged} rows with this name merged</div>`}</td><td class="sm">${x.uom}</td><td class="r num">${fmt(x.opening)}</td><td class="r num c-p">${fl.rec?fmt(fl.rec):"—"}</td><td class="r num c-i">${fl.iss?fmt(fl.iss):"—"}</td><td class="r num bold">${fmt(bal)}</td><td class="r num">${x.excelBal===null?"—":fmt(x.excelBal)}</td><td>${x.error?chk(x):diff?html`<${Tag} tone="warn">Differs from Excel</${Tag}>`:chk(x)}</td></tr>`; })}</tbody></table></div>`}
-      ${view!=="items"&&html`<div class="tbl-wrap" style="max-height:420px"><table class="tbl"><thead><tr><th>Row</th><th>Date</th><th>No.</th><th>Particulars</th><th class="r">Qty</th><th>${view==="received"?"Donor / Supplier":"Issued to"}</th><th>Purpose</th>${view==="received"&&html`<th>Type</th>`}<th>Check</th></tr></thead><tbody>${res[view].map(x=>html`<tr style=${x.error?"background:var(--bad-bg)":""}><td class="num faint">${x.row}</td><td class="sm nowrap">${x.date?fmtD(x.date):"—"}</td><td class="sm">${x.no||"—"}</td><td><b>${x.name||"—"}</b></td><td class="r num">${x.qty>0?fmt(x.qty):"—"}</td><td class="sm">${x.party||"—"}</td><td class="sm">${x.purpose||"—"}</td>${view==="received"&&html`<td>${x.type?html`<${Tag} tone=${x.type==="GRN-P"?"info":"ok"}>${x.type}</${Tag}>`:html`<span class="xs faint">${defType} (default)</span>`}</td>`}<td>${chk(x)}</td></tr>`)}
-        ${!res[view].length&&html`<tr><td colspan="9"><div class="empty" style="padding:14px">No rows on this sheet.</div></td></tr>`}</tbody></table></div>`}
+      ${similar.length>0&&html`<div class="notice notice-warn"><${Icon} name="alert"/><span><b>Similar names — check whether these are the same item</b> (if so, use one spelling in Excel before importing): ${similar.map(a=>a.join(" / ")).join(" · ")}.</span></div>`}
+      ${overIssued>0&&html`<div class="notice notice-bad"><${Icon} name="alert"/><span><b>${overIssued} item${overIssued>1?"s":""} issued more than received</b> (see “Check”). Their balance will be set to 0 — check the Dispatched sheet.</span></div>`}
+      ${docCount>0&&html`<div class="notice notice-info"><${Icon} name="file"/><span><b>${docCount} document number${docCount>1?"s":""} will be given automatically</b> in date order (GRN-P / GDN-D per month, GIN per year). The number written in your Excel stays on each document as “Excel no.” See the <b>Portal no.</b> column.</span></div>`}
+      ${view==="items"&&html`<div class="tbl-wrap" style="max-height:420px"><table class="tbl"><thead><tr><th>Row</th><th>Category</th><th>Particular</th><th>Condition</th><th>Unit</th><th class="r">Opening</th><th class="r">+ Received</th><th class="r">− Issued</th><th class="r">= Balance</th><th class="r">Excel balance</th><th>Check</th></tr></thead><tbody>${res.items.map(x=>{ const fl=flow[itemKey(x.name)+"|"+x.condition]||{rec:0,iss:0}; const bal=x.opening+fl.rec-fl.iss; const diff=x.excelBal!==null&&x.excelBal!==bal;
+        return html`<tr style=${x.error?"background:var(--bad-bg)":""}><td class="num faint">${x.row}</td><td class="sm">${x.category||html`<span class="faint">OTHER</span>`}</td><td><b>${x.name}</b>${x.merged&&html`<div class="xs faint">${x.merged} rows with this name merged</div>`}</td><td><${CondTag} c=${x.condition}/>${x.condFromName&&x.condition!=="New"&&html`<div class="xs faint">from the name</div>`}</td><td class="sm">${x.uom}</td><td class="r num">${fmt(x.opening)}</td><td class="r num c-p">${fl.rec?fmt(fl.rec):"—"}</td><td class="r num c-i">${fl.iss?fmt(fl.iss):"—"}</td><td class="r num bold">${fmt(bal)}</td><td class="r num">${x.excelBal===null?"—":fmt(x.excelBal)}</td><td>${x.error?chk(x):bal<0?html`<${Tag} tone="bad">Issued more than stock</${Tag}>`:diff?html`<${Tag} tone="warn">Differs from Excel</${Tag}>`:chk(x)}</td></tr>`; })}</tbody></table></div>`}
+      ${view!=="items"&&html`<div class="tbl-wrap" style="max-height:420px"><table class="tbl"><thead><tr><th>Row</th><th>Date</th><th>Portal no.</th><th>Excel no.</th><th>Particulars</th><th>Condition</th><th class="r">Qty</th><th>${view==="received"?"Donor / Supplier":"Issued to"}</th><th>Purpose</th>${view==="received"&&html`<th>Type</th>`}<th>Check</th></tr></thead><tbody>${res[view].map(x=>html`<tr style=${x.error?"background:var(--bad-bg)":""}><td class="num faint">${x.row}</td><td class="sm nowrap">${x.date?fmtD(x.date):"—"}</td><td><b class="id xs">${numbers[view+x.row]||"—"}</b></td><td class="sm">${x.no||"—"}</td><td><b>${x.name||"—"}</b></td><td>${x.condition?html`<${CondTag} c=${x.condition}/>`:html`<span class="xs faint">as on Home</span>`}</td><td class="r num">${x.qty>0?fmt(x.qty):"—"}</td><td class="sm">${x.party||"—"}</td><td class="sm">${x.purpose||"—"}</td>${view==="received"&&html`<td>${x.type?html`<${Tag} tone=${x.type==="GRN-P"?"info":"ok"}>${x.type}</${Tag}>`:html`<span class="xs faint">${defType} (default)</span>`}</td>`}<td>${chk(x)}</td></tr>`)}
+        ${!res[view].length&&html`<tr><td colspan="11"><div class="empty" style="padding:14px">No rows on this sheet.</div></td></tr>`}</tbody></table></div>`}
       <div class="grid3">
         <${Field} label="Store for these items"><${Pick} value=${store} options=${STORES} onChange=${setStore}/><//>
         <${Field} label=${`Received rows without a Type (${untyped})`}><select class="select" value=${defType} onChange=${e=>setDefType(e.target.value)}>${Object.entries(RECEIPT_TYPES).map(([k,l])=>html`<option value=${k}>${l}</option>`)}</select><//>
