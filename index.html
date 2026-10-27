@@ -782,6 +782,71 @@ button.tk-row:hover{background:var(--surface-2)}
 .tk-file .g{flex:1;min-width:0}
 .tk-file .g b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tk-file .g small{color:var(--ink-3);font-size:11.5px}
+/* Tasks — planner views */
+.tk-hero{position:relative;overflow:hidden;border-radius:22px;background:var(--grad);color:#fff;padding:22px 24px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;box-shadow:var(--shadow)}
+.tk-hero::before{content:"";position:absolute;right:-120px;top:-160px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle at 40% 40%,rgba(255,255,255,.18),rgba(255,255,255,0) 60%)}
+.tk-hero h2{margin:0;font-size:26px;letter-spacing:-.02em;position:relative}
+.tk-hero p{margin:6px 0 0;color:rgba(255,255,255,.82);position:relative}
+.tk-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;position:relative}
+.tk-chip2{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;font-size:12.5px;font-weight:700;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.2)}
+.tk-chip2 svg{width:13px;height:13px}
+.tk-chip2.alert{background:#fff;color:#C8322B}.tk-chip2.warn{background:#fff;color:#B96A00}
+.tk-ring{position:relative;width:118px;height:118px;display:grid;place-items:center;align-content:center}
+.tk-ring svg{position:absolute;inset:0}
+.tk-ring b{font-size:26px;line-height:1;position:relative}.tk-ring small{font-size:11px;color:rgba(255,255,255,.8);font-weight:600;position:relative}
+@media (max-width:700px){.tk-hero{grid-template-columns:1fr}.tk-ring{justify-self:center}.tk-hero h2{font-size:22px}}
+.tk-ai-card{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:14px 16px;border-radius:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);color:var(--ink)}
+.tk-ai-card:hover{border-color:var(--brand-3)}
+.tk-ai-card>span:nth-child(2){flex:1;min-width:0}.tk-ai-card b{display:block}.tk-ai-card small{color:var(--ink-3)}
+.tk-ai-card>svg{width:18px;height:18px;color:var(--ink-3)}
+.tk-ai-ico{width:40px;height:40px;border-radius:12px;background:var(--grad);color:#fff;display:grid;place-items:center;flex:none}
+.tk-ai-ico svg{width:20px;height:20px}.tk-ai-ico.lg{width:52px;height:52px;border-radius:16px}
+.tk-ai-hero{display:flex;gap:14px;align-items:center;padding:16px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
+.tk-ai-hero h2{margin:0;font-size:19px}.tk-ai-hero p{margin:4px 0 0;color:var(--ink-2);font-size:13px}
+.tk-kpis4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.tk-kpis4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tk-trow{display:flex;align-items:center;gap:10px;min-width:0;padding:9px 6px;border-radius:10px;cursor:pointer;color:var(--ink)}
+.tk-trow:hover{background:var(--surface-2)}
+.tk-trow .pri{width:4px;align-self:stretch;border-radius:3px;flex:none}
+.tk-trow .g{flex:1;min-width:0}.tk-trow .g b{display:block;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tk-trow .g small{color:var(--ink-3);font-size:11.5px}
+.tk-strike{text-decoration:line-through;color:var(--ink-3)}
+.tk-due{font-size:12px;font-weight:800;color:var(--ink-3);white-space:nowrap}
+.tk-pill{display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 8px;border-radius:999px;font-size:10.5px;font-weight:800;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line);white-space:nowrap}
+.tk-pill i{width:7px;height:7px;border-radius:50%;background:var(--c)}
+.tk-col.locked{background:repeating-linear-gradient(135deg,var(--surface-2) 0 8px,var(--surface) 8px 16px)}
+.tk-col-add{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 10px;border-radius:12px;color:var(--ink-3);font-weight:700;font-size:12.5px;border:1px dashed var(--line-2)}
+.tk-col-add:hover{background:var(--surface);color:var(--brand-2)}.tk-col-add svg{width:14px;height:14px}
+.tk-card .tk-card-top{flex-wrap:wrap}
+.tk-card .tag{font-size:10.5px;padding:2px 7px}
+.tk-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px}
+.tk-tag{font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-3)}
+.tk-foot{display:flex;align-items:center;gap:6px;margin-top:9px;min-width:0}
+.tk-date{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.tk-date svg{width:12px;height:12px}.tk-date.bad{background:var(--bad-bg);color:var(--bad)}.tk-date.warn{background:var(--warn-bg);color:var(--warn)}
+.tk-deptgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.tk-deptcard{display:grid;gap:8px;padding:12px 14px;text-align:left;color:var(--ink)}
+.tk-dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.tk-chart{width:100%;height:auto;display:block}
+.tk-chart text{font-family:inherit;font-size:11px;fill:var(--ink-3);font-weight:700}.tk-chart text.v{fill:var(--ink-2)}
+.tk-chart .axis{stroke:var(--line);stroke-width:1}
+.tk-spill{margin-top:8px;padding:8px;border-radius:12px;background:var(--warn-bg)}
+.tk-risk{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:4px}
+.tk-risk:last-child{border-bottom:0}.tk-risk .xs{display:block;padding-left:20px}
+.tk-digest{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
+.tk-digest b{display:block;font-size:22px}.tk-digest small{color:var(--ink-3);font-size:11.5px}
+.tk-lrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.tk-lrow:last-child{border-bottom:0}.tk-lrow .g{flex:1;min-width:0}.tk-lrow .g small{color:var(--ink-3);font-size:11.5px}
+.tk-color{width:26px;height:26px;border:0;padding:0;background:none;cursor:pointer;border-radius:8px}
+.tk-inl{border:0;background:transparent;font:inherit;font-weight:700;width:100%;outline:0;color:var(--ink);padding:2px 0}
+.tk-inl:focus{border-bottom:1px solid var(--brand-3)}
+.tk-title-wrap{display:grid;gap:4px}
+.tk-title-wrap>span{font-size:12px;font-weight:700;color:var(--ink-3)}
+.tk-title-wrap .tk-title{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--surface)}
+.tk-title-wrap .tk-title:focus{border-color:var(--brand-3);box-shadow:0 0 0 3px var(--ice-2)}
+.tk-timerbox{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line)}
+.tk-timerbox b{font-size:18px}.tk-timerbox small{color:var(--ink-3);font-size:11.5px}
+.tk-timerbox.on{background:var(--warn-bg);border-color:var(--warn)}
+.modal .tag{white-space:normal;line-height:1.35}
 </style>
 </head>
 <body>
@@ -4913,7 +4978,8 @@ function Users({state,A,me}){
         <div class="ua-grid">${TABS.map(t=>html`<label class=${"ua-opt"+(curTabs.includes(t.id)?" on":"")}><input type="checkbox" checked=${curTabs.includes(t.id)} onChange=${()=>toggleTab(t.id)}/><${Icon} name=${t.icon}/><span>${t.label}</span>${roleTabs.includes(t.id)?"":html`<em>extra</em>`}</label>`)}</div>
         ${(curTabs.includes("users")||curTabs.includes("settings"))&&f.role!=="super"&&html`<div class="notice notice-warn"><${Icon} name="alert"/><span>Users and Settings let this person change logins, roles and policies. Give them only to someone you trust as an administrator.</span></div>`}
         ${!curTabs.length&&html`<div class="notice notice-bad"><${Icon} name="alert"/><span>Tick at least one page, or this person sees an empty portal.</span></div>`}
-        <label class="ua-opt wide"><input type="checkbox" checked=${!!f.taskAdmin||TASK_ADMIN.includes(f.role)} disabled=${TASK_ADMIN.includes(f.role)} onChange=${e=>set("taskAdmin",e.target.checked)}/><${Icon} name="tasks"/><span><b>Manage all tasks</b> — see, assign, approve and close tasks in every department (like the Regional Manager)</span></label></div>
+        <label class="ua-opt wide"><input type="checkbox" checked=${!!f.taskAdmin||TASK_ADMIN.includes(f.role)} disabled=${TASK_ADMIN.includes(f.role)} onChange=${e=>set("taskAdmin",e.target.checked)}/><${Icon} name="tasks"/><span><b>Manage all tasks</b> — see, assign, approve and close tasks in every department (like the Regional Manager)</span></label>
+        <label class="field" style="max-width:420px"><span>Task department (Tasks page — decides who this person's HOD is)</span><select class="select" value=${f.taskDept||PORTAL_TO_TASK_DEPT[f.dept]||"01"} onChange=${e=>set("taskDept",e.target.value)}>${((state.settings&&state.settings.taskDepts)||TASK_DEPTS_DEFAULT).map(x=>html`<option value=${x.id}>${x.code} · ${x.name}</option>`)}</select></label></div>
       <div class="row" style="margin-top:12px"><button class="btn btn-ghost" onClick=${()=>setF(null)}>Cancel</button><span class="grow"/>${dup&&html`<span class="sm" style="color:var(--bad)">Username already taken</span>`}<button class="btn btn-primary" disabled=${!ok} onClick=${save}>Save user</button></div><//>`}
     <${Card} title="Accounts" desc="Only the Super Admin sees this page. Click the eye to reveal a password."><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Name</th><th>Username</th><th>Password</th><th>Role</th><th>Department</th><th>Signature</th><th>Status</th><th/></tr></thead><tbody>${state.users.map(u=>html`<tr><td><b>${u.name}</b><div class="xs faint">${u.designation}</div></td><td class="sm">${u.username}</td>
       <td class="nowrap"><span class="num sm">${u.password?(show[u.id]?u.password:"••••••••"):html`<span class="faint xs">not recorded</span>`}</span>${u.password&&html`<button class="iconbtn" style="width:26px;height:26px;margin-left:6px;display:inline-grid;vertical-align:middle" title=${show[u.id]?"Hide":"Show password"} onClick=${()=>setShow(s=>({...s,[u.id]:!s[u.id]}))}><${Icon} name=${show[u.id]?"lock":"eye"}/></button>`}</td>
@@ -5439,605 +5505,730 @@ const BootScreen=({status,err})=>html`<div class="auth"><div class="auth-bg"><i/
 const Toasts=({items})=>html`<div class="toasts" aria-live="polite">${items.map(t=>html`<div class=${"toast "+t.tone} key=${t.id}>${t.tone==="ok"?html`<${Icon} name="check"/>`:t.tone==="bad"?html`<${Icon} name="alert"/>`:html`<${Icon} name="shield"/>`}${t.msg}</div>`)}</div>`;
 
 /* =====================================================================
-   Tasks — task board, planner, workload and performance.
-   Tasks are stored in the same portal_rows table (collection "tasks"), so
-   every signed-in member of staff works on one shared board.
-   Workflow (enforced): New → In progress → Ready for review → Waiting HOD
-   → Approved → Done. The person doing a task can never approve or close it.
+   Tasks — the Alkhidmat Islamabad Task Planner, built into the portal.
+   Same rules as the planner file: stages 01–07, RM / HOD / Staff /
+   President / GS rights, departments with codes and colours (editable by
+   the Regional Manager), custom fields, dependencies, repeating tasks,
+   time tracking, HOD ratings, planner, workload, performance, assistant.
+   Records live in portal_rows (collection "tasks"), shared by all staff.
    ===================================================================== */
 Object.assign(PATHS,{
   tasks:"M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9",
-  board:"M3 3h7v18H3zM14 3h7v10h-7z",
+  board:"M3 3h7v18H3zM14 3h7v12h-7z",
   cal:"M3 5h18v16H3zM3 10h18M8 3v4M16 3v4",
   msg:"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z",
   clip:"M21.4 11.1l-9.2 9.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5",
-  play:"M6 4l14 8-14 8z",
-  stop:"M6 6h12v12H6z",
+  play:"M6 4l14 8-14 8z", stop:"M6 6h12v12H6z",
   star:"M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z",
   tag:"M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8zM7 7h.01",
-  dep:"M6 3v12M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 9a9 9 0 0 1-9 9",
+  dep:"M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1",
   trophy:"M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3",
+  zap:"M13 2L3 14h9l-1 8 10-12h-9z",
+  sliders:"M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6",
+  subtask:"M4 6h5M4 12h5M4 18h5M13 6l2 2 4-4M13 12l2 2 4-4M13 18l2 2 4-4",
+  approve:"M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11",
+  repeat:"M17 2l4 4-4 4M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 0 1-4 4H3",
+  left:"M15 18l-6-6 6-6", right:"M9 18l6-6-6-6",
 });
 
-const TSTAGES=[
-  {k:"new",      label:"New",              tone:"neutral",color:"#8C9AB0"},
-  {k:"progress", label:"In progress",      tone:"info",   color:"#1E6FD9"},
-  {k:"review",   label:"Ready for review", tone:"violet", color:"#5B3FD3"},
-  {k:"hod",      label:"Waiting HOD",      tone:"warn",   color:"#D08A12"},
-  {k:"approved", label:"Approved",         tone:"ok",     color:"#0E8C84"},
-  {k:"done",     label:"Done",             tone:"ok",     color:"#0F8A5F"},
-  {k:"cancelled",label:"Cancelled",        tone:"bad",    color:"#B4BCCB"},
+/* ---------- reference data (as in the planner file) ---------- */
+const TASK_DEPTS_DEFAULT=[
+  {id:"01",code:"REG",name:"Regional Office",color:"#0B4A9F"},
+  {id:"02",code:"FIN",name:"Finance",color:"#0E8C84"},
+  {id:"03",code:"ADMIN",name:"Administration",color:"#6A4FD9"},
+  {id:"04",code:"RMD",name:"Resource Mobilization",color:"#D98A14"},
+  {id:"05",code:"EDU",name:"Education",color:"#2567CF"},
+  {id:"06",code:"AKIM",name:"Al-Khidmat Health (AKIM)",color:"#D23B3B"},
+  {id:"07",code:"BANO",name:"Bano Qabil",color:"#C2410C"},
+  {id:"08",code:"ORPHAN",name:"Orphan Care",color:"#7C3AED"},
+  {id:"09",code:"VOL",name:"Volunteers",color:"#1E9A5A"},
+  {id:"10",code:"WASH",name:"Clean Water (WASH)",color:"#0891B2"},
+  {id:"11",code:"MOWAKHAT",name:"Mowakhat (Interest-free loans)",color:"#9333EA"},
 ];
-const TSTAGE=Object.fromEntries(TSTAGES.map((s,i)=>[s.k,{...s,i}]));
-const TPRI={ Urgent:{tone:"bad",color:"#D23B3B",rank:0}, High:{tone:"warn",color:"#E08A12",rank:1}, Medium:{tone:"info",color:"#2567CF",rank:2}, Low:{tone:"neutral",color:"#9AA5BD",rank:3} };
-const TREC={ none:"Does not repeat", daily:"Every day", weekly:"Every week", monthly:"Every month" };
-const TASK_ADMIN=["super","regional_manager"];               // manage every task
-const TASK_VIEW_ALL=["super","regional_manager","president","gen_sec"];
-const TASK_NO_CREATE=["president","gen_sec"];               // view and comment only
-const T_OPEN=["new","progress","review","hod","approved"];
-const T_WORK=["new","progress","review","hod"];             // counted as overdue after the planned date
+const TASK_STAGES_DEFAULT=[
+  {id:"01",name:"New",color:"#7B8798"},{id:"02",name:"In progress",color:"#0B4A9F"},{id:"03",name:"Ready for review",color:"#D98A14"},
+  {id:"04",name:"Waiting HOD",color:"#6A4FD9"},{id:"05",name:"Approved",color:"#0E8C84"},{id:"06",name:"Done",color:"#1E9A5A"},{id:"07",name:"Cancelled",color:"#D23B3B"},
+];
+const TPRI_LIST=["Urgent","High","Medium","Low"];
+const TPRI_COLOR={Urgent:"#D23B3B",High:"#D98A14",Medium:"#2567CF",Low:"#7B8798"};
+const TPRI_TONE={Urgent:"bad",High:"warn",Medium:"info",Low:"neutral"};
+const TPRI_RANK={Urgent:0,High:1,Medium:2,Low:3};
+const TSTAGE_TONE={"01":"neutral","02":"info","03":"warn","04":"violet","05":"ok","06":"ok","07":"bad"};
+const TROLE_LABEL={RM:"Regional Manager",HOD:"Head of Department",Staff:"Staff",President:"President",GS:"General Secretary"};
+const TREC={none:"Does not repeat",daily:"Daily",weekly:"Weekly",monthly:"Monthly"};
+const TASK_ADMIN=["super","regional_manager"];      // act as RM in Tasks (plus anyone ticked "Manage all tasks")
+/* portal department → planner department, used until the Super Admin sets a person's task department */
+const PORTAL_TO_TASK_DEPT={"Health":"06","Education":"05","Orphan Care":"08","WASH":"10","Mawakhat":"11","Finance":"02","Admin":"03","Volunteer":"09","Fundraising":"04","Qurbani":"04","Ramadan":"04"};
 
-/* ---- dates: always local calendar days (no UTC shift) ---- */
+/* ---------- small helpers ---------- */
+let TS=null;   // current portal state, set on every render of the Tasks page
+const tDepts=()=>(TS&&TS.settings&&TS.settings.taskDepts)||TASK_DEPTS_DEFAULT;
+const tStages=()=>(TS&&TS.settings&&TS.settings.taskStages)||TASK_STAGES_DEFAULT;
+const tDept=id=>tDepts().find(d=>d.id===id)||{id,code:"?",name:"Unknown department",color:"#8C9AB0"};
+const tStage=id=>tStages().find(s=>s.id===id)||{id,name:id,color:"#8C9AB0"};
 const tISO=d=>d.getFullYear()+"-"+pad(d.getMonth()+1,2)+"-"+pad(d.getDate(),2);
 const tToday=()=>tISO(new Date());
 function tDate(s){ const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||""); if(!m) return null; const d=new Date(+m[1],+m[2]-1,+m[3]); return d.getMonth()===+m[2]-1&&d.getDate()===+m[3]?d:null; }
 function tAddDays(s,n){ const d=tDate(s)||new Date(); d.setDate(d.getDate()+n); return tISO(d); }
-/* month step that keeps the wanted day where the month has it (31 Jan → 28/29 Feb → 31 Mar) */
 function tAddMonths(s,n,day){ const d=tDate(s)||new Date(); const want=day||d.getDate(); const x=new Date(d.getFullYear(),d.getMonth()+n,1); const last=new Date(x.getFullYear(),x.getMonth()+1,0).getDate(); x.setDate(Math.min(want,last)); return tISO(x); }
-const tFmt=s=>{ const d=tDate(s); return d?d.toLocaleDateString("en-GB",{day:"2-digit",month:"short"}):"No date"; };
-const tFmtY=s=>{ const d=tDate(s); return d?d.toLocaleDateString("en-GB",{weekday:"short",day:"2-digit",month:"short",year:"numeric"}):"No date"; };
+const T_MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+function tFmt(iso,long){ if(!iso) return "—"; const d=tDate(iso); if(!d) return iso; const t=tToday();
+  if(!long){ if(iso===t) return "Today"; if(iso===tAddDays(t,1)) return "Tomorrow"; if(iso===tAddDays(t,-1)) return "Yesterday"; }
+  const s=`${d.getDate()} ${T_MONTHS[d.getMonth()].slice(0,3)}`; return d.getFullYear()===new Date().getFullYear()&&!long?s:`${s} ${d.getFullYear()}`; }
+const tFmtMonth=k=>{ const [y,m]=k.split("-").map(Number); return `${T_MONTHS[m-1]} ${y}`; };
 const tLocalDay=iso=>iso?tISO(new Date(iso)):"";
-const tMin=m=>{ m=Math.round(m||0); if(!m) return "0m"; const h=Math.floor(m/60), r=m%60; return (h?h+"h":"")+(h&&r?" ":"")+(r?r+"m":""); };
-/* "1h 30m", "1.5h", "45m", "45" → minutes. A bare number means minutes. */
-function tParseMin(v){ const s=String(v||"").trim().toLowerCase(); if(!s) return 0; if(/^\d+(\.\d+)?$/.test(s)) return Math.round(+s);
-  let tot=0, ok=false; const rest=s.replace(/(\d+(?:\.\d+)?)\s*(hours?|hrs?|h|minutes?|mins?|m)\b/g,(_,n,u)=>{ ok=true; tot+=u[0]==="h"?n*60:+n; return ""; });
+const tTs=iso=>Date.parse(iso)||0;
+const tMin=m=>{ m=Math.round(m||0); if(!m) return "0m"; const h=Math.floor(m/60), r=m%60; return h?(r?`${h}h ${r}m`:`${h}h`):`${r}m`; };
+/* "1h 30m", "1.5h", "45m", "2d", or a bare number of minutes */
+function tParseMin(v){ const s=String(v==null?"":v).trim().toLowerCase(); if(!s) return 0; if(/^\d+(\.\d+)?$/.test(s)) return Math.round(+s);
+  let tot=0, ok=false; const rest=s.replace(/(\d+(?:\.\d+)?)\s*(days?|d|hours?|hrs?|h|minutes?|mins?|m)\b/g,(_,n,u)=>{ ok=true; tot+=u[0]==="d"?n*480:u[0]==="h"?n*60:+n; return ""; });
   return ok&&!rest.trim()?Math.round(tot):NaN; }
 const tToast=(m,t)=>window.__toast&&window.__toast(m,t);
 const tLS={ get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }, set(k,v){ try{ v==null?localStorage.removeItem(k):localStorage.setItem(k,v); }catch(e){} } };
-const tNum=t=>{ const m=/(\d+)-(\d+)$/.exec(t.id||""); return m?(+m[1])*1e6+(+m[2]):0; };
+const tUser=(state,id)=>(state.users||[]).find(u=>u.id===id);
+const tName=(state,id)=>{ const u=tUser(state,id); return u?u.name:"Unassigned"; };
+const tOpen=t=>t.stage!=="06"&&t.stage!=="07";
+const tOverdue=t=>tOpen(t)&&!!t.plannedDate&&t.plannedDate<tToday();
+const tDueToday=t=>tOpen(t)&&t.plannedDate===tToday();
+const tByPri=(a,b)=>TPRI_RANK[a.priority]-TPRI_RANK[b.priority]||(a.plannedDate||"").localeCompare(b.plannedDate||"");
+const tNum=t=>+(String(t.id||"").replace(/\D/g,""))||0;
+function tBlockers(state,t){ return (t.dependencies||[]).map(k=>(state.tasks||[]).find(x=>x.key===k)).filter(x=>x&&tOpen(x)); }
+function tProgress(t){ if(t.stage==="06") return 100; if(t.stage==="07") return 0; const s=t.subtasks||[]; if(s.length) return Math.round(s.filter(x=>x.done).length/s.length*100); return {"01":5,"02":40,"03":70,"04":85,"05":95}[t.stage]||0; }
 
-/* ---- who may do what ---- */
-const tUser=(state,id)=>state.users.find(u=>u.id===id);
-const tIsAdmin=u=>TASK_ADMIN.includes(u.role)||!!u.taskAdmin;   // taskAdmin: ticked by the Super Admin under Users → Access
-function taskVisible(u,t){ return TASK_VIEW_ALL.includes(u.role)||!!u.taskAdmin||t.assigneeId===u.id||t.creatorId===u.id||(u.role==="hod"&&t.dept===u.dept)||(t.watchers||[]).includes(u.id); }
-function tCanManage(u,t){ return tIsAdmin(u)||(u.role==="hod"&&t.dept===u.dept)||t.creatorId===u.id; }   // fields, dates, assignee
-function tCanWork(u,t){ return tCanManage(u,t)||t.assigneeId===u.id; }                                   // checklist, time, files
-function tIsApprover(u,t){ return (tIsAdmin(u)||(u.role==="hod"&&t.dept===u.dept))&&u.id!==t.assigneeId; }
-function tCanDelete(u,t){ return tIsAdmin(u)||(u.role==="hod"&&t.dept===u.dept&&t.assigneeId!==u.id)||(t.creatorId===u.id&&t.stage==="new"); }
-const tCanCreate=u=>!TASK_NO_CREATE.includes(u.role);
-const tDeptsFor=u=>tIsAdmin(u)?(u.dept&&!DEPTS.includes(u.dept)?[u.dept,...DEPTS]:DEPTS):[u.dept].filter(Boolean);
-function tAssignable(state,u,dept){ const act=state.users.filter(x=>x.active&&!TASK_NO_CREATE.includes(x.role)); return tIsAdmin(u)?act:act.filter(x=>x.dept===dept||x.id===u.id); }
-const tOverdue=t=>T_WORK.includes(t.stage)&&!!t.plannedDate&&t.plannedDate<tToday();
-function tDepsOpen(state,t){ return (t.deps||[]).map(k=>(state.tasks||[]).find(x=>x.key===k)).filter(x=>x&&x.stage!=="done"&&x.stage!=="cancelled"); }
-/* the HOD of the task's department decides; Regional Manager / Super Admin step in when there is no HOD or the HOD is the assignee */
-function tPrimaryApprover(state,u,t){ const hod=state.users.some(x=>x.active&&x.role==="hod"&&x.dept===t.dept&&x.id!==t.assigneeId); return u.role==="hod"?tIsApprover(u,t):(tIsAdmin(u)&&!hod&&u.id!==t.assigneeId); }
-
-/* the buttons a user may press on a task right now */
-function taskMoves(u,t){
-  const m=[]; const appr=tIsApprover(u,t), work=tCanWork(u,t);
-  const reviewer=t.creatorId!==t.assigneeId&&t.creatorId===u.id&&!appr;
-  const back={to:"progress",label:"Send back",icon:"back",tone:"btn-ghost",comment:true};
-  if(t.stage==="new"&&work) m.push({to:"progress",label:"Start work",icon:"play",tone:"btn-primary"});
-  if(t.stage==="progress"&&work) m.push({to:"review",label:"Submit for review",icon:"send",tone:"btn-primary"});
-  if(t.stage==="review"){ if(appr) m.push({to:"approved",label:"Approve",icon:"check",tone:"btn-ok"}); else if(reviewer) m.push({to:"hod",label:"Checked · send to HOD",icon:"send",tone:"btn-primary"}); if(appr||reviewer) m.push(back); }
-  if(t.stage==="hod"&&appr) m.push({to:"approved",label:"Approve",icon:"check",tone:"btn-ok"},back);
-  if(t.stage==="approved"&&appr) m.push({to:"done",label:"Close as done",icon:"check",tone:"btn-ok"},back);
-  if(t.stage==="done"&&appr) m.push({to:"progress",label:"Reopen",icon:"refresh",tone:"btn-ghost",comment:true});
-  if(t.stage==="cancelled"&&appr) m.push({to:"new",label:"Restore",icon:"refresh",tone:"btn-ghost"});
-  if(T_OPEN.includes(t.stage)&&(appr||(t.creatorId===u.id&&t.stage==="new"))) m.push({to:"cancelled",label:"Cancel task",icon:"x",tone:"btn-bad",comment:true});
-  return m;
+/* ---------- rights: exactly the planner's rules ---------- */
+const tRole=u=>!u?"Staff":(TASK_ADMIN.includes(u.role)||u.taskAdmin)?"RM":u.role==="hod"?"HOD":u.role==="president"?"President":u.role==="gen_sec"?"GS":"Staff";
+const tUDept=u=>(u&&(u.taskDept||PORTAL_TO_TASK_DEPT[u.dept]))||"01";
+const TR={
+  canSee(t,u){ const r=tRole(u); if(["RM","President","GS"].includes(r)) return true; if(r==="HOD") return t.dept===tUDept(u)||t.assigneeId===u.id||t.creatorId===u.id; return t.assigneeId===u.id||t.creatorId===u.id; },
+  canCreate:u=>!["President","GS"].includes(tRole(u)),
+  canComment:u=>tRole(u)!=="President",
+  canEdit(t,u){ const r=tRole(u); if(["President","GS"].includes(r)) return false; if(r==="RM") return true; if(r==="HOD") return t.dept===tUDept(u)||t.creatorId===u.id||t.assigneeId===u.id; return t.assigneeId===u.id||t.creatorId===u.id; },
+  canClose(t,u){ const r=tRole(u); if(["President","GS"].includes(r)) return false; if(r==="RM") return true; if(t.assigneeId===u.id) return false; if(r==="HOD") return t.dept===tUDept(u)||t.creatorId===u.id; return t.creatorId===u.id; },
+  canApprove(t,u){ const r=tRole(u); return r==="RM"||(r==="HOD"&&t.dept===tUDept(u)&&t.assigneeId!==u.id); },
+  canRate(t,u){ const r=tRole(u); return (r==="RM"||(r==="HOD"&&t.dept===tUDept(u)))&&t.assigneeId!==u.id; },
+  canDelete(t,u){ const r=tRole(u); return r==="RM"||(r==="HOD"&&t.dept===tUDept(u))||(t.creatorId===u.id&&t.stage==="01"); },
+  canSettings:u=>tRole(u)==="RM",
+  whyNoClose(t,u,state){ const r=tRole(u);
+    if(r==="President") return "President has view-only access.";
+    if(r==="GS") return "General Secretary can view and comment only.";
+    if(t.assigneeId===u.id) return t.creatorId===u.id?"Self-assigned tasks are closed by your HOD or the Regional Manager.":`Only ${tName(state,t.creatorId)} (who assigned it), the HOD or the Regional Manager can close this.`;
+    return "Only the assigner, the department HOD or the Regional Manager can close this task."; },
+};
+function tAssignable(state,deptId,u){
+  const act=(state.users||[]).filter(x=>x.active!==false);
+  if(tRole(u)==="RM") return act.filter(x=>tRole(x)!=="President");
+  return act.filter(x=>(tUDept(x)===deptId||x.id===u.id)&&!["President","GS"].includes(tRole(x)));
 }
-/* is this task waiting for *me*? (drives the badge, the KPI and notifications) */
-function tNeedsMe(state,u,t){
-  if(t.assigneeId===u.id&&(t.stage==="new"||t.stage==="progress")) return true;
-  if(t.stage==="review"){ if(t.creatorId!==t.assigneeId&&!tIsApprover(tUser(state,t.creatorId)||{},t)) return t.creatorId===u.id; return tPrimaryApprover(state,u,t); }
-  if(t.stage==="hod"||t.stage==="approved") return tPrimaryApprover(state,u,t);
-  return false;
-}
-function tNextHint(state,t){
-  const a=tUser(state,t.assigneeId), c=tUser(state,t.creatorId);
-  if(t.stage==="new") return `${a?a.name:"The assignee"} starts the work`;
-  if(t.stage==="progress") return `${a?a.name:"The assignee"} submits it for review`;
-  if(t.stage==="review") return t.creatorId!==t.assigneeId&&c&&!tIsApprover(c,t)?`${c.name} checks it and sends it to the HOD`:`The ${t.dept} HOD approves or sends it back`;
-  if(t.stage==="hod") return `The ${t.dept} HOD approves or sends it back`;
-  if(t.stage==="approved") return "The HOD closes it as done";
-  return "";
+/* why a stage change is not allowed (null = allowed) */
+function tMoveError(state,t,to,u){
+  if(!TR.canEdit(t,u)) return "You can't change this task.";
+  if((to==="06"||to==="07")&&!TR.canClose(t,u)) return TR.whyNoClose(t,u,state);
+  if(to==="05"&&!TR.canApprove(t,u)) return "Only the department HOD or Regional Manager can approve.";
+  if(to==="06"){ const b=tBlockers(state,t); if(b.length) return `Blocked: finish ${b.map(x=>x.id).join(", ")} first.`; }
+  return null;
 }
 
-/* ---- actions: every change re-checks permissions against the saved data ---- */
+/* ---------- actions: every change is re-checked against the saved data ---------- */
 function makeTaskActions(commit,user,toast){
   const me=d=>d.users.find(u=>u.id===user.id)||user;
   const find=(d,key)=>{ d.tasks=d.tasks||[]; return d.tasks.find(t=>t.key===key); };
-  const act=(t,text,u)=>{ t.activity=t.activity||[]; t.activity.unshift({at:nowISO(),by:u.name,uid:u.id,text}); if(t.activity.length>200) t.activity.length=200; t.updatedAt=nowISO(); };
-  const audit=(d,t,u,action,comment)=>d.audit.unshift({id:uid(),at:nowISO(),doc:t.id,action,comment:comment||t.title,dept:t.dept,by:u.name,role:u.role,uid:u.id,desig:u.designation||""});
-  const nextNo=d=>{ const pre=`TSK-${new Date().getFullYear()}-`; let max=0; (d.tasks||[]).forEach(t=>{ if((t.id||"").startsWith(pre)) max=Math.max(max,+t.id.slice(pre.length)||0); }); return pre+pad(max+1,4); };
+  const act=(t,text,u)=>{ t.activity=t.activity||[]; t.activity.push({at:nowISO(),uid:u.id,by:u.name,text}); if(t.activity.length>200) t.activity.shift(); t.updatedAt=nowISO(); };
+  const audit=(d,t,u,action,comment)=>d.audit.unshift({id:uid(),at:nowISO(),doc:t.id,action,comment:comment||t.title,dept:tDept(t.dept).name,by:u.name,role:u.role,uid:u.id,desig:u.designation||""});
+  const nextNo=d=>"AK-"+(Math.max(100,...(d.tasks||[]).map(tNum))+1);
   const newKey=()=>uid()+uid()+Date.now().toString(36);
-  const run=(fn,ok)=>{ let err=null, out; commit(d=>{ d.tasks=d.tasks||[]; try{ out=fn(d,me(d)); }catch(e){ err=e.message; } }); if(err){ toast(err,"bad"); return null; } if(ok) toast(typeof ok==="function"?ok(out):ok,"ok"); return out===undefined?true:out; };
   const fail=m=>{ throw new Error(m); };
-  const checkDates=(sd,pd)=>{ if(!pd) fail("A planned (due) date is required."); if(!tDate(pd)) fail("The planned date is not a real date."); if(sd&&!tDate(sd)) fail("The start date is not a real date."); if(sd&&sd>pd) fail("The start date is after the planned date."); };
-  const LABEL={title:"title",dept:"department",assigneeId:"assignee",plannedDate:"planned date",startDate:"start date",priority:"priority",recurring:"repeat",estimateMin:"estimate",tags:"tags",deps:"dependencies",description:"description"};
-  const MANAGE=["title","dept","assigneeId","plannedDate","startDate","priority","recurring","estimateMin","tags","deps"];
-
+  const run=(fn,ok)=>{ let err=null, out; commit(d=>{ d.tasks=d.tasks||[]; TS=d; try{ out=fn(d,me(d)); }catch(e){ err=e.message; } }); if(err){ toast(err,"bad"); return null; } if(ok) toast(typeof ok==="function"?ok(out):ok,"ok"); return out===undefined?true:out; };
+  const depsLoop=(d,t,deps)=>{ const reach=(k,seen)=>{ if(k===t.key) return true; if(seen.has(k)) return false; seen.add(k); const x=d.tasks.find(z=>z.key===k); return !!x&&(x.dependencies||[]).some(j=>reach(j,seen)); }; return deps.some(k=>reach(k,new Set())); };
+  const doMove=(d,t,to,u)=>{
+    const e=tMoveError(d,t,to,u); if(e) fail(e);
+    const from=tStage(t.stage).name; t.stage=to; act(t,`moved from ${from} to ${tStage(to).name}`,u);
+    if(to==="06"){ t.completedAt=nowISO(); audit(d,t,u,"Task done"); return spawn(d,t,u); }
+    t.completedAt=""; if(to==="05"||to==="07") audit(d,t,u,`Task ${tStage(to).name.toLowerCase()}`);
+  };
+  /* a repeating task creates its next occurrence once, the first time it is done */
+  const spawn=(d,t,u)=>{
+    if(!t.recurring||t.recurring==="none"||t.spawnedNext) return null;
+    const next=t.recurring==="daily"?tAddDays(t.plannedDate,1):t.recurring==="weekly"?tAddDays(t.plannedDate,7):tAddMonths(t.plannedDate,1,t.repeatDay);
+    const n={...JSON.parse(JSON.stringify(t)),key:newKey(),id:nextNo(d),stage:"01",plannedDate:next,startDate:"",timeLogged:0,timeLog:[],attachments:[],comments:[],activity:[],rating:null,ratedBy:"",completedAt:"",spawnedNext:false,repeatOf:t.id,
+      subtasks:(t.subtasks||[]).map(s=>({id:uid(),title:s.title,done:false})),createdAt:nowISO(),updatedAt:nowISO()};
+    act(n,`created automatically as the next ${t.recurring} occurrence of ${t.id}`,u); d.tasks.unshift(n); t.spawnedNext=true; return n;
+  };
+  const clean=(d,f,u,isNew)=>{
+    const title=String(f.title||"").trim(); if(!title) fail("Give the task a title.");
+    if(!tDepts().some(x=>x.id===f.dept)) fail("Choose a department — every task needs one.");
+    if(!f.assigneeId||!tUser(d,f.assigneeId)) fail("Choose who this task is assigned to.");
+    if(!tDate(f.plannedDate)) fail("Choose a valid planned date.");
+    if(f.startDate&&!tDate(f.startDate)) fail("The start date is not a valid date.");
+    if(f.startDate&&f.startDate>f.plannedDate) fail("The start date is after the planned date.");
+    const est=typeof f.estimate==="number"?f.estimate:tParseMin(f.estimate); if(isNaN(est)) fail("Write the estimate like 45m, 2h or 1h 30m.");
+    return {title:title.slice(0,200),description:String(f.description||"").slice(0,5000),dept:f.dept,assigneeId:f.assigneeId,plannedDate:f.plannedDate,startDate:f.startDate||"",
+      priority:TPRI_LIST.includes(f.priority)?f.priority:"Medium",tags:(f.tags||[]).slice(0,20),estimate:Math.max(0,est),recurring:TREC[f.recurring]?f.recurring:"none",
+      subtasks:f.subtasks||[],dependencies:f.dependencies||[],customFields:(f.customFields||[]).filter(x=>x&&x.k),repeatDay:(tDate(f.plannedDate)||new Date()).getDate()};
+  };
   return {
     tCreate(f){
       return run((d,u)=>{
-        if(!tCanCreate(u)) fail("Your role can view and comment on tasks but not create them.");
-        if(!String(f.title||"").trim()) fail("Give the task a title.");
-        if(!f.dept||(!tIsAdmin(u)&&!tDeptsFor(u).includes(f.dept))) fail("You can only create tasks in your own department.");
-        if(!tAssignable(d,u,f.dept).some(x=>x.id===f.assigneeId)) fail("Choose someone from this department to do the task.");
-        checkDates(f.startDate,f.plannedDate);
-        const a=tUser(d,f.assigneeId);
-        const t={ key:newKey(), id:nextNo(d), title:f.title.trim().slice(0,200), description:String(f.description||"").slice(0,5000), dept:f.dept, assigneeId:f.assigneeId, creatorId:u.id,
-          plannedDate:f.plannedDate, startDate:f.startDate||"", priority:TPRI[f.priority]?f.priority:"Medium", tags:(f.tags||[]).slice(0,12), estimateMin:Math.max(0,f.estimateMin||0),
-          loggedMin:0, timeLog:[], subtasks:[], deps:[], files:[], comments:[], watchers:[], recurring:TREC[f.recurring]?f.recurring:"none", repeatDay:(tDate(f.plannedDate)||new Date()).getDate(),
-          stage:"new", createdAt:nowISO(), updatedAt:nowISO(), assignedAt:nowISO(), activity:[] };
-        act(t,a.id===u.id?"Created the task":`Created the task and assigned it to ${a.name}`,u);
-        d.tasks.unshift(t); audit(d,t,u,"Task created",`${t.title} → ${a.name}`);
-        return t;
-      },t=>`${t.id} created`);
+        if(!TR.canCreate(u)) fail("Your role can view tasks but not create them.");
+        const c=clean(d,f,u,true);
+        if(!tAssignable(d,c.dept,u).some(x=>x.id===c.assigneeId)) fail(`${tName(d,c.assigneeId)} is not in ${tDept(c.dept).name}. Choose someone from that department.`);
+        const t={key:newKey(),v:2,id:nextNo(d),...c,stage:"01",creatorId:u.id,timeLogged:0,timeLog:[],attachments:[],comments:[],activity:[],rating:null,completedAt:"",createdAt:nowISO(),updatedAt:nowISO()};
+        act(t,"created this task",u); if(t.assigneeId!==u.id) act(t,`assigned to ${tName(d,t.assigneeId)}`,u);
+        d.tasks.unshift(t); audit(d,t,u,"Task created",`${t.title} → ${tName(d,t.assigneeId)}`); return t;
+      },t=>`Created ${t.id}`);
     },
-    tUpdate(key,patch){
+    tSave(key,f){
       return run((d,u)=>{
         const t=find(d,key); if(!t) fail("This task no longer exists.");
-        if(!T_OPEN.includes(t.stage)) fail("This task is closed. Reopen it before changing it.");
-        const keys=Object.keys(patch).filter(k=>JSON.stringify(patch[k])!==JSON.stringify(t[k])); if(!keys.length) return;
-        if(keys.some(k=>MANAGE.includes(k))&&!tCanManage(u,t)) fail("Only the creator, the HOD or the Regional Manager can change this.");
-        if(!tCanWork(u,t)) fail("You can't edit this task.");
-        const nx={...t,...patch};
-        if(!String(nx.title).trim()) fail("The title can't be empty.");
-        if(keys.includes("dept")&&(!nx.dept||(!tIsAdmin(u)&&!tDeptsFor(u).includes(nx.dept)))) fail("You can only move tasks within your own department.");
-        if((keys.includes("dept")||keys.includes("assigneeId"))&&!tAssignable(d,u,nx.dept).some(x=>x.id===nx.assigneeId)) fail(`${(tUser(d,nx.assigneeId)||{name:"That person"}).name} is not in ${nx.dept}. Choose someone from that department.`);
-        if(keys.includes("plannedDate")||keys.includes("startDate")) checkDates(nx.startDate,nx.plannedDate);
-        if(keys.includes("deps")){
-          const reach=(from,seen)=>{ if(from===t.key) return true; if(seen.has(from)) return false; seen.add(from); const x=d.tasks.find(z=>z.key===from); return !!x&&(x.deps||[]).some(k=>reach(k,seen)); };
-          if(nx.deps.some(k=>reach(k,new Set()))) fail("That would make the two tasks wait for each other forever.");
-        }
-        keys.forEach(k=>{ t[k]=patch[k]; });
-        t.title=String(t.title).trim().slice(0,200);
-        if(keys.includes("plannedDate")) t.repeatDay=(tDate(t.plannedDate)||new Date()).getDate();
-        if(keys.includes("assigneeId")){ t.assignedAt=nowISO(); act(t,`Assigned to ${tUser(d,t.assigneeId).name}`,u); }
-        const rest=keys.filter(k=>k!=="assigneeId"&&k!=="subtasks");
-        if(rest.length) act(t,"Changed "+rest.map(k=>k==="plannedDate"?`planned date to ${tFmt(t.plannedDate)}`:k==="priority"?`priority to ${t.priority}`:k==="dept"?`department to ${t.dept}`:LABEL[k]||k).join(", "),u);
-        else t.updatedAt=nowISO();
-      });
+        if(!TR.canEdit(t,u)) fail("You can't edit this task.");
+        const c=clean(d,f,u,false);
+        if(c.dept!==t.dept&&tRole(u)!=="RM") fail("Only the Regional Manager can move a task to another department.");
+        if(c.assigneeId!==t.assigneeId&&!tAssignable(d,c.dept,u).some(x=>x.id===c.assigneeId)) fail(`${tName(d,c.assigneeId)} is not in ${tDept(c.dept).name}.`);
+        if(depsLoop(d,t,c.dependencies)) fail("These tasks would wait for each other forever. Remove one of the dependencies.");
+        const changes=[];
+        if(c.assigneeId!==t.assigneeId) changes.push(`reassigned to ${tName(d,c.assigneeId)}`);
+        if(c.plannedDate!==t.plannedDate) changes.push(`moved the planned date to ${tFmt(c.plannedDate,true)}`);
+        if(c.priority!==t.priority) changes.push(`set priority to ${c.priority}`);
+        if(c.title!==t.title) changes.push("renamed the task");
+        if(c.dept!==t.dept) changes.push(`moved to ${tDept(c.dept).name}`);
+        const moving=!!f.stage&&f.stage!==t.stage; let spawned=null; if(moving) spawned=doMove(d,t,f.stage,u);
+        Object.assign(t,c); changes.forEach(x=>act(t,x,u)); if(!changes.length&&!moving) act(t,"updated details",u);
+        return spawned;
+      },n=>n?`Saved · next occurrence ${n.id} created`:"Saved");
     },
-    tMove(key,to,comment){
-      return run((d,u)=>{
-        const t=find(d,key); if(!t) fail("This task no longer exists.");
-        const mv=taskMoves(u,t).find(m=>m.to===to);
-        if(!mv){ const nx=tNextHint(d,t); fail(`You can't move ${t.id} to “${TSTAGE[to].label}”.${nx?" Next step: "+nx+".":""}`); }
-        const why=String(comment||"").trim().slice(0,1000);
-        if(mv.comment&&!why) fail("Please give a short reason.");
-        if(to==="done"){ const open=tDepsOpen(d,t); if(open.length) fail(`Still waiting for ${open.map(x=>x.id).join(", ")} to finish.`); }
-        const from=t.stage; t.stage=to;
-        if(to==="progress"&&from==="new") t.startedAt=nowISO();
-        if(to==="progress"&&from!=="new") t.sentBack={at:nowISO(),by:u.name,uid:u.id,comment:why};
-        if(to==="review"){ t.submittedAt=nowISO(); t.sentBack=null; }
-        if(to==="approved"){ t.approvedAt=nowISO(); t.approvedBy=u.id; }
-        if(to==="done") t.completedAt=nowISO();
-        if(from==="done"){ t.completedAt=""; t.rating=0; t.ratedBy=""; }
-        act(t,`${mv.label}: ${TSTAGE[from].label} → ${TSTAGE[to].label}${why?" — “"+why+"”":""}`,u);
-        if(["approved","done","cancelled"].includes(to)||from==="done") audit(d,t,u,`Task ${mv.label.toLowerCase()}`,why||t.title);
-        /* a repeating task creates its next occurrence once, when it is first closed */
-        if(to==="done"&&t.recurring&&t.recurring!=="none"&&!t.spawnedNext){
-          const step=x=>t.recurring==="daily"?tAddDays(x,1):t.recurring==="weekly"?tAddDays(x,7):tAddMonths(x,1,t.repeatDay);
-          let nd=step(t.plannedDate||tToday()), guard=0; while(nd<tToday()&&guard++<500) nd=step(nd);
-          const c={...JSON.parse(JSON.stringify(t)), key:newKey(), id:nextNo(d), stage:"new", plannedDate:nd, startDate:"", loggedMin:0, timeLog:[], files:[], comments:[], activity:[],
-            rating:0, ratedBy:"", completedAt:"", submittedAt:"", approvedAt:"", approvedBy:"", startedAt:"", sentBack:null, spawnedNext:false, repeatOf:t.id,
-            subtasks:(t.subtasks||[]).map(s=>({...s,id:uid(),done:false})), createdAt:nowISO(), updatedAt:nowISO(), assignedAt:nowISO()};
-          act(c,`Next occurrence of ${t.id} (${TREC[t.recurring].toLowerCase()})`,u); d.tasks.unshift(c); t.spawnedNext=true;
-          return {next:c.id};
-        }
-      },out=>out&&out.next?`Moved to ${TSTAGE[to].label} · next occurrence ${out.next} created`:`Moved to ${TSTAGE[to].label}`);
+    tMove(key,to){
+      return run((d,u)=>{ const t=find(d,key); if(!t) fail("This task no longer exists."); if(t.stage===to) return; return doMove(d,t,to,u); },
+        n=>n?`Moved to ${tStage(to).name} · next occurrence ${n.id} created`:to==="06"?"Done":`Moved to ${tStage(to).name}`);
+    },
+    tReschedule(key,date){
+      return run((d,u)=>{ const t=find(d,key); if(!t) fail("This task no longer exists."); if(!TR.canEdit(t,u)) fail("You can't change this task."); if(!tDate(date)) fail("Not a valid date.");
+        if(t.startDate&&t.startDate>date) t.startDate=""; t.plannedDate=date; act(t,`moved the planned date to ${tFmt(date,true)}`,u); },`Planned for ${tFmt(date,true)}`);
     },
     tComment(key,text){
       return run((d,u)=>{
-        const t=find(d,key); if(!t||!taskVisible(u,t)) fail("You can't comment on this task.");
+        const t=find(d,key); if(!t||!TR.canSee(t,u)) fail("You don't have access to this task."); if(!TR.canComment(u)) fail("Your role can view but not comment.");
         const body=String(text||"").trim().slice(0,2000); if(!body) fail("Write something first.");
         const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
-        const ment=d.users.filter(x=>x.active&&x.username&&x.id!==u.id&&new RegExp("(^|[\\s(])@"+esc(x.username)+"(?![\\w.-])","i").test(body)).map(x=>x.id);
-        t.comments=t.comments||[]; t.comments.push({id:uid(),uid:u.id,by:u.name,text:body,at:nowISO(),mentions:ment});
-        t.watchers=[...new Set([...(t.watchers||[]),...ment])]; t.updatedAt=nowISO();
+        const ment=d.users.filter(x=>x.username&&x.id!==u.id&&new RegExp("(^|[\\s(])@"+esc(x.username)+"(?![\\w.-])","i").test(body)).map(x=>x.id);
+        t.comments=t.comments||[]; t.comments.push({id:uid(),uid:u.id,by:u.name,text:body,at:nowISO(),mentions:ment}); t.updatedAt=nowISO();
       });
     },
     tLogTime(key,min){
-      return run((d,u)=>{
-        const t=find(d,key); if(!t||!tCanWork(u,t)) fail("Only people working on this task can log time.");
+      return run((d,u)=>{ const t=find(d,key); if(!t||!TR.canEdit(t,u)) fail("You can't log time on this task.");
         if(!(min>=1&&min<=24*60)) fail("Enter a time between 1 minute and 24 hours, e.g. 45m or 1h 30m.");
-        t.loggedMin=(t.loggedMin||0)+min; t.timeLog=t.timeLog||[]; t.timeLog.push({id:uid(),at:nowISO(),uid:u.id,by:u.name,min}); act(t,`Logged ${tMin(min)}`,u);
-      },`Logged ${tMin(min)}`);
+        t.timeLogged=(t.timeLogged||0)+min; t.timeLog=t.timeLog||[]; t.timeLog.push({id:uid(),at:nowISO(),uid:u.id,by:u.name,min}); act(t,`logged ${tMin(min)}`,u); },`Logged ${tMin(min)}`);
     },
     tRate(key,n){
-      return run((d,u)=>{
-        const t=find(d,key); if(!t||!tIsApprover(u,t)||!["approved","done"].includes(t.stage)) fail("Only the approving HOD can rate an approved task.");
-        t.rating=Math.max(1,Math.min(5,n)); t.ratedBy=u.name; act(t,`Rated ${t.rating}/5`,u);
-      });
+      return run((d,u)=>{ const t=find(d,key); if(!t||!TR.canRate(t,u)||t.stage!=="06") fail("Only the department HOD or the Regional Manager rates a done task.");
+        t.rating=Math.max(1,Math.min(5,n)); t.ratedBy=u.name; act(t,`rated the work ${t.rating}/5`,u); },`Rated ${n}/5`);
     },
     tAddFile(key,file){
-      return run((d,u)=>{ const t=find(d,key); if(!t||!tCanWork(u,t)) fail("You can't attach files to this task."); t.files=t.files||[]; t.files.push({id:uid(),at:nowISO(),by:u.name,...file}); act(t,`Attached ${file.name}`,u); },`Attached ${file.name}`);
+      return run((d,u)=>{ const t=find(d,key); if(!t||!TR.canEdit(t,u)) fail("You can't attach files to this task."); t.attachments=t.attachments||[]; t.attachments.push({id:uid(),at:nowISO(),by:u.name,...file}); act(t,`attached ${file.name}`,u); },`Attached ${file.name}`);
     },
     tRemoveFile(key,fid){
-      return run((d,u)=>{ const t=find(d,key); if(!t||!tCanWork(u,t)) fail("You can't change this task."); const f=(t.files||[]).find(x=>x.id===fid); t.files=(t.files||[]).filter(x=>x.id!==fid); if(f) act(t,`Removed ${f.name}`,u); });
+      return run((d,u)=>{ const t=find(d,key); if(!t||!TR.canEdit(t,u)) fail("You can't change this task."); const f=(t.attachments||[]).find(x=>x.id===fid); t.attachments=(t.attachments||[]).filter(x=>x.id!==fid); if(f) act(t,`removed ${f.name}`,u); });
     },
     tDelete(key){
-      return run((d,u)=>{
-        const t=find(d,key); if(!t) return; if(!tCanDelete(u,t)) fail("Only the HOD, the Regional Manager, or the creator of a task that has not started can delete it.");
-        d.tasks=d.tasks.filter(x=>x.key!==key); d.tasks.forEach(x=>{ if((x.deps||[]).includes(key)){ x.deps=x.deps.filter(k=>k!==key); act(x,`Dependency ${t.id} removed (task deleted)`,u); } });
-        audit(d,t,u,"Task deleted",t.title);
-      },"Task deleted");
+      return run((d,u)=>{ const t=find(d,key); if(!t) return; if(!TR.canDelete(t,u)) fail("You can't delete this task.");
+        d.tasks=d.tasks.filter(x=>x.key!==key); d.tasks.forEach(x=>{ x.dependencies=(x.dependencies||[]).filter(k=>k!==key); }); audit(d,t,u,"Task deleted"); return t; },t=>`Deleted ${t.id}`);
+    },
+    tSettings(patch){
+      return run((d,u)=>{ if(!TR.canSettings(u)) fail("Only the Regional Manager can change task settings."); d.settings={...d.settings,...patch}; },"Settings saved");
+    },
+    /* tasks saved by an earlier version of this page are converted once to the planner format */
+    tMigrate(){
+      const OLD={new:"01",progress:"02",review:"03",hod:"04",approved:"05",done:"06",cancelled:"07"};
+      commit(d=>{ (d.tasks||[]).forEach(t=>{ if(t.v===2) return; t.v=2; if(OLD[t.stage]) t.stage=OLD[t.stage]; if(!tDepts().some(x=>x.id===t.dept)) t.dept=PORTAL_TO_TASK_DEPT[t.dept]||"01";
+        if(t.deps&&!t.dependencies) t.dependencies=t.deps; if(t.files&&!t.attachments) t.attachments=t.files; if(t.loggedMin!=null&&t.timeLogged==null) t.timeLogged=t.loggedMin; if(t.estimateMin!=null&&t.estimate==null) t.estimate=t.estimateMin;
+        t.customFields=t.customFields||[]; t.dependencies=t.dependencies||[]; t.attachments=t.attachments||[]; t.subtasks=t.subtasks||[]; t.comments=t.comments||[]; t.tags=t.tags||[]; }); });
     },
   };
 }
 
-/* ---- notifications for the bell (merged into buildNotifications) ---- */
+/* ---------- notifications (merged into the portal bell) ---------- */
 function taskNotifications(state,user){
-  const n=[]; const tasks=(state.tasks||[]).filter(t=>taskVisible(user,t));
-  tasks.forEach(t=>{
-    if(t.assigneeId===user.id&&t.stage==="new"&&t.creatorId!==user.id) n.push({tone:"info",icon:"tasks",t:`New task · ${t.id}`,d:`${t.title} · due ${tFmt(t.plannedDate)}`,at:t.assignedAt||t.createdAt,task:t.key});
-    if(t.assigneeId===user.id&&t.stage==="progress"&&t.sentBack) n.push({tone:"warn",icon:"back",t:`Sent back · ${t.id}`,d:`${t.sentBack.by}: ${t.sentBack.comment}`,at:t.sentBack.at,task:t.key});
-    if(["review","hod","approved"].includes(t.stage)&&tNeedsMe(state,user,t)) n.push({tone:"info",icon:"stamp",t:`${t.stage==="approved"?"Ready to close":t.stage==="hod"?"Approval needed":"Review needed"} · ${t.id}`,d:`${t.title} · ${(tUser(state,t.assigneeId)||{}).name||""}`,at:t.updatedAt,task:t.key});
-    if(t.assigneeId===user.id&&tOverdue(t)) n.push({tone:"bad",icon:"alert",t:`Overdue · ${t.id}`,d:`${t.title} was due ${tFmt(t.plannedDate)}`,at:t.plannedDate+"T00:00:00",task:t.key,key:"tod|"+t.key+"|"+t.plannedDate});
-    (t.comments||[]).filter(c=>(c.mentions||[]).includes(user.id)&&hoursSince(c.at)<24*14).forEach(c=>n.push({tone:"info",icon:"msg",t:`${c.by} mentioned you · ${t.id}`,d:c.text.slice(0,120),at:c.at,task:t.key,key:"tm|"+c.id}));
+  TS=state; const out=[]; const weekAgo=Date.now()-7*864e5; const r=tRole(user); const all=["RM","GS","President"].includes(r); const handle=(user.username||"").toLowerCase();
+  (state.tasks||[]).filter(t=>t.v===2&&TR.canSee(t,user)).forEach(t=>{
+    const deptMine=all||(r==="HOD"&&t.dept===tUDept(user));
+    if(t.assigneeId===user.id&&t.creatorId!==user.id&&tTs(t.createdAt)>weekAgo&&tOpen(t)) out.push({tone:"info",icon:"user",t:`${tName(state,t.creatorId)} assigned you a task · ${t.id}`,d:t.title,at:t.createdAt,task:t.key,key:"tas|"+t.key});
+    if(tOverdue(t)&&(t.assigneeId===user.id||deptMine)) out.push({tone:"bad",icon:"alert",t:`Overdue since ${tFmt(t.plannedDate)} · ${t.id}`,d:t.title,at:t.plannedDate+"T23:59:00",task:t.key,key:"tov|"+t.key+"|"+t.plannedDate});
+    else if(tDueToday(t)&&t.assigneeId===user.id) out.push({tone:"warn",icon:"clock",t:`Due today · ${t.id}`,d:t.title,at:tToday()+"T07:00:00",task:t.key,key:"tdt|"+t.key+"|"+t.plannedDate});
+    if(t.stage==="04"&&TR.canApprove(t,user)) out.push({tone:"info",icon:"approve",t:`Waiting for your approval · ${t.id}`,d:t.title,at:t.updatedAt,task:t.key,key:"tap|"+t.key+"|"+t.updatedAt});
+    if(t.stage==="06"&&tTs(t.completedAt)>weekAgo&&deptMine&&t.assigneeId!==user.id) out.push({tone:"info",icon:"check",t:`${tName(state,t.assigneeId)} completed a task · ${t.id}`,d:t.title,at:t.completedAt,task:t.key,key:"tdn|"+t.key});
+    (t.comments||[]).forEach(c=>{ if(c.uid===user.id||tTs(c.at)<=weekAgo) return; const m=(c.mentions||[]).includes(user.id)||(handle&&c.text.toLowerCase().includes("@"+handle));
+      if(m||t.assigneeId===user.id||t.creatorId===user.id) out.push({tone:"info",icon:"msg",t:`${c.by} commented${m?" and mentioned you":""} · ${t.id}`,d:c.text.slice(0,90),at:c.at,task:t.key,key:"tcm|"+c.id}); });
   });
-  return n;
+  return out.sort((a,b)=>tTs(b.at)-tTs(a.at)).slice(0,40);
 }
-const tWaitingCount=(state,user)=>(state.tasks||[]).filter(t=>taskVisible(user,t)&&tNeedsMe(state,user,t)).length;
+const tWaitingCount=(state,user)=>{ TS=state; return (state.tasks||[]).filter(t=>t.v===2&&TR.canSee(t,user)&&((t.stage==="04"&&TR.canApprove(t,user))||(t.assigneeId===user.id&&tOverdue(t)))).length; };
 
-/* ---- running timer: kept per user on this device, survives a reload ---- */
+/* ---------- running timer: per user on this device, survives a reload ---------- */
 function useTaskTimer(user){
-  const k="akf-timer-"+user.id;
-  const read=()=>{ try{ return JSON.parse(tLS.get(k)||"null"); }catch(e){ return null; } };
+  const k="akf-timer-"+user.id; const read=()=>{ try{ return JSON.parse(tLS.get(k)||"null"); }catch(e){ return null; } };
   const [tm,setTm]=useState(read); const [,tick]=useState(0);
   useEffect(()=>{ const f=()=>setTm(read()); window.addEventListener("akf-timer",f); window.addEventListener("storage",f); return ()=>{ window.removeEventListener("akf-timer",f); window.removeEventListener("storage",f); }; },[]);
   useEffect(()=>{ if(!tm) return; const i=setInterval(()=>tick(x=>x+1),1000); return ()=>clearInterval(i); },[tm&&tm.start]);
   const set=v=>{ tLS.set(k,v?JSON.stringify(v):null); window.dispatchEvent(new Event("akf-timer")); };
   const secs=tm?Math.max(0,Math.floor((Date.now()-tm.start)/1000)):0;
-  return { tm, secs, label:`${pad(Math.floor(secs/3600),2)}:${pad(Math.floor(secs/60)%60,2)}:${pad(secs%60,2)}`, start:key=>set({key,start:Date.now()}), clear:()=>set(null) };
+  return {tm,secs,label:`${pad(Math.floor(secs/3600),2)}:${pad(Math.floor(secs/60)%60,2)}:${pad(secs%60,2)}`,start:key=>set({key,start:Date.now()}),clear:()=>set(null)};
 }
 function stopTimer(timer,A){ const min=Math.round(timer.secs/60); const key=timer.tm.key; timer.clear(); if(min>=1) A.tLogTime(key,Math.min(min,24*60)); else tToast("Timer stopped — under a minute, nothing logged",""); }
 
-/* ---- small pieces ---- */
-const TStage=({k})=>html`<${Tag} tone=${TSTAGE[k].tone} dot>${TSTAGE[k].label}</${Tag}>`;
-const TPriTag=({p})=>html`<${Tag} tone=${TPRI[p].tone}>${p}</${Tag}>`;
-const TStars=({n,onPick,sm})=>html`<span class=${"tk-stars"+(sm?" sm":"")}>${[1,2,3,4,5].map(i=>onPick?html`<button type="button" class=${i<=n?"on":""} title=${i+" of 5"} onClick=${()=>onPick(i)}>★</button>`:html`<span class=${i<=n?"on":""}>★</span>`)}</span>`;
-const TAvatar=({state,id,sm})=>{ const u=tUser(state,id); return html`<span class=${"avatar"+(sm?" tk-av":"")} title=${u?u.name:"Unknown"}>${initials(u?u.name:"?")}</span>`; };
-function tSorted(list){ return list.slice().sort((a,b)=>TPRI[a.priority].rank-TPRI[b.priority].rank||(a.plannedDate||"9").localeCompare(b.plannedDate||"9")); }
-
-/* ---- quick add: "Prepare ration list @ali tomorrow !high #ramadan" ---- */
-function tParseQuick(text,state,user){
-  let s=" "+text+" "; const out={tags:[]};
-  s=s.replace(/\s@([\w.-]+)/g,(_,n)=>{ const u=state.users.find(x=>(x.username||"").toLowerCase()===n.toLowerCase()||(x.name||"").toLowerCase().split(" ")[0]===n.toLowerCase()); if(u) out.assigneeId=u.id; else out.badUser=n; return " "; });
-  s=s.replace(/\s!(urgent|high|medium|low)\b/gi,(_,p)=>{ out.priority=p[0].toUpperCase()+p.slice(1).toLowerCase(); return " "; });
-  s=s.replace(/\s#([\w-]+)/g,(_,tg)=>{ out.tags.push(tg.toLowerCase()); return " "; });
-  const days=["sun","mon","tue","wed","thu","fri","sat"];
-  s=s.replace(/\s(today|tomorrow|next week|(?:mon|tue|wed|thu|fri|sat|sun)[a-z]*|\d{1,2}\/\d{1,2}(?:\/\d{2,4})?)(?=\s)/i,(_,w)=>{ const x=w.toLowerCase();
-    if(x==="today") out.plannedDate=tToday(); else if(x==="tomorrow") out.plannedDate=tAddDays(tToday(),1); else if(x==="next week") out.plannedDate=tAddDays(tToday(),7);
-    else if(/^\d/.test(x)){ const [d,m,y]=x.split("/").map(Number); const yy=y?(y<100?2000+y:y):new Date().getFullYear(); const iso=yy+"-"+pad(m,2)+"-"+pad(d,2); if(tDate(iso)) out.plannedDate=iso; else out.badDate=w; }
-    else { const i=days.indexOf(x.slice(0,3)); let n=(i-new Date().getDay()+7)%7||7; out.plannedDate=tAddDays(tToday(),n); }
-    return " "; });
-  out.title=s.replace(/\s+/g," ").trim();
-  return out;
+/* ---------- quick add: "Call donors tomorrow !high #Donors @farhan" ---------- */
+function tParseQuick(str,state,u){
+  const out={title:"",priority:"Medium",tags:[],plannedDate:tToday(),assigneeId:u.id,dept:tUDept(u)}; const t0=tToday(); const words=str.trim().split(/\s+/); const keep=[];
+  const dow={mon:1,tue:2,wed:3,thu:4,fri:5,sat:6,sun:0};
+  for(let i=0;i<words.length;i++){ const w=words[i], lw=w.toLowerCase();
+    if(/^!(urgent|high|medium|low)$/i.test(w)){ out.priority=w[1].toUpperCase()+w.slice(2).toLowerCase(); continue; }
+    if(/^#\S+/.test(w)){ out.tags.push(w.slice(1)); continue; }
+    if(/^@\S+/.test(w)){ const q=w.slice(1).toLowerCase(); const m=(state.users||[]).find(x=>x.active!==false&&((x.username||"").toLowerCase()===q||(x.name||"").toLowerCase().split(" ").includes(q)||(x.name||"").toLowerCase().replace(/\s+/g,"")===q)); if(m){ out.assigneeId=m.id; out.dept=tUDept(m); continue; } out.badUser=w; continue; }
+    if(/^\d{4}-\d{2}-\d{2}$/.test(w)){ if(tDate(w)) out.plannedDate=w; else out.badDate=w; continue; }
+    if(/^\d{1,2}\/\d{1,2}(\/\d{2,4})?$/.test(w)){ const [dd,mm,yy]=w.split("/").map(Number); const y=yy?(yy<100?2000+yy:yy):new Date().getFullYear(); const iso=y+"-"+pad(mm,2)+"-"+pad(dd,2); if(tDate(iso)) out.plannedDate=iso; else out.badDate=w; continue; }
+    if(lw==="today") continue;
+    if(lw==="tomorrow"||lw==="tmrw"){ out.plannedDate=tAddDays(t0,1); continue; }
+    if(lw==="next"&&/^week$/i.test(words[i+1]||"")){ out.plannedDate=tAddDays(t0,7); i++; continue; }
+    if(lw==="next"&&/^month$/i.test(words[i+1]||"")){ out.plannedDate=tAddMonths(t0,1); i++; continue; }
+    if(lw==="in"&&/^\d+$/.test(words[i+1]||"")&&/^(day|days|week|weeks)$/i.test(words[i+2]||"")){ const n=+words[i+1]; out.plannedDate=tAddDays(t0,/^week/i.test(words[i+2])?n*7:n); i+=2; continue; }
+    if(lw.length<=9&&/^(mon|tue|wed|thu|fri|sat|sun)/.test(lw)){ let diff=(dow[lw.slice(0,3)]-new Date().getDay()+7)%7; if(!diff) diff=7; out.plannedDate=tAddDays(t0,diff); continue; }
+    keep.push(w); }
+  out.title=keep.join(" ").replace(/\s+(on|by|due)$/i,"").trim(); return out;
 }
 
-/* ===================== page ===================== */
-function Tasks({state,user,A,taskOpen,setTaskOpen}){
-  const all=(state.tasks||[]).filter(t=>taskVisible(user,t));
-  const lsk="akf-tasks-"+user.id;
-  const saved=(()=>{ try{ return JSON.parse(tLS.get(lsk)||"{}"); }catch(e){ return {}; } })();
-  const [view,setView]=useState(saved.view||"board");
-  const [q,setQ]=useState(""); const [dept,setDept]=useState("all"); const [who,setWho]=useState("all"); const [pri,setPri]=useState("all");
-  const [scope,setScope]=useState(saved.scope||(user.role==="staff"?"mine":"all"));
-  const [creating,setCreating]=useState(null); const [quick,setQuick]=useState("");
-  const timer=useTaskTimer(user);
-  useEffect(()=>{ tLS.set(lsk,JSON.stringify({view,scope})); },[view,scope]);
-  const open=key=>setTaskOpen(key);
-  const today=tToday(), weekEnd=tAddDays(today,7), month=today.slice(0,7);
-  const mine=all.filter(t=>t.assigneeId===user.id&&T_OPEN.includes(t.stage));
-  const kp={
-    mine:mine.length,
-    me:all.filter(t=>tNeedsMe(state,user,t)).length,
-    overdue:all.filter(tOverdue).length,
-    week:all.filter(t=>T_WORK.includes(t.stage)&&t.plannedDate>=today&&t.plannedDate<=weekEnd).length,
-    done:all.filter(t=>t.stage==="done"&&tLocalDay(t.completedAt).slice(0,7)===month).length,
-  };
-  const inScope=t=>scope==="all"||(scope==="mine"&&t.assigneeId===user.id)||(scope==="me"&&tNeedsMe(state,user,t))||(scope==="overdue"&&tOverdue(t))||(scope==="week"&&T_WORK.includes(t.stage)&&t.plannedDate>=today&&t.plannedDate<=weekEnd)||(scope==="created"&&t.creatorId===user.id)||(scope==="donemonth"&&t.stage==="done"&&tLocalDay(t.completedAt).slice(0,7)===month);
-  const ql=q.trim().toLowerCase();
-  const list=all.filter(t=>inScope(t)&&(dept==="all"||t.dept===dept)&&(who==="all"||t.assigneeId===who)&&(pri==="all"||t.priority===pri)
-    &&(!ql||[t.id,t.title,t.description,(t.tags||[]).join(" "),(tUser(state,t.assigneeId)||{}).name].join(" ").toLowerCase().includes(ql)));
-  const people=[...new Set(all.map(t=>t.assigneeId))].map(id=>tUser(state,id)).filter(Boolean).sort((a,b)=>a.name.localeCompare(b.name));
-  const depts=[...new Set(all.map(t=>t.dept))].sort();
-  const pickScope=s=>{ setScope(x=>x===s?"all":s); if(view==="workload"||view==="performance") setView("list"); };
-  const canCreate=tCanCreate(user);
-  const blank=extra=>({title:"",description:"",dept:user.dept&&tDeptsFor(user).includes(user.dept)?user.dept:tDeptsFor(user)[0],assigneeId:user.id,priority:"Medium",plannedDate:today,startDate:"",estimate:"",recurring:"none",tags:[],...extra});
-  const addQuick=()=>{ const p=tParseQuick(quick,state,user);
-    if(!p.title){ tToast("Type a task title first","bad"); return; }
-    if(p.badUser){ tToast(`No user “@${p.badUser}”. Use their portal username.`,"bad"); return; }
-    if(p.badDate){ tToast(`“${p.badDate}” is not a real date`,"bad"); return; }
-    const a=p.assigneeId?tUser(state,p.assigneeId):user;
-    const d=tIsAdmin(user)?(a.dept||user.dept):user.dept;
-    if(A.tCreate({...blank(),...p,dept:d,assigneeId:a.id,plannedDate:p.plannedDate||today,tags:p.tags})){ setQuick(""); showAll(); } };
-  /* a new task must never vanish behind a filter such as "Assigned to me" */
-  const showAll=()=>{ setQ(""); setScope("all"); setDept("all"); setWho("all"); setPri("all"); if(view==="performance") setView("board"); };
-  const exportCsv=()=>{ const head=["ID","Title","Department","Assigned to","Created by","Priority","Stage","Start","Planned","Completed","Estimate (min)","Logged (min)","Rating","Tags"];
-    const rows=list.map(t=>[t.id,t.title,t.dept,(tUser(state,t.assigneeId)||{}).name||"",(tUser(state,t.creatorId)||{}).name||"",t.priority,TSTAGE[t.stage].label,t.startDate,t.plannedDate,tLocalDay(t.completedAt),t.estimateMin||0,t.loggedMin||0,t.rating||"",(t.tags||[]).join(" ")]);
-    const csv=[head,...rows].map(r=>r.map(v=>`"${String(v==null?"":v).replace(/"/g,'""')}"`).join(",")).join("\r\n");
-    const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob(["﻿"+csv],{type:"text/csv"})); a.download=`tasks-${today}.csv`; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),2000); };
-  const running=timer.tm&&(state.tasks||[]).find(t=>t.key===timer.tm.key);
-  const VIEWS=[["board","Board","board"],["list","List","list"],["calendar","Planner","cal"],["workload","Workload","users"],["performance","Performance","trophy"]];
+/* ---------- small pieces ---------- */
+const TDeptPill=({id})=>{ const d=tDept(id); return html`<span class="tk-pill" style=${`--c:${d.color}`} title=${d.name}><i/>${d.code}</span>`; };
+const TStagePill=({id})=>html`<${Tag} tone=${TSTAGE_TONE[id]||"neutral"} dot>${tStage(id).name}</${Tag}>`;
+const TPriPill=({p})=>html`<${Tag} tone=${TPRI_TONE[p]||"neutral"}>${p}</${Tag}>`;
+const TAvatar=({state,id,sm})=>{ const u=tUser(state,id); return html`<span class=${"avatar"+(sm?" tk-av":"")} title=${u?u.name:"Unassigned"}>${initials(u?u.name:"?")}</span>`; };
+const TStars=({n,onPick,sm})=>html`<span class=${"tk-stars"+(sm?" sm":"")}>${[1,2,3,4,5].map(i=>onPick?html`<button type="button" class=${i<=n?"on":""} aria-label=${i+" star"} onClick=${()=>onPick(i)}>★</button>`:html`<span class=${i<=n?"on":""}>★</span>`)}</span>`;
+const TEmpty=({title,children})=>html`<div class="empty" style="padding:20px 10px"><b>${title}</b>${children}</div>`;
+function TRow({t,state,user,A,open,who=true}){
+  const done=t.stage==="06"; const due=tOverdue(t)?"tk-bad":tDueToday(t)?"tk-warn":"";
+  const toggle=e=>{ e.stopPropagation(); A.tMove(t.key,done?"02":"06"); };
+  return html`<div class="tk-trow" role="button" tabindex="0" onClick=${()=>open(t.key)} onKeyDown=${e=>{ if(e.key==="Enter") open(t.key); }}>
+    <span class="pri" style=${"background:"+TPRI_COLOR[t.priority]}/>
+    <button class=${"tk-chk"+(done?" on":"")} aria-label=${done?"Reopen":"Mark done"} title=${done?"Reopen":TR.canClose(t,user)?"Mark done":TR.whyNoClose(t,user,state)} onClick=${toggle}>${done&&html`<${Icon} name="check"/>`}</button>
+    <span class="g"><b class=${done?"tk-strike":""}>${t.title}</b><small>${t.id} · ${tDept(t.dept).code}${who?" · "+tName(state,t.assigneeId):""} · ${tStage(t.stage).name}</small></span>
+    <span class=${"tk-due "+due}>${tFmt(t.plannedDate)}</span>
+  </div>`;
+}
 
+/* ===================== the Tasks page ===================== */
+function Tasks({state,user,A,taskOpen,setTaskOpen}){
+  TS=state;
+  const lsk="akf-tasks-"+user.id; const saved=(()=>{ try{ return JSON.parse(tLS.get(lsk)||"{}"); }catch(e){ return {}; } })();
+  const [view,setView]=useState(saved.view||"home"); const [mode,setMode]=useState(saved.mode||"board");
+  const [f,setF]=useState({q:"",dept:"",pri:"",who:"all",tag:"",...(saved.f||{}),q:""});
+  const [modal,setModal]=useState(null);   // {kind:"new",preset} — existing tasks open through taskOpen
+  const [month,setMonth]=useState(tToday().slice(0,7)); const [selDay,setSelDay]=useState(tToday());
+  const [range,setRange]=useState({from:tToday(),to:tAddDays(tToday(),6)}); const [perfMonth,setPerfMonth]=useState(tToday().slice(0,7));
+  const timer=useTaskTimer(user);
+  useEffect(()=>{ tLS.set(lsk,JSON.stringify({view,mode,f:{...f,q:""}})); },[view,mode,f]);
+  useEffect(()=>{ if((state.tasks||[]).some(t=>t.v!==2)) A.tMigrate(); },[(state.tasks||[]).length]);
+  const vis=(state.tasks||[]).filter(t=>t.v===2&&TR.canSee(t,user));
+  const setFilter=(k,v)=>setF(x=>({...x,[k]:v}));
+  const clearF=()=>setF({q:"",dept:"",pri:"",who:"all",tag:""});
+  const ql=f.q.trim().toLowerCase();
+  const filtered=vis.filter(t=>(!f.dept||t.dept===f.dept)&&(!f.pri||t.priority===f.pri)&&(!f.tag||(t.tags||[]).includes(f.tag))
+    &&(f.who==="all"||(f.who==="me"?t.assigneeId===user.id:t.assigneeId===f.who))
+    &&(!ql||t.title.toLowerCase().includes(ql)||t.id.toLowerCase().includes(ql)||(t.tags||[]).some(x=>x.toLowerCase().includes(ql))||tName(state,t.assigneeId).toLowerCase().includes(ql)));
+  const open=key=>{ const t=vis.find(x=>x.key===key); if(!t){ tToast("You don't have access to this task.","bad"); return; } setTaskOpen(key); };
+  const openNew=(preset={})=>{ if(!TR.canCreate(user)){ tToast("Your role can view tasks but not create them.","bad"); return; } setModal({kind:"new",preset}); };
+  const go=(v,patch)=>{ setView(v); if(patch) setF(x=>({...x,...patch})); };
+  const running=timer.tm&&vis.find(t=>t.key===timer.tm.key);
+  const VIEWS=[["home","Home","home"],["board","Board","board"],["planner","Planner","cal"],["workload","Workload","users"],["performance","Performance","chart"],["assistant","Assistant","zap"],["settings","Settings","settings"]];
+  const P={state,user,A,open,vis,filtered,f,setFilter,clearF,openNew,go,timer};
+  const migrating=(state.tasks||[]).some(t=>t.v!==2);
   return html`<${Fragment}><div class="tk-page">
-    <div class="tk-kpis">
-      <${Kpi} label="My open tasks" value=${kp.mine} sub="assigned to me" tone="info" onClick=${()=>pickScope("mine")}/>
-      <${Kpi} label="Waiting for me" value=${kp.me} sub="start, review or approve" tone="violet" onClick=${()=>pickScope("me")}/>
-      <${Kpi} label="Overdue" value=${kp.overdue} sub="past the planned date" tone=${kp.overdue?"bad":"ok"} onClick=${()=>pickScope("overdue")}/>
-      <${Kpi} label="Due in 7 days" value=${kp.week} sub="not yet submitted" tone="warn" onClick=${()=>pickScope("week")}/>
-      <${Kpi} label="Done this month" value=${kp.done} sub=${new Date().toLocaleDateString("en-GB",{month:"long"})} tone="ok" onClick=${()=>pickScope("donemonth")}/>
-    </div>
-    ${canCreate&&html`<div class="tk-quick"><${Icon} name="plus"/><input value=${quick} onInput=${e=>setQuick(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter") addQuick(); }} placeholder="Add a task and press Enter…" aria-label="Quick add task"/><button class="btn btn-ghost btn-sm" onClick=${()=>setCreating(blank({title:quick}))}>More details</button><button class="btn btn-primary btn-sm" disabled=${!quick.trim()} onClick=${addQuick}>Add</button></div>
-      <div class="tk-hint">Quick add: <code>@username</code> assign · <code>today</code> <code>tomorrow</code> <code>fri</code> <code>15/11</code> due date · <code>!urgent</code> <code>!high</code> <code>!low</code> priority · <code>#tag</code></div>`}
     <div class="tk-views">
       <div class="seg" role="tablist">${VIEWS.map(([k,l,i])=>html`<button role="tab" class=${view===k?"active":""} onClick=${()=>setView(k)}><${Icon} name=${i}/>${l}</button>`)}</div>
       <span class="grow"/>
       ${running&&html`<span class="tk-timer"><${Icon} name="clock"/>${running.id} · ${timer.label}<button onClick=${()=>open(running.key)}>Open</button><button onClick=${()=>stopTimer(timer,A)}>Stop & log</button></span>`}
-      ${canCreate&&html`<button class="btn btn-primary" onClick=${()=>setCreating(blank())}><${Icon} name="plus"/>New task</button>`}
+      ${TR.canCreate(user)&&html`<button class="btn btn-primary" onClick=${()=>openNew()}><${Icon} name="plus"/>New task</button>`}
     </div>
-    ${view!=="performance"&&html`<div class="tk-toolbar">
-      <label class="tk-search"><${Icon} name="search"/><input value=${q} onInput=${e=>setQ(e.target.value)} placeholder="Search ID, title, tag or person"/></label>
-      <select class="select" value=${scope} onChange=${e=>setScope(e.target.value)}><option value="all">All tasks I can see</option><option value="mine">Assigned to me</option><option value="me">Waiting for me</option><option value="created">Created by me</option><option value="overdue">Overdue</option><option value="week">Due in 7 days</option><option value="donemonth">Done this month</option></select>
-      ${depts.length>1&&html`<select class="select" value=${dept} onChange=${e=>setDept(e.target.value)}><option value="all">All departments</option>${depts.map(d=>html`<option value=${d}>${d}</option>`)}</select>`}
-      ${people.length>1&&html`<select class="select" value=${who} onChange=${e=>setWho(e.target.value)}><option value="all">Everyone</option>${people.map(p=>html`<option value=${p.id}>${p.name}</option>`)}</select>`}
-      <select class="select" value=${pri} onChange=${e=>setPri(e.target.value)}><option value="all">Any priority</option>${Object.keys(TPRI).map(p=>html`<option value=${p}>${p}</option>`)}</select>
-      ${(q||scope!=="all"||dept!=="all"||who!=="all"||pri!=="all")&&html`<button class="btn btn-ghost btn-sm" onClick=${()=>{ setQ(""); setScope("all"); setDept("all"); setWho("all"); setPri("all"); }}><${Icon} name="x"/>Clear</button>`}
-      <button class="btn btn-ghost btn-sm" title="Download the tasks shown as a spreadsheet" onClick=${exportCsv}><${Icon} name="download"/>Excel (CSV)</button>
-    </div>`}
-    <div class="xs faint row" style="gap:6px"><${Icon} name=${SB_READY?"shield":"alert"} cls="icon" style="width:13px"/>${SB_READY?"Saved in Supabase (shared with all staff)":"Offline mode: saved in this browser only"} · ${(state.tasks||[]).length} task${(state.tasks||[]).length===1?"":"s"} in the database · ${all.length} visible to you${list.length!==all.length?` · ${list.length} match the filters`:""}</div>
-    ${!all.length&&html`<div class="notice notice-info"><${Icon} name="tasks"/><span>${canCreate?html`No tasks yet. Type one in the box above and press <b>Enter</b> (e.g. <i>Prepare ration list tomorrow !high</i>), or click <b>New task</b>. The board, planner and reports below fill in as tasks are added.`:"No tasks yet. Tasks created by departments will appear here."}</span></div>`}
-    ${all.length>0&&!list.length&&html`<div class="notice notice-warn"><${Icon} name="search"/><span>${all.length} task${all.length===1?"":"s"} hidden by the filters. <button class="link-like" onClick=${()=>{ setQ(""); setScope("all"); setDept("all"); setWho("all"); setPri("all"); }}>Show all tasks</button></span></div>`}
-    ${view==="board"&&html`<${TBoard} tasks=${list} state=${state} user=${user} A=${A} open=${open}/>`}
-    ${view==="list"&&html`<${TList} tasks=${list} state=${state} open=${open}/>`}
-    ${view==="calendar"&&html`<${TCalendar} tasks=${list} state=${state} user=${user} A=${A} open=${open} onCreate=${canCreate?(date=>setCreating(blank({plannedDate:date}))):null}/>`}
-    ${view==="workload"&&html`<${TWorkload} tasks=${list} state=${state} open=${open}/>`}
-    ${view==="performance"&&html`<${TPerformance} tasks=${all} state=${state}/>`}
+    <div class="xs faint row" style="gap:6px;margin-top:-6px"><${Icon} name=${SB_READY?"shield":"alert"} cls="icon" style="width:13px"/>${SB_READY?"Saved in Supabase, shared with all staff":"Offline mode: saved in this browser only"} · ${(state.tasks||[]).length} task${(state.tasks||[]).length===1?"":"s"} in the database · ${vis.length} visible to you as ${TROLE_LABEL[tRole(user)]}${tRole(user)==="HOD"?" of "+tDept(tUDept(user)).name:""}</div>
+    ${migrating&&html`<div class="notice notice-info"><${Icon} name="refresh"/><span>Updating older tasks to the planner format…</span></div>`}
+    ${view==="home"&&html`<${THome} ...${P}/>`}
+    ${view==="board"&&html`<${TToolbar} ...${P} mode=${mode} setMode=${setMode}/>${mode==="list"?html`<${TList} ...${P}/>`:html`<${TBoard} ...${P}/>`}`}
+    ${view==="planner"&&html`<${TPlanner} ...${P} month=${month} setMonth=${setMonth} selDay=${selDay} setSelDay=${setSelDay} range=${range} setRange=${setRange}/>`}
+    ${view==="workload"&&html`<${TWorkload} ...${P}/>`}
+    ${view==="performance"&&html`<${TPerformance} ...${P} perfMonth=${perfMonth} setPerfMonth=${setPerfMonth}/>`}
+    ${view==="assistant"&&html`<${TAssistant} ...${P}/>`}
+    ${view==="settings"&&html`<${TSettings} ...${P}/>`}
   </div>
-  ${/* dialogs sit outside .tk-page: its entry animation would otherwise trap them under the top bar */""}
-  ${creating&&html`<${TaskForm} init=${creating} state=${state} user=${user} A=${A} onClose=${()=>setCreating(null)} onCreated=${showAll}/>`}
+  ${modal&&modal.kind==="new"&&html`<${TaskModal} isNew preset=${modal.preset} state=${state} user=${user} A=${A} timer=${timer} onClose=${()=>setModal(null)} open=${open} onCreated=${t=>{ setModal(null); clearF(); if(view==="home"||view==="settings"||view==="assistant") setView("board"); }}/>`}
   ${taskOpen&&html`<${TaskModal} key=${taskOpen} tkey=${taskOpen} state=${state} user=${user} A=${A} timer=${timer} onClose=${()=>setTaskOpen(null)} open=${open}/>`}<//>`;
 }
 
-/* ---- board ---- */
-function TBoard({tasks,state,user,A,open}){
-  const [over,setOver]=useState(null); const [dragKey,setDragKey]=useState(null);
-  const dragging=dragKey&&tasks.find(t=>t.key===dragKey);
-  const allowed=dragging?taskMoves(user,dragging).map(m=>m.to):[];
-  const drop=to=>{ const t=dragging; setOver(null); setDragKey(null); if(!t||t.stage===to) return; tryMove(t,to,user,A,state); };
-  return html`<div class="tk-board">${TSTAGES.map(s=>{
-    let col=tasks.filter(t=>t.stage===s.k); const total=col.length; const closed=s.k==="done"||s.k==="cancelled";
-    col=closed?col.sort((a,b)=>(b.completedAt||b.updatedAt||"").localeCompare(a.completedAt||a.updatedAt||"")).slice(0,40):tSorted(col);
-    const deny=dragging&&dragging.stage!==s.k&&!allowed.includes(s.k);
-    return html`<section class=${"tk-col"+(over===s.k?" over":"")+(deny?" deny":"")} aria-label=${s.label}
-      onDragOver=${e=>{ if(!dragging) return; e.preventDefault(); if(over!==s.k) setOver(s.k); }} onDragLeave=${e=>{ if(!e.currentTarget.contains(e.relatedTarget)) setOver(o=>o===s.k?null:o); }} onDrop=${e=>{ e.preventDefault(); drop(s.k); }}>
-      <header class="tk-col-h"><i style=${"background:"+s.color}/>${s.label}<span class="n">${total}</span></header>
-      <div class="tk-col-b">${col.map(t=>html`<${TCard} key=${t.key} t=${t} state=${state} onOpen=${()=>open(t.key)} dragging=${dragKey===t.key} onDragStart=${()=>setDragKey(t.key)} onDragEnd=${()=>{ setDragKey(null); setOver(null); }}/>`)}
-        ${!col.length&&html`<div class="tk-col-empty">${deny?"Not a step you can move it to":"Nothing here"}</div>`}
-        ${closed&&total>40&&html`<div class="xs faint" style="text-align:center">Latest 40 of ${total} · see List for all</div>`}</div>
-    </section>`; })}</div>`;
-}
-function tryMove(t,to,user,A,state){
-  const m=taskMoves(user,t).find(x=>x.to===to);
-  if(!m){ const nx=tNextHint(state,t); tToast(`${t.id} can't go to “${TSTAGE[to].label}” from here.${nx?" Next: "+nx+".":""}`,"bad"); return; }
-  let why="";
-  if(m.comment){ why=prompt(`${m.label} ${t.id} — reason:`); if(why===null) return; if(!why.trim()){ tToast("A reason is needed","bad"); return; } }
-  A.tMove(t.key,to,why);
-}
-const TCard=({t,state,onOpen,dragging,onDragStart,onDragEnd})=>{
-  const od=tOverdue(t); const sub=t.subtasks||[]; const dn=sub.filter(s=>s.done).length;
-  return html`<button class=${"tk-card"+(od?" od":"")+(dragging?" dragging":"")} style=${"--pri:"+TPRI[t.priority].color} draggable="true"
-    onDragStart=${e=>{ e.dataTransfer.effectAllowed="move"; try{ e.dataTransfer.setData("text/plain",t.key); }catch(_){} onDragStart(); }} onDragEnd=${onDragEnd} onClick=${onOpen}>
-    <div class="tk-card-top"><span class="tk-id">${t.id}</span>${(t.priority==="Urgent"||t.priority==="High")&&html`<${TPriTag} p=${t.priority}/>`}${t.recurring&&t.recurring!=="none"&&html`<span class="tk-rep" title=${TREC[t.recurring]}><${Icon} name="refresh"/></span>`}</div>
-    <div class="tk-ttl">${t.title}</div>
-    <div class="tk-meta"><span class=${od?"bad":t.plannedDate===tToday()?"warn":""} title="Planned date"><${Icon} name="clock"/>${od?"Overdue · ":""}${tFmt(t.plannedDate)}</span>${sub.length>0&&html`<span title="Checklist"><${Icon} name="check"/>${dn}/${sub.length}</span>`}${(t.comments||[]).length>0&&html`<span title="Comments"><${Icon} name="msg"/>${t.comments.length}</span>`}${(t.files||[]).length>0&&html`<span title="Files"><${Icon} name="clip"/>${t.files.length}</span>`}${t.rating?html`<${TStars} n=${t.rating} sm/>`:""}<span class="grow"/><${TAvatar} state=${state} id=${t.assigneeId} sm/></div>
-    <div class="tk-dept">${t.dept}${t.tags&&t.tags.length?" · #"+t.tags.join(" #"):""}</div>
-  </button>`;
-};
-
-/* ---- list ---- */
-function TList({tasks,state,open}){
-  const [sort,setSort]=useState({k:"plannedDate",dir:1});
-  const nm=id=>(tUser(state,id)||{name:""}).name;
-  const V={id:tNum,title:t=>t.title.toLowerCase(),dept:t=>t.dept.toLowerCase(),assignee:t=>nm(t.assigneeId).toLowerCase(),priority:t=>TPRI[t.priority].rank,plannedDate:t=>t.plannedDate||"9999",stage:t=>TSTAGE[t.stage].i,time:t=>t.loggedMin||0};
-  const rows=tasks.slice().sort((a,b)=>{ const x=V[sort.k](a), y=V[sort.k](b); return (x<y?-1:x>y?1:tNum(a)-tNum(b))*sort.dir; });
-  const th=(k,l)=>html`<th class=${sort.k===k?"on":""} onClick=${()=>setSort(s=>({k,dir:s.k===k?-s.dir:1}))} aria-sort=${sort.k===k?(sort.dir>0?"ascending":"descending"):"none"}>${l}${sort.k===k?(sort.dir>0?" ↑":" ↓"):""}</th>`;
-  return html`<${Card} title=${`${rows.length} task${rows.length===1?"":"s"}`} desc="Click a column to sort · click a row to open">
-    ${rows.length?html`<div class="tbl-wrap"><table class="tbl tk-tbl"><thead><tr>${th("id","ID")}${th("title","Task")}${th("dept","Department")}${th("assignee","Assigned to")}${th("priority","Priority")}${th("plannedDate","Planned")}${th("stage","Stage")}${th("time","Time")}</tr></thead>
-      <tbody>${rows.map(t=>html`<tr key=${t.key} onClick=${()=>open(t.key)}><td class="nowrap bold xs">${t.id}</td><td class="t"><b>${t.title}</b>${t.tags&&t.tags.length?html`<div class="xs faint">#${t.tags.join(" #")}</div>`:""}</td><td class="nowrap">${t.dept}</td><td class="nowrap">${nm(t.assigneeId)}</td><td><${TPriTag} p=${t.priority}/></td><td class=${"nowrap "+(tOverdue(t)?"tk-bad bold":"")}>${tFmt(t.plannedDate)}</td><td><${TStage} k=${t.stage}/></td><td class="nowrap xs">${tMin(t.loggedMin)}${t.estimateMin?" / "+tMin(t.estimateMin):""}</td></tr>`)}</tbody></table></div>`
-    :html`<${Empty} title="No tasks match">Try clearing the filters.<//>`}<//>`;
-}
-
-/* ---- planner (month calendar) ---- */
-function TCalendar({tasks,state,user,A,open,onCreate}){
-  const [month,setMonth]=useState(()=>tToday().slice(0,7)); const [sel,setSel]=useState(tToday());
-  const [over,setOver]=useState(null); const drag=useRef(null);
-  const [y,m]=month.split("-").map(Number); const first=new Date(y,m-1,1); const lead=(first.getDay()+6)%7;
-  const cells=[]; for(let i=0;i<42;i++) cells.push(tISO(new Date(y,m-1,1-lead+i)));
-  if(cells.slice(35).every(d=>+d.slice(5,7)!==m)) cells.length=35;
-  const byDay={}; tasks.forEach(t=>{ if(t.plannedDate&&t.stage!=="cancelled") (byDay[t.plannedDate]=byDay[t.plannedDate]||[]).push(t); });
-  Object.values(byDay).forEach(l=>l.sort((a,b)=>(a.stage==="done")-(b.stage==="done")||TPRI[a.priority].rank-TPRI[b.priority].rank));
-  const shift=n=>{ const d=new Date(y,m-1+n,1); setMonth(tISO(d).slice(0,7)); };
-  const today=tToday(); const agenda=byDay[sel]||[];
-  const dropOn=day=>{ const t=drag.current; drag.current=null; setOver(null); if(!t||t.plannedDate===day) return; if(!tCanManage(user,t)){ tToast("Only the creator, the HOD or the Regional Manager can reschedule this task","bad"); return; } A.tUpdate(t.key,{plannedDate:day}); };
-  return html`<div class="tk-cal-wrap"><${Card}>
-      <div class="tk-cal-h"><button class="iconbtn" aria-label="Previous month" onClick=${()=>shift(-1)}><${Icon} name="back"/></button><h3>${first.toLocaleDateString("en-GB",{month:"long",year:"numeric"})}</h3><button class="iconbtn" aria-label="Next month" onClick=${()=>shift(1)}><${Icon} name="arrow"/></button><span class="grow"/><button class="btn btn-ghost btn-sm" onClick=${()=>{ setMonth(today.slice(0,7)); setSel(today); }}>Today</button></div>
-      <div class="tk-cal">${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d=>html`<div class="dow">${d}</div>`)}
-        ${cells.map(d=>{ const l=byDay[d]||[]; return html`<div role="button" tabindex="0" class=${"day"+(+d.slice(5,7)!==m?" out":"")+(d===today?" today":"")+(d===sel?" sel":"")+(over===d?" over":"")} onClick=${()=>setSel(d)} onKeyDown=${e=>{ if(e.key==="Enter") setSel(d); }}
-          onDragOver=${e=>{ if(!drag.current) return; e.preventDefault(); if(over!==d) setOver(d); }} onDrop=${e=>{ e.preventDefault(); dropOn(d); }}>
-          <span class="dn">${+d.slice(8)}</span>
-          ${l.slice(0,3).map(t=>{ const can=T_OPEN.includes(t.stage)&&tCanManage(user,t); return html`<div class=${"ev"+(t.stage==="done"?" done":"")+(tOverdue(t)?" od":"")} style=${"--pri:"+TPRI[t.priority].color} draggable=${can?"true":"false"} title=${t.id+" · "+t.title} onDragStart=${e=>{ drag.current=t; try{ e.dataTransfer.setData("text/plain",t.key); }catch(_){} }} onClick=${e=>{ e.stopPropagation(); open(t.key); }}>${t.title}</div>`; })}
-          ${l.length>3&&html`<span class="more">+${l.length-3} more</span>`}
-          ${l.length>0&&html`<span class="dots">${l.slice(0,6).map(t=>html`<i style=${"--pri:"+TPRI[t.priority].color}/>`)}</span>`}
-        </div>`; })}</div>
-      <div class="xs faint" style="margin-top:8px">Drag a task to another day to reschedule it.</div>
-    <//>
-    <${Card} title=${tFmtY(sel)} desc=${`${agenda.length} task${agenda.length===1?"":"s"} planned`} right=${onCreate&&html`<button class="btn btn-primary btn-sm" onClick=${()=>onCreate(sel)}><${Icon} name="plus"/>Add</button>`}>
-      ${agenda.length?agenda.map(t=>html`<button class="tk-row" style=${"--pri:"+TPRI[t.priority].color} onClick=${()=>open(t.key)}><span class="pri"/><span class="g"><b>${t.title}</b><small>${t.id} · ${(tUser(state,t.assigneeId)||{}).name||""}</small></span><${TStage} k=${t.stage}/></button>`):html`<${Empty} title="Free day">Nothing planned for this date.<//>`}
-    <//></div>`;
-}
-
-/* ---- workload ---- */
-function TWorkload({tasks,state,open}){
-  const open_=tasks.filter(t=>T_OPEN.includes(t.stage));
-  const rows=[...new Set(open_.map(t=>t.assigneeId))].map(id=>{ const u=tUser(state,id)||{name:"Unknown",dept:""}; const l=open_.filter(t=>t.assigneeId===id);
-    const od=l.filter(tOverdue).length, wait=l.filter(t=>!tOverdue(t)&&["review","hod","approved"].includes(t.stage)).length, prog=l.filter(t=>!tOverdue(t)&&t.stage==="progress").length, nw=l.length-od-wait-prog;
-    return {u,id,n:l.length,od,wait,prog,nw,est:l.reduce((s,t)=>s+Math.max(0,(t.estimateMin||0)-(t.loggedMin||0)),0),urgent:l.filter(t=>t.priority==="Urgent").length}; }).sort((a,b)=>b.n-a.n||b.od-a.od);
-  const max=Math.max(1,...rows.map(r=>r.n));
-  const seg=(n,c)=>n?html`<i style=${`width:${n/max*100}%;background:${c}`}/>`:"";
-  return html`<${Card} title="Workload" desc="Open tasks per person — each task is counted once">
-    <div class="tk-legend" style="margin-bottom:6px"><span><i style="background:var(--bad)"/>Overdue</span><span><i style="background:#1E6FD9"/>In progress</span><span><i style="background:#8C9AB0"/>Not started</span><span><i style="background:#5B3FD3"/>With reviewer / HOD</span></div>
-    ${rows.length?rows.map(r=>html`<div class="tk-wl"><div class="tk-who"><span class="avatar">${initials(r.u.name)}</span><div style="min-width:0"><b>${r.u.name}</b><small>${r.u.dept}${r.urgent?` · ${r.urgent} urgent`:""}</small></div></div>
-      <div class="tk-bar" title=${`${r.od} overdue · ${r.prog} in progress · ${r.nw} not started · ${r.wait} waiting`}>${seg(r.od,"var(--bad)")}${seg(r.prog,"#1E6FD9")}${seg(r.nw,"#8C9AB0")}${seg(r.wait,"#5B3FD3")}</div>
-      <div class="xs bold" style="text-align:right">${r.n} open${r.od?html` · <span class="tk-bad">${r.od} late</span>`:""}<div class="faint">${r.est?tMin(r.est)+" left":"no estimate"}</div></div></div>`)
-    :html`<${Empty} title="No open tasks">Everyone is clear.<//>`}<//>`;
-}
-
-/* ---- performance (one month at a time, every number for the same month) ---- */
-function TPerformance({tasks,state}){
-  const [month,setMonth]=useState(tToday().slice(0,7));
-  const [y,m]=month.split("-").map(Number); const mLabel=new Date(y,m-1,1).toLocaleDateString("en-GB",{month:"long",year:"numeric"});
-  const done=tasks.filter(t=>t.stage==="done"&&tLocalDay(t.completedAt).slice(0,7)===month);
-  const onTime=t=>!t.plannedDate||tLocalDay(t.submittedAt||t.completedAt)<=t.plannedDate;
-  const rated=done.filter(t=>t.rating);
-  const mins=tasks.reduce((s,t)=>s+(t.timeLog||[]).filter(l=>tLocalDay(l.at).slice(0,7)===month).reduce((a,l)=>a+l.min,0),0);
-  const created=tasks.filter(t=>tLocalDay(t.createdAt).slice(0,7)===month).length;
-  const pct=(a,b)=>b?Math.round(a/b*100)+"%":"—";
-  const lb=[...new Set(done.map(t=>t.assigneeId))].map(id=>{ const l=done.filter(t=>t.assigneeId===id); const r=l.filter(t=>t.rating); const ot=l.filter(onTime).length;
-    return {u:tUser(state,id)||{name:"Unknown",dept:""},n:l.length,ot,rate:r.length?r.reduce((s,t)=>s+t.rating,0)/r.length:0,score:l.length*2+ot+(r.length?r.reduce((s,t)=>s+t.rating,0)/r.length:0)}; }).sort((a,b)=>b.score-a.score);
-  const byDept=[...new Set(tasks.map(t=>t.dept))].map(d=>({d,done:done.filter(t=>t.dept===d).length,late:done.filter(t=>t.dept===d&&!onTime(t)).length,open:tasks.filter(t=>t.dept===d&&T_OPEN.includes(t.stage)).length})).filter(x=>x.done||x.open).sort((a,b)=>b.done-a.done);
-  const dmax=Math.max(1,...byDept.map(x=>x.done+x.open));
+/* ---------- Home ---------- */
+function THome({state,user,A,open,vis,openNew,go}){
+  const t0=tToday(); const h=new Date().getHours(); const greet=h<12?"Good morning":h<17?"Good afternoon":"Good evening";
+  const r=tRole(user); const mine=vis.filter(t=>t.assigneeId===user.id); const scope=r==="Staff"?mine:vis;
+  const dueToday=scope.filter(tDueToday), overdue=scope.filter(tOverdue), openT=scope.filter(tOpen);
+  const waiting=vis.filter(t=>t.stage==="04"&&TR.canApprove(t,user));
+  const doneMonth=scope.filter(t=>t.stage==="06"&&tLocalDay(t.completedAt).slice(0,7)===t0.slice(0,7));
+  const todayAll=scope.filter(t=>t.plannedDate===t0); const todayDone=todayAll.filter(t=>t.stage==="06").length;
+  const pct=todayAll.length?Math.round(todayDone/todayAll.length*100):(openT.length?0:100);
+  const rr=50, c=2*Math.PI*rr;
+  const upcoming=openT.filter(t=>t.plannedDate>t0&&t.plannedDate<=tAddDays(t0,7)).sort((a,b)=>a.plannedDate.localeCompare(b.plannedDate));
+  const activity=vis.flatMap(t=>(t.activity||[]).slice(-3).map(a=>({...a,task:t}))).sort((a,b)=>tTs(b.at)-tTs(a.at)).slice(0,8);
+  const [q,setQ]=useState("");
+  const add=()=>{ const p=tParseQuick(q,state,user);
+    if(!p.title){ tToast("Type what needs to be done first","bad"); return; }
+    if(p.badUser){ tToast(`No user ${p.badUser}. Use their portal username, e.g. @${(user.username||"username")}.`,"bad"); return; }
+    if(p.badDate){ tToast(`${p.badDate} is not a real date`,"bad"); return; }
+    if(A.tCreate({...p,estimate:60,recurring:"none"})) setQ(""); };
+  const needs=[...overdue.sort((a,b)=>a.plannedDate.localeCompare(b.plannedDate)),...waiting.filter(w=>!overdue.includes(w))].slice(0,8);
+  const RowP=t=>html`<${TRow} t=${t} state=${state} user=${user} A=${A} open=${open}/>`;
   return html`<div class="stack" style="gap:16px">
-    <div class="row wrap" style="gap:8px"><button class="iconbtn" aria-label="Previous month" onClick=${()=>setMonth(tISO(new Date(y,m-2,1)).slice(0,7))}><${Icon} name="back"/></button><b style="font-size:17px;min-width:150px;text-align:center">${mLabel}</b><button class="iconbtn" aria-label="Next month" onClick=${()=>setMonth(tISO(new Date(y,m,1)).slice(0,7))}><${Icon} name="arrow"/></button><span class="xs faint">Every figure on this page is for ${mLabel}.</span></div>
-    <div class="tk-kpis">
-      <${Kpi} label="Completed" value=${done.length} sub=${`${created} created this month`} tone="ok"/>
-      <${Kpi} label="On time" value=${pct(done.filter(onTime).length,done.length)} sub="submitted by the planned date" tone="info"/>
-      <${Kpi} label="Average rating" value=${rated.length?(rated.reduce((s,t)=>s+t.rating,0)/rated.length).toFixed(1)+" ★":"—"} sub=${`${rated.length} rated by HODs`} tone="warn"/>
-      <${Kpi} label="Time logged" value=${tMin(mins)} sub="across all tasks" tone="violet"/>
-      <${Kpi} label="Still overdue" value=${tasks.filter(tOverdue).length} sub="today, all months" tone="bad"/>
+    <section class="tk-hero"><div>
+      <h2>${greet}, ${(user.name||"").split(" ")[0]}</h2>
+      <p>${todayAll.length?`${todayDone} of ${todayAll.length} tasks planned for today are done.`:"Nothing is planned for today yet."} ${overdue.length?`${overdue.length} overdue need attention.`:"Nothing is overdue."}</p>
+      <div class="tk-chips"><span class="tk-chip2"><${Icon} name="board"/>${openT.length} open</span>
+        ${overdue.length>0&&html`<button class="tk-chip2 alert" onClick=${()=>go("board",{who:r==="Staff"?"me":"all"})}><${Icon} name="alert"/>${overdue.length} overdue</button>`}
+        ${waiting.length>0&&html`<button class="tk-chip2 warn" onClick=${()=>go("board")}><${Icon} name="approve"/>${waiting.length} waiting your approval</button>`}
+        <span class="tk-chip2"><${Icon} name="check"/>${doneMonth.length} done this month</span></div></div>
+      <div class="tk-ring"><svg viewBox="0 0 120 120" width="118" height="118"><circle cx="60" cy="60" r=${rr} stroke="rgba(255,255,255,.2)" stroke-width="10" fill="none"/><circle cx="60" cy="60" r=${rr} stroke="#fff" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray=${c} stroke-dashoffset=${c*(1-pct/100)} transform="rotate(-90 60 60)"/></svg><b>${pct}%</b><small>today</small></div>
+    </section>
+    ${TR.canCreate(user)&&html`<div><div class="tk-quick"><${Icon} name="plus"/><input value=${q} onInput=${e=>setQ(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter") add(); }} placeholder="Add a task… e.g. Call donors tomorrow !high #Donors @username" aria-label="Quick add task"/><button class="btn btn-primary btn-sm" onClick=${add}>Add</button></div>
+      <div class="tk-hint" style="margin-top:6px">Shortcuts: <code>!urgent</code> <code>#tag</code> <code>@username</code> <code>tomorrow</code> <code>friday</code> <code>next week</code> <code>in 3 days</code> <code>15/11</code> <code>2026-11-05</code></div></div>`}
+    <button class="tk-ai-card" onClick=${()=>go("assistant")}><span class="tk-ai-ico"><${Icon} name="zap"/></span><span><b>${tAiHeadline(state,user,vis)}</b><small>Open your assistant for a plan, risks and a weekly digest.</small></span><${Icon} name="right"/></button>
+    <div class="tk-kpis4">
+      <${Kpi} label="Due today" value=${dueToday.length} tone="warn" onClick=${()=>go("planner")}/>
+      <${Kpi} label="Overdue" value=${overdue.length} tone="bad" onClick=${()=>go("board")}/>
+      <${Kpi} label="Waiting approval" value=${waiting.length} tone="violet" onClick=${()=>go("board")}/>
+      <${Kpi} label="Done this month" value=${doneMonth.length} tone="ok" onClick=${()=>go("performance")}/>
     </div>
     <div class="grid2">
-      <${Card} title="Leaderboard" desc=${`Completed in ${mLabel} · on-time and HOD rating`}>${lb.length?lb.slice(0,12).map((r,i)=>html`<div class="tk-row"><span class=${"tk-rank"+(i<3?" top":"")}>${i+1}</span><span class="avatar">${initials(r.u.name)}</span><span class="g"><b>${r.u.name}</b><small>${r.u.dept} · ${r.n} done · ${pct(r.ot,r.n)} on time</small></span>${r.rate?html`<${TStars} n=${Math.round(r.rate)} sm/>`:html`<span class="xs faint">not rated</span>`}</div>`):html`<${Empty} title="No completed tasks">Nothing was closed in ${mLabel}.<//>`}<//>
-      <${Card} title="By department" desc="Done this month vs. still open"><div class="tk-legend" style="margin-bottom:6px"><span><i style="background:#0F8A5F"/>Done</span><span><i style="background:var(--bad)"/>Done late</span><span><i style="background:#9DB9E6"/>Open</span></div>${byDept.length?byDept.map(x=>html`<div class="tk-wl" style="grid-template-columns:140px minmax(0,1fr) 70px"><b class="sm">${x.d}</b><div class="tk-bar"><i style=${`width:${(x.done-x.late)/dmax*100}%;background:#0F8A5F`}/><i style=${`width:${x.late/dmax*100}%;background:var(--bad)`}/><i style=${`width:${x.open/dmax*100}%;background:#9DB9E6`}/></div><span class="xs bold" style="text-align:right">${x.done} / ${x.open}</span></div>`):html`<${Empty} title="No data">No tasks for this month.<//>`}<//>
+      <${Card} title="Today" desc=${tFmt(t0,true)}>${todayAll.length?todayAll.sort(tByPri).map(RowP):html`<${TEmpty} title="No tasks planned for today">Use the quick-add bar above or the planner to schedule work.<//>`}<//>
+      <${Card} title="Needs attention">${needs.length?needs.map(RowP):html`<${TEmpty} title="All clear">Nothing overdue and nothing waiting for you.<//>`}<//>
+      <${Card} title="Next 7 days" right=${html`<button class="btn btn-ghost btn-sm" onClick=${()=>go("planner")}>Open planner<${Icon} name="right"/></button>`}>${upcoming.length?upcoming.slice(0,8).map(RowP):html`<${TEmpty} title="Nothing scheduled this week"><//>`}<//>
+      <${Card} title="Recent activity">${activity.length?activity.map(a=>html`<div class="tk-act"><b>${a.by}</b> ${a.text} · <button class="link-like" onClick=${()=>open(a.task.key)}>${a.task.id}</button><span class="faint" style="float:right">${ago(a.at)}</span></div>`):html`<${TEmpty} title="No activity yet"><//>`}<//>
     </div></div>`;
 }
 
-/* ---- new task form ---- */
-function TaskForm({init,state,user,A,onClose,onCreated}){
-  const [f,setF]=useState(init); const set=(k,v)=>setF(x=>({...x,[k]:v})); const [tag,setTag]=useState("");
-  const people=tAssignable(state,user,f.dept);
-  useEffect(()=>{ if(!people.some(p=>p.id===f.assigneeId)) set("assigneeId",(people.find(p=>p.id===user.id)||people[0]||{}).id||""); },[f.dept]);
-  const est=tParseMin(f.estimate);
-  const ok=f.title.trim()&&f.assigneeId&&tDate(f.plannedDate)&&!(f.startDate&&(!tDate(f.startDate)||f.startDate>f.plannedDate))&&!isNaN(est);
-  const save=()=>{ if(!ok) return; if(A.tCreate({...f,estimateMin:est||0})){ if(onCreated) onCreated(); onClose(); } };
-  const addTag=()=>{ const v=tag.trim().replace(/^#/,"").toLowerCase(); if(v&&!f.tags.includes(v)) set("tags",[...f.tags,v]); setTag(""); };
-  return html`<${Modal} title="New task" sub="It starts as New and follows the approval steps" onClose=${onClose} footer=${html`<button class="btn btn-ghost" onClick=${onClose}>Cancel</button><span class="grow"/>${f.startDate&&f.plannedDate&&f.startDate>f.plannedDate&&html`<span class="sm tk-bad">Start date is after the planned date</span>`}<button class="btn btn-primary" disabled=${!ok} onClick=${save}><${Icon} name="check"/>Create task</button>`}>
-    <input class="tk-title" autofocus placeholder="What needs to be done?" value=${f.title} onInput=${e=>set("title",e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)) save(); }}/>
-    <div class="grid3">
-      <${Field} label="Department"><select class="select" value=${f.dept} onChange=${e=>set("dept",e.target.value)} disabled=${tDeptsFor(user).length<2}>${tDeptsFor(user).map(d=>html`<option value=${d}>${d}</option>`)}</select><//>
-      <${Field} label="Assigned to"><select class="select" value=${f.assigneeId} onChange=${e=>set("assigneeId",e.target.value)}>${people.map(p=>html`<option value=${p.id}>${p.name}${p.id===user.id?" (me)":""} · ${p.dept}</option>`)}</select><//>
-      <${Field} label="Priority"><select class="select" value=${f.priority} onChange=${e=>set("priority",e.target.value)}>${Object.keys(TPRI).map(p=>html`<option value=${p}>${p}</option>`)}</select><//>
-      <${Field} label="Start date (optional)"><input class="input" type="date" value=${f.startDate} max=${f.plannedDate} onInput=${e=>set("startDate",e.target.value)}/><//>
-      <${Field} label="Planned / due date"><input class="input" type="date" required value=${f.plannedDate} onInput=${e=>set("plannedDate",e.target.value)}/><//>
-      <${Field} label="Repeats"><select class="select" value=${f.recurring} onChange=${e=>set("recurring",e.target.value)}>${Object.entries(TREC).map(([k,v])=>html`<option value=${k}>${v}</option>`)}</select><//>
-      <${Field} label="Estimate (e.g. 2h or 45m)"><input class="input" value=${f.estimate} placeholder="45m" onInput=${e=>set("estimate",e.target.value)} style=${isNaN(est)?"border-color:var(--bad)":""}/><//>
-    </div>
-    <${Field} label="Description"><textarea class="textarea" value=${f.description} onInput=${e=>set("description",e.target.value)} placeholder="Details, location, people to contact…"/><//>
-    <${Field} label="Tags"><div class="row wrap" style="gap:6px">${f.tags.map(t=>html`<span class="tk-chip">#${t}<button type="button" aria-label=${"Remove "+t} onClick=${()=>set("tags",f.tags.filter(x=>x!==t))}><${Icon} name="x"/></button></span>`)}<input class="input" style="max-width:200px" value=${tag} placeholder="Add tag + Enter" onInput=${e=>setTag(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter"){ e.preventDefault(); addTag(); } }}/></div><//>
-  <//>`;
+/* ---------- Board / List ---------- */
+function TToolbar({state,user,vis,f,setFilter,clearF,mode,setMode,noMode}){
+  const people=[...new Set(vis.map(t=>t.assigneeId))].map(id=>tUser(state,id)).filter(Boolean).sort((a,b)=>a.name.localeCompare(b.name));
+  const tags=[...new Set(vis.flatMap(t=>t.tags||[]))].sort();
+  return html`<div class="tk-toolbar">
+    <label class="tk-search"><${Icon} name="search"/><input value=${f.q} onInput=${e=>setFilter("q",e.target.value)} placeholder="Filter by title, ID, tag or person" aria-label="Filter tasks"/></label>
+    <select class="select" value=${f.dept} onChange=${e=>setFilter("dept",e.target.value)} aria-label="Department"><option value="">All departments</option>${tDepts().map(d=>html`<option value=${d.id}>${d.code} · ${d.name}</option>`)}</select>
+    <select class="select" value=${f.pri} onChange=${e=>setFilter("pri",e.target.value)} aria-label="Priority"><option value="">Any priority</option>${TPRI_LIST.map(p=>html`<option value=${p}>${p}</option>`)}</select>
+    <select class="select" value=${f.who} onChange=${e=>setFilter("who",e.target.value)} aria-label="Assignee"><option value="all">Everyone</option><option value="me">Assigned to me</option>${people.filter(p=>p.id!==user.id).map(p=>html`<option value=${p.id}>${p.name}</option>`)}</select>
+    ${tags.length>0&&html`<select class="select" value=${f.tag} onChange=${e=>setFilter("tag",e.target.value)} aria-label="Tag"><option value="">Any tag</option>${tags.map(t=>html`<option value=${t}>${t}</option>`)}</select>`}
+    ${(f.q||f.dept||f.pri||f.tag||f.who!=="all")&&html`<button class="btn btn-ghost btn-sm" onClick=${clearF}><${Icon} name="x"/>Clear</button>`}
+    <span class="grow"/>
+    ${!noMode&&html`<div class="seg"><button class=${mode==="board"?"active":""} onClick=${()=>setMode("board")}><${Icon} name="board"/>Board</button><button class=${mode==="list"?"active":""} onClick=${()=>setMode("list")}><${Icon} name="list"/>List</button></div>`}
+  </div>`;
+}
+function TBoard({state,user,A,open,filtered,vis,openNew}){
+  const [over,setOver]=useState(null); const [dragKey,setDragKey]=useState(null);
+  const r=tRole(user);
+  const drop=to=>{ const t=vis.find(x=>x.key===dragKey); setOver(null); setDragKey(null); if(!t||t.stage===to) return; const e=tMoveError(state,t,to,user); if(e){ tToast(e,"bad"); return; } A.tMove(t.key,to); };
+  return html`<div>${filtered.length===0&&vis.length>0&&html`<div class="notice notice-warn" style="margin-bottom:10px"><${Icon} name="search"/><span>All ${vis.length} tasks are hidden by the filters above.</span></div>`}
+  <div class="tk-board">${tStages().map(s=>{
+    const list=filtered.filter(t=>t.stage===s.id).sort(tByPri);
+    const locked=(s.id==="06"||s.id==="07")&&!["RM","HOD"].includes(r)&&!list.length;
+    return html`<section class=${"tk-col"+(over===s.id?" over":"")+(locked?" locked":"")} aria-label=${s.name}
+      onDragOver=${e=>{ if(!dragKey) return; e.preventDefault(); if(over!==s.id) setOver(s.id); }} onDragLeave=${e=>{ if(!e.currentTarget.contains(e.relatedTarget)) setOver(o=>o===s.id?null:o); }} onDrop=${e=>{ e.preventDefault(); drop(s.id); }}>
+      <header class="tk-col-h"><i style=${"background:"+s.color}/>${s.name}<span class="n">${list.length}</span></header>
+      <div class="tk-col-b">${list.map(t=>html`<${TCard} key=${t.key} t=${t} state=${state} onOpen=${()=>open(t.key)} dragging=${dragKey===t.key} onDragStart=${()=>setDragKey(t.key)} onDragEnd=${()=>{ setDragKey(null); setOver(null); }}/>`)}
+        ${s.id==="01"&&TR.canCreate(user)&&html`<button class="tk-col-add" onClick=${()=>openNew()}><${Icon} name="plus"/>Add task</button>`}
+        ${!list.length&&s.id!=="01"&&html`<div class="tk-col-empty">${locked?"Closing needs HOD or RM rights":"Drop tasks here"}</div>`}</div>
+    </section>`; })}</div>
+  <div class="xs faint" style="margin-top:6px">Drag a card to another column on a computer, or open it and change the stage. Scroll sideways for more stages.</div></div>`;
+}
+const TCard=({t,state,onOpen,dragging,onDragStart,onDragEnd})=>{
+  const s=t.subtasks||[]; const done=s.filter(x=>x.done).length; const blocked=tBlockers(state,t).length>0;
+  return html`<div class=${"tk-card"+(tOverdue(t)?" od":"")+(dragging?" dragging":"")} style=${"--pri:"+TPRI_COLOR[t.priority]} role="button" tabindex="0" draggable="true"
+    onDragStart=${e=>{ e.dataTransfer.effectAllowed="move"; try{ e.dataTransfer.setData("text/plain",t.key); }catch(_){} onDragStart(); }} onDragEnd=${onDragEnd} onClick=${onOpen} onKeyDown=${e=>{ if(e.key==="Enter") onOpen(); }}>
+    <div class="tk-card-top"><${TDeptPill} id=${t.dept}/><${TPriPill} p=${t.priority}/>${blocked&&html`<${Tag} tone="bad"><${Icon} name="dep"/>blocked</${Tag}>`}${t.recurring&&t.recurring!=="none"&&html`<span class="tk-rep" title=${"Repeats "+t.recurring}><${Icon} name="repeat"/></span>`}<span class="grow"/><span class="tk-id">${t.id}</span></div>
+    <div class="tk-ttl">${t.title}</div>
+    <div class="tk-meta">${s.length>0&&html`<span><${Icon} name="subtask"/>${done}/${s.length}</span>`}${(t.comments||[]).length>0&&html`<span><${Icon} name="msg"/>${t.comments.length}</span>`}${(t.attachments||[]).length>0&&html`<span><${Icon} name="clip"/>${t.attachments.length}</span>`}<span><${Icon} name="clock"/>${tMin(t.timeLogged)}/${tMin(t.estimate)}</span></div>
+    ${(t.tags||[]).length>0&&html`<div class="tk-tags">${t.tags.map(x=>html`<span class="tk-tag">${x}</span>`)}</div>`}
+    <div class="tk-foot"><${TAvatar} state=${state} id=${t.assigneeId} sm/><span class="sm ellipsis" style="font-weight:600">${tName(state,t.assigneeId)}</span><span class="grow"/><span class=${"tk-date "+(tOverdue(t)?"bad":tDueToday(t)?"warn":"")}><${Icon} name="cal"/>${tFmt(t.plannedDate)}</span></div>
+  </div>`;
+};
+function TList({state,open,filtered}){
+  const [sort,setSort]=useState({k:"plannedDate",d:1});
+  const V={id:tNum,title:t=>t.title.toLowerCase(),dept:t=>tDept(t.dept).code,assignee:t=>tName(state,t.assigneeId).toLowerCase(),stage:t=>t.stage,priority:t=>TPRI_RANK[t.priority],plannedDate:t=>t.plannedDate||""};
+  const rows=filtered.slice().sort((a,b)=>{ const x=V[sort.k](a), y=V[sort.k](b); return (x>y?1:x<y?-1:0)*sort.d; });
+  const th=(k,l)=>html`<th class=${sort.k===k?"on":""} onClick=${()=>setSort(s=>({k,d:s.k===k?-s.d:1}))}>${l} ${sort.k===k?(sort.d>0?"↑":"↓"):""}</th>`;
+  const exportCsv=()=>{ const head=["ID","Task","Department","Assignee","Stage","Priority","Planned","Start","Estimate","Logged","Rating","Tags"];
+    const data=rows.map(t=>[t.id,t.title,tDept(t.dept).name,tName(state,t.assigneeId),tStage(t.stage).name,t.priority,t.plannedDate,t.startDate,tMin(t.estimate),tMin(t.timeLogged),t.rating||"",(t.tags||[]).join(" ")]);
+    const csv=[head,...data].map(r=>r.map(v=>`"${String(v==null?"":v).replace(/"/g,'""')}"`).join(",")).join("\r\n");
+    const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob(["﻿"+csv],{type:"text/csv"})); a.download=`tasks-${tToday()}.csv`; a.click(); };
+  return html`<${Card} title=${`${rows.length} task${rows.length===1?"":"s"}`} right=${html`<button class="btn btn-ghost btn-sm" onClick=${exportCsv}><${Icon} name="download"/>Excel (CSV)</button>`}>
+    ${rows.length?html`<div class="tbl-wrap"><table class="tbl tk-tbl"><thead><tr>${th("id","ID")}${th("title","Task")}${th("dept","Dept")}${th("assignee","Assignee")}${th("stage","Stage")}${th("priority","Priority")}${th("plannedDate","Planned")}<th>Progress</th></tr></thead>
+      <tbody>${rows.map(t=>html`<tr key=${t.key} onClick=${()=>open(t.key)}><td class="faint nowrap">${t.id}</td><td class="t"><b>${t.title}</b></td><td><${TDeptPill} id=${t.dept}/></td><td class="nowrap"><span class="row" style="gap:6px"><${TAvatar} state=${state} id=${t.assigneeId} sm/>${tName(state,t.assigneeId)}</span></td><td><${TStagePill} id=${t.stage}/></td><td><${TPriPill} p=${t.priority}/></td><td class=${"nowrap bold "+(tOverdue(t)?"tk-bad":tDueToday(t)?"tk-warn":"")}>${tFmt(t.plannedDate)}</td><td style="min-width:110px"><div class="tk-bar"><i style=${`width:${tProgress(t)}%;background:var(--ok)`}/></div></td></tr>`)}</tbody></table></div>`
+    :html`<${TEmpty} title="No tasks match these filters">Try clearing a filter.<//>`}<//>`;
 }
 
-/* ---- task details dialog (every change saves immediately) ---- */
-function TaskModal({tkey,state,user,A,timer,onClose,open}){
-  const t=(state.tasks||[]).find(x=>x.key===tkey);
-  const [title,setTitle]=useState(t?t.title:""); const [desc,setDesc]=useState(t?t.description:"");
-  const [sub,setSub]=useState(""); const [tag,setTag]=useState(""); const [logv,setLogv]=useState(""); const [cmt,setCmt]=useState(""); const [reason,setReason]=useState(null);
-  const [showAct,setShowAct]=useState(false); const [busy,setBusy]=useState(false); const [ment,setMent]=useState(null); const fileRef=useRef();
-  const est0=t?(t.estimateMin?tMin(t.estimateMin):""):""; const [est,setEst]=useState(est0);
-  useEffect(()=>{ if(t){ setTitle(t.title); setDesc(t.description||""); setEst(t.estimateMin?tMin(t.estimateMin):""); } },[t&&t.updatedAt]);
-  if(!t||!taskVisible(user,t)) return html`<${Modal} title="Task" onClose=${onClose} narrow><${Empty} title=${t?"Not available to you":"Task not found"}>${t?"This task belongs to another department.":"It may have been deleted."}<//><//>`;
-  const closed=!T_OPEN.includes(t.stage);
-  const manage=tCanManage(user,t)&&!closed, work=tCanWork(user,t)&&!closed;
-  const moves=taskMoves(user,t); const appr=tIsApprover(user,t);
-  const people=tAssignable(state,user,t.dept); const cur=tUser(state,t.assigneeId);
-  if(cur&&!people.some(p=>p.id===cur.id)) people.unshift(cur);
-  const deps=(t.deps||[]).map(k=>(state.tasks||[]).find(x=>x.key===k)).filter(Boolean);
-  const depChoices=(state.tasks||[]).filter(x=>x.key!==t.key&&taskVisible(user,x)&&T_OPEN.includes(x.stage)&&!(t.deps||[]).includes(x.key));
-  const blocked=tDepsOpen(state,t);
-  const up=patch=>A.tUpdate(t.key,patch);
-  const subs=t.subtasks||[];
-  const doMove=m=>{ if(m.comment){ setReason({m,text:""}); return; } A.tMove(t.key,m.to,""); };
-  const mine=timer.tm&&timer.tm.key===t.key;
+/* ---------- Planner: month, day agenda, weekly range ---------- */
+function TPlanner(P){
+  const {state,user,A,open,filtered,openNew,month,setMonth,selDay,setSelDay,range,setRange}=P;
+  const [over,setOver]=useState(null); const drag=useRef(null);
+  const [y,m]=month.split("-").map(Number); const lead=(new Date(y,m-1,1).getDay()+6)%7;
+  const cells=[]; for(let i=0;i<42;i++) cells.push(tISO(new Date(y,m-1,1-lead+i)));
+  const byDay={}; filtered.forEach(t=>{ if(t.plannedDate) (byDay[t.plannedDate]=byDay[t.plannedDate]||[]).push(t); });
+  const t0=tToday(); const dayTasks=(byDay[selDay]||[]).slice().sort(tByPri);
+  const rangeList=filtered.filter(t=>t.plannedDate>=range.from&&t.plannedDate<=range.to).sort((a,b)=>a.plannedDate.localeCompare(b.plannedDate)||tByPri(a,b));
+  const monthTasks=filtered.filter(t=>(t.plannedDate||"").slice(0,7)===month);
+  const shift=n=>setMonth(tISO(new Date(y,m-1+n,1)).slice(0,7));
+  const dropOn=day=>{ const t=drag.current; drag.current=null; setOver(null); if(!t||t.plannedDate===day) return; if(!TR.canEdit(t,user)){ tToast("You can't change this task.","bad"); return; } A.tReschedule(t.key,day); };
+  const RowP=t=>html`<${TRow} t=${t} state=${state} user=${user} A=${A} open=${open}/>`;
+  return html`<div class="stack" style="gap:14px">
+    <div class="tk-cal-h"><button class="iconbtn" aria-label="Previous month" onClick=${()=>shift(-1)}><${Icon} name="left"/></button><h3>${tFmtMonth(month)}</h3><button class="iconbtn" aria-label="Next month" onClick=${()=>shift(1)}><${Icon} name="right"/></button>
+      <button class="btn btn-ghost btn-sm" onClick=${()=>{ setMonth(t0.slice(0,7)); setSelDay(t0); }}>Today</button><input type="month" class="input" style="width:170px" value=${month} onChange=${e=>{ if(e.target.value) setMonth(e.target.value); }} aria-label="Jump to month"/>
+      <span class="grow"/><span class="xs faint">${monthTasks.length} tasks · ${monthTasks.filter(t=>t.stage==="06").length} done · ${tMin(monthTasks.filter(tOpen).reduce((a,t)=>a+(t.estimate||0),0))} planned work remaining</span></div>
+    <${TToolbar} ...${P} noMode/>
+    <div class="tk-cal">${["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d=>html`<div class="dow">${d}</div>`)}
+      ${cells.map(d=>{ const l=(byDay[d]||[]).slice().sort(tByPri); return html`<div role="button" tabindex="0" class=${"day"+(d.slice(0,7)!==month?" out":"")+(d===t0?" today":"")+(d===selDay?" sel":"")+(over===d?" over":"")} onClick=${()=>setSelDay(d)} onKeyDown=${e=>{ if(e.key==="Enter") setSelDay(d); }}
+        onDragOver=${e=>{ if(!drag.current) return; e.preventDefault(); if(over!==d) setOver(d); }} onDrop=${e=>{ e.preventDefault(); dropOn(d); }}>
+        <span class="dn">${+d.slice(8)}</span>
+        ${l.slice(0,3).map(t=>html`<div class=${"ev"+(t.stage==="06"?" done":"")+(tOverdue(t)?" od":"")} style=${"--pri:"+TPRI_COLOR[t.priority]} draggable="true" title=${t.title} onDragStart=${e=>{ drag.current=t; try{ e.dataTransfer.setData("text/plain",t.key); }catch(_){} }} onClick=${e=>{ e.stopPropagation(); open(t.key); }}>${t.title}</div>`)}
+        ${l.length>3&&html`<span class="more">+${l.length-3} more</span>`}
+        ${l.length>0&&html`<span class="dots">${l.slice(0,6).map(t=>html`<i style=${"--pri:"+TPRI_COLOR[t.priority]}/>`)}</span>`}
+      </div>`; })}</div>
+    <div class="grid2">
+      <${Card} title=${`${tFmt(selDay,true)}${selDay===t0?" · Today":""}`} right=${TR.canCreate(user)&&html`<button class="btn btn-primary btn-sm" onClick=${()=>openNew({plannedDate:selDay})}><${Icon} name="plus"/>Add on this day</button>`}>${dayTasks.length?dayTasks.map(RowP):html`<${TEmpty} title="Nothing planned">Pick a task and drag it here, or add one.<//>`}<//>
+      <${Card} title="Weekly range" right=${html`<div class="row" style="gap:6px"><input type="date" class="input" style="height:34px;width:150px" value=${range.from} onChange=${e=>{ const v=e.target.value; if(v) setRange(r=>({from:v,to:r.to<v?v:r.to})); }} aria-label="From"/><span class="faint">to</span><input type="date" class="input" style="height:34px;width:150px" value=${range.to} onChange=${e=>{ const v=e.target.value; if(v) setRange(r=>({from:r.from>v?v:r.from,to:v})); }} aria-label="To"/></div>`}>
+        <div style="max-height:420px;overflow-y:auto">${rangeList.length?rangeList.map(RowP):html`<${TEmpty} title="No tasks in this range"><//>`}</div><//>
+    </div></div>`;
+}
+
+/* ---------- Workload ---------- */
+function TWorkload(P){
+  const {state,user,filtered,setFilter,go}=P; const r=tRole(user);
+  const people=(state.users||[]).filter(p=>p.active!==false&&!["President","GS"].includes(tRole(p))&&(r!=="HOD"||tUDept(p)===tUDept(user)||filtered.some(t=>t.assigneeId===p.id))&&(r!=="Staff"||p.id===user.id));
+  const stats=l=>({total:l.length,prog:l.filter(t=>t.stage==="02").length,review:l.filter(t=>["03","04","05"].includes(t.stage)).length,newc:l.filter(t=>t.stage==="01").length,done:l.filter(t=>t.stage==="06").length,over:l.filter(tOverdue).length,hours:l.filter(tOpen).reduce((a,t)=>a+(t.estimate||0),0)});
+  const rows=people.map(p=>({p,s:stats(filtered.filter(t=>t.assigneeId===p.id))})).sort((a,b)=>b.s.total-a.s.total);
+  const groups=[["RM","Regional Manager"],["HOD","Heads of Department"],["Staff","Staff"]].map(([k,l])=>({l,rows:rows.filter(x=>tRole(x.p)===k)})).filter(g=>g.rows.length);
+  /* each task counted once: overdue first, then new / in progress / review / done */
+  const bar=s=>{ const n=Math.max(1,s.total); const prog=Math.max(0,s.prog-Math.min(s.prog,s.over)); const rest=Math.max(0,s.over-Math.min(s.prog,s.over));
+    return html`<div class="tk-bar"><i style=${`width:${Math.max(0,s.newc-Math.min(s.newc,rest))/n*100}%;background:#7B8798`}/><i style=${`width:${prog/n*100}%;background:#2567CF`}/><i style=${`width:${s.over/n*100}%;background:var(--bad)`}/><i style=${`width:${Math.max(0,s.review-Math.max(0,rest-s.newc))/n*100}%;background:#D98A14`}/><i style=${`width:${s.done/n*100}%;background:#1E9A5A`}/></div>`; };
+  const deptCards=tDepts().map(d=>({d,s:stats(filtered.filter(t=>t.dept===d.id))})).filter(x=>x.s.total||r==="RM");
+  return html`<div class="stack" style="gap:14px">
+    <div class="tk-legend"><span><i style="background:#7B8798"/>New</span><span><i style="background:#2567CF"/>In progress</span><span><i style="background:var(--bad)"/>Overdue</span><span><i style="background:#D98A14"/>Review / approval</span><span><i style="background:#1E9A5A"/>Done</span></div>
+    ${groups.length?groups.map(g=>html`<${Card} title=${g.l} right=${html`<span class="xs faint">${g.rows.reduce((a,x)=>a+x.s.total,0)} tasks</span>`}>
+      ${g.rows.map(({p,s})=>html`<div class="tk-wl"><button class="tk-who" onClick=${()=>{ setFilter("who",p.id===user.id?"me":p.id); go("board"); }}><span class="avatar">${initials(p.name)}</span><span style="min-width:0;text-align:left"><b>${p.name}</b><small>${p.designation||TROLE_LABEL[tRole(p)]} · ${tDept(tUDept(p)).code}</small></span></button>
+        <div>${bar(s)}<div class="row xs faint" style="margin-top:5px;gap:12px"><span>${s.total} assigned</span><span>${s.done} done</span>${s.over>0&&html`<span class="tk-bad bold">${s.over} overdue</span>`}<span>${tMin(s.hours)} open work</span></div></div>
+        <div class="xs bold faint" style="text-align:right">${s.total?Math.round(s.done/s.total*100):0}% complete</div></div>`)}<//>`):html`<${Card}><${TEmpty} title="No people to show">Add staff under Users, then assign tasks to them.<//><//>`}
+    <${Card} title="By department"><div class="tk-deptgrid">${deptCards.map(({d,s})=>html`<button class="card tk-deptcard" onClick=${()=>{ setFilter("dept",d.id); go("board"); }}><span class="row" style="gap:8px"><i class="tk-dot" style=${"background:"+d.color}/><b class="sm">${d.code} · ${d.name}</b></span>${bar(s)}<span class="row xs faint" style="gap:10px"><span>${s.total} tasks</span><span>${s.done} done</span>${s.over>0&&html`<span class="tk-bad bold">${s.over} overdue</span>`}</span></button>`)}</div><//>
+  </div>`;
+}
+
+/* ---------- Performance ---------- */
+function tSuggestion(state,tasks){
+  const over=tasks.filter(tOverdue); const waiting=tasks.filter(t=>t.stage==="04");
+  const byP={}; over.forEach(t=>byP[t.assigneeId]=(byP[t.assigneeId]||0)+1); const worst=Object.entries(byP).sort((a,b)=>b[1]-a[1])[0];
+  if(waiting.length>2) return `${waiting.length} tasks are waiting for HOD approval — clearing them would unblock the most work.`;
+  if(worst&&worst[1]>=2) return `${tName(state,worst[0])} has ${worst[1]} overdue tasks; rebalancing one or two to a colleague would help.`;
+  if(over.length) return `${over.length} overdue task${over.length>1?"s":""} — review planned dates in the Planner and reschedule what slipped.`;
+  return "Workload looks balanced. Keep estimates realistic and close reviewed tasks promptly.";
+}
+function TPerformance(P){
+  const {state,filtered,perfMonth,setPerfMonth}=P; const mk=perfMonth; const tasks=filtered;
+  const inMonth=tasks.filter(t=>(t.plannedDate||"").slice(0,7)===mk||tLocalDay(t.completedAt).slice(0,7)===mk);
+  const done=inMonth.filter(t=>t.stage==="06"), cancelled=inMonth.filter(t=>t.stage==="07");
+  const completion=inMonth.length-cancelled.length?Math.round(done.length/(inMonth.length-cancelled.length)*100):0;
+  const days=done.filter(t=>t.completedAt&&t.createdAt).map(t=>(tTs(t.completedAt)-tTs(t.createdAt))/864e5);
+  const avgDays=days.length?(days.reduce((a,b)=>a+b,0)/days.length).toFixed(1):"—";
+  const rated=done.filter(t=>t.rating); const avgRating=rated.length?(rated.reduce((a,t)=>a+t.rating,0)/rated.length).toFixed(1):"—";
+  const onTime=done.filter(t=>tLocalDay(t.completedAt)<=t.plannedDate).length; const onTimePct=done.length?Math.round(onTime/done.length*100):0;
+  const est=done.reduce((a,t)=>a+(t.estimate||0),0), logged=done.reduce((a,t)=>a+(t.timeLogged||0),0);
+  const dd=tDepts().map(d=>{ const l=inMonth.filter(t=>t.dept===d.id); return {d,done:l.filter(t=>t.stage==="06").length,open:l.filter(tOpen).length}; }).filter(x=>x.done+x.open);
+  const maxV=Math.max(1,...dd.map(x=>x.done+x.open)); const W=640,H=220,pl=28,pb=34; const bw=dd.length?Math.min(44,(W-pl-10)/dd.length-10):0;
+  const t0=tToday(); const weeks=[]; for(let i=7;i>=0;i--){ const end=tAddDays(t0,-7*i), start=tAddDays(end,-6); weeks.push({end,n:tasks.filter(t=>{ const c=tLocalDay(t.completedAt); return c&&c>=start&&c<=end; }).length}); }
+  const mw=Math.max(1,...weeks.map(w=>w.n));
+  const people=(state.users||[]).filter(p=>!["President","GS"].includes(tRole(p))).map(p=>{ const l=tasks.filter(t=>t.assigneeId===p.id); const dn=l.filter(t=>t.stage==="06"); const rr=dn.filter(t=>t.rating);
+    return {p,done:dn.length,total:l.length,over:l.filter(tOverdue).length,rating:rr.length?rr.reduce((a,t)=>a+t.rating,0)/rr.length:0,hrs:dn.reduce((a,t)=>a+(t.timeLogged||0),0)}; }).filter(x=>x.total).sort((a,b)=>b.done-a.done||b.rating-a.rating||a.over-b.over).slice(0,10);
+  return html`<div class="stack" style="gap:14px">
+    <div class="row wrap" style="gap:10px"><label class="row" style="gap:8px"><span class="xs bold faint">Month</span><input type="month" class="input" style="width:170px" value=${mk} onChange=${e=>{ if(e.target.value) setPerfMonth(e.target.value); }}/></label><span class="grow"/><span class="xs faint">${inMonth.length} tasks in ${tFmtMonth(mk)}</span></div>
+    <${TToolbar} ...${P} noMode/>
+    <div class="tk-kpis4">
+      <${Kpi} label="Completion rate" value=${completion+"%"} tone="ok"/>
+      <${Kpi} label="Avg days to complete" value=${avgDays} tone="info"/>
+      <${Kpi} label=${`Quality rating by HODs (${rated.length} rated)`} value=${avgRating==="—"?"—":avgRating+" / 5"} tone="warn"/>
+      <${Kpi} label="Completed on time" value=${onTimePct+"%"} tone=${onTimePct<60?"bad":"ok"}/>
+    </div>
+    <div class="grid2">
+      <${Card} title="Tasks by department">${dd.length?html`<svg class="tk-chart" viewBox=${`0 0 ${W} ${H}`} role="img" aria-label="Tasks by department">
+        ${[0,.5,1].map(fr=>{ const yy=H-pb-fr*(H-pb-16); return html`<line class="axis" x1=${pl} x2=${W-6} y1=${yy} y2=${yy}/><text x=${pl-6} y=${yy+4} text-anchor="end">${Math.round(maxV*fr)}</text>`; })}
+        ${dd.map((x,i)=>{ const gx=pl+10+i*((W-pl-10)/dd.length); const sc=(H-pb-16)/maxV; const hd=x.done*sc, ho=x.open*sc; return html`<rect x=${gx} y=${H-pb-ho} width=${bw} height=${ho} rx="4" fill=${x.d.color} opacity=".35"/><rect x=${gx} y=${H-pb-ho-hd} width=${bw} height=${hd} rx="4" fill=${x.d.color}/><text x=${gx+bw/2} y=${H-pb+16} text-anchor="middle">${x.d.code.length>6?x.d.code.slice(0,5)+".":x.d.code}</text><text x=${gx+bw/2} y=${H-pb-ho-hd-5} text-anchor="middle" class="v">${x.done}/${x.done+x.open}</text>`; })}
+      </svg><div class="tk-legend" style="margin-top:6px"><span><i style="background:var(--brand-2)"/>Done</span><span><i style="background:var(--brand-2);opacity:.35"/>Still open</span></div>`:html`<${TEmpty} title="No tasks in this month"><//>`}<//>
+      <${Card} title="Completed per week" right=${html`<span class="xs faint">last 8 weeks</span>`}><svg class="tk-chart" viewBox="0 0 640 150" role="img" aria-label="Completed per week"><polyline fill="none" stroke="var(--brand-2)" stroke-width="3" stroke-linejoin="round" points=${weeks.map((w,i)=>`${30+i*82},${120-w.n/mw*90}`).join(" ")}/>${weeks.map((w,i)=>html`<circle cx=${30+i*82} cy=${120-w.n/mw*90} r="5" fill="var(--surface)" stroke="var(--brand-2)" stroke-width="3"/><text x=${30+i*82} y=${120-w.n/mw*90-11} text-anchor="middle" class="v">${w.n}</text><text x=${30+i*82} y="142" text-anchor="middle">${tFmt(w.end,true).replace(/ \d{4}$/,"")}</text>`)}</svg><//>
+      <${Card} title="Leaderboard" right=${html`<span class="xs faint">by tasks done, then rating</span>`}>${people.length?people.map((x,i)=>html`<div class="tk-row"><span class=${"tk-rank"+(i<3?" top":"")}>${i+1}</span><span class="avatar">${initials(x.p.name)}</span><span class="g"><b>${x.p.name}</b><small>${x.done} done of ${x.total} · ${tMin(x.hrs)} logged${x.over?html` · <span class="tk-bad">${x.over} overdue</span>`:""}</small></span><${TStars} n=${Math.round(x.rating)} sm/></div>`):html`<${TEmpty} title="No data yet"><//>`}<//>
+      <${Card} title="Time accuracy"><div class="row" style="gap:20px"><div><b style="font-size:22px">${tMin(est)}</b><div class="xs faint">estimated</div></div><div><b style="font-size:22px">${tMin(logged)}</b><div class="xs faint">logged</div></div><div><b style=${`font-size:22px;color:${logged>est*1.15?"var(--bad)":"var(--ok)"}`}>${est?Math.round(logged/est*100):0}%</b><div class="xs faint">of estimate</div></div></div>
+        <div class="tk-bar" style="margin-top:14px"><i style=${`width:${est?Math.min(100,logged/est*100):0}%;background:${logged>est*1.15?"var(--bad)":"var(--ok)"}`}/></div>
+        <p class="xs faint" style="margin:12px 0 0">${logged>est*1.15?"Completed work took noticeably longer than planned. Consider larger estimates or splitting big tasks.":"Completed work stayed within planned effort."}</p>
+        <div class="notice notice-info" style="margin-top:12px"><${Icon} name="zap"/><span><b>Suggestion:</b> ${tSuggestion(state,tasks)}</span></div><//>
+    </div></div>`;
+}
+
+/* ---------- Assistant (insights from live data; chat = the portal's Ask AI button) ---------- */
+const tAiScope=(user,vis)=>{ const r=tRole(user); return r==="Staff"?vis.filter(t=>t.assigneeId===user.id):r==="HOD"?vis.filter(t=>t.dept===tUDept(user)||t.assigneeId===user.id):vis; };
+function tAiHeadline(state,user,vis){
+  const sc=tAiScope(user,vis); const over=sc.filter(tOverdue).length, today=sc.filter(tDueToday), wait=vis.filter(t=>t.stage==="04"&&TR.canApprove(t,user)).length;
+  if(wait) return `${wait} task${wait>1?"s":""} waiting for your approval — clearing them unblocks the most work.`;
+  if(over) return `${over} overdue task${over>1?"s":""}. Your assistant can reschedule them with one tap.`;
+  if(today.length) return `${today.length} task${today.length>1?"s":""} due today, about ${tMin(today.reduce((a,t)=>a+Math.max(0,(t.estimate||0)-(t.timeLogged||0)),0))} of work left.`;
+  return "Nothing urgent. A good moment to plan the week ahead.";
+}
+function TAssistant({state,user,A,open,vis}){
+  const t0=tToday(); const r=tRole(user); const sc=tAiScope(user,vis); const rem=t=>Math.max(0,(t.estimate||0)-(t.timeLogged||0));
+  const RowP=(t,who=true)=>html`<${TRow} t=${t} state=${state} user=${user} A=${A} open=${open} who=${who}/>`;
+  const mine=(r==="Staff"?sc:vis.filter(t=>t.assigneeId===user.id)).filter(tOpen);
+  const todayList=mine.filter(t=>t.plannedDate<=t0).sort(tByPri); let used=0; const fit=[], spill=[];
+  todayList.forEach(t=>{ const x=rem(t)||30; if(used+x<=480){ used+=x; fit.push(t); } else spill.push(t); });
+  const risks=[];
+  sc.filter(tOverdue).forEach(t=>risks.push({t,why:`overdue by ${Math.round((tDate(t0)-tDate(t.plannedDate))/864e5)} day(s)`,fix:TR.canEdit(t,user)?{label:"Reschedule +3d",fn:()=>A.tReschedule(t.key,tAddDays(t0,3))}:null}));
+  sc.filter(t=>tOpen(t)&&tBlockers(state,t).length).forEach(t=>risks.push({t,why:"blocked by an unfinished dependency"}));
+  sc.filter(t=>t.stage==="04"&&Date.now()-tTs(t.updatedAt)>2*864e5).forEach(t=>risks.push({t,why:`waiting for HOD approval for ${Math.round((Date.now()-tTs(t.updatedAt))/864e5)} days`,fix:TR.canApprove(t,user)?{label:"Approve",fn:()=>A.tMove(t.key,"05")}:null}));
+  sc.filter(t=>t.priority==="Urgent"&&t.stage==="01").forEach(t=>risks.push({t,why:"urgent but not started",fix:TR.canEdit(t,user)?{label:"Start",fn:()=>A.tMove(t.key,"02")}:null}));
+  sc.filter(t=>tOpen(t)&&t.estimate&&(t.timeLogged||0)>t.estimate*1.3).forEach(t=>risks.push({t,why:`already ${Math.round(t.timeLogged/t.estimate*100)}% of its estimate`}));
+  const wait=vis.filter(t=>t.stage==="04"&&TR.canApprove(t,user));
+  const people=(state.users||[]).filter(p=>p.active!==false&&!["President","GS"].includes(tRole(p))&&(r!=="HOD"||tUDept(p)===tUDept(user))).map(p=>{ const l=sc.filter(t=>t.assigneeId===p.id&&tOpen(t)); return {p,n:l.length,h:l.reduce((a,t)=>a+rem(t),0),over:l.filter(tOverdue).length}; }).filter(x=>x.n||r==="HOD");
+  const avg=people.length?people.reduce((a,x)=>a+x.h,0)/people.length:0;
+  const heavy=people.filter(x=>x.h>avg*1.5&&x.h>240).sort((a,b)=>b.h-a.h), light=people.filter(x=>x.h<avg*.5).sort((a,b)=>a.h-b.h);
+  const wk=tAddDays(t0,-7); const doneWk=sc.filter(t=>tLocalDay(t.completedAt)>=wk), newWk=sc.filter(t=>tLocalDay(t.createdAt)>=wk);
+  const byP={}; doneWk.forEach(t=>byP[t.assigneeId]=(byP[t.assigneeId]||0)+1); const top=Object.entries(byP).sort((a,b)=>b[1]-a[1])[0]; const ratedWk=doneWk.filter(t=>t.rating);
+  return html`<div class="stack" style="gap:14px">
+    <div class="tk-ai-hero"><span class="tk-ai-ico lg"><${Icon} name="zap"/></span><div><h2>Your assistant, ${(user.name||"").split(" ")[0]}</h2><p>Works from what you can see as ${TROLE_LABEL[r]}${r==="HOD"?" of "+tDept(tUDept(user)).name:""}. It plans, flags risks and — within your rights — reschedules, approves and starts tasks. For questions in your own words, use the <b>Ask AI</b> button at the bottom right.</p></div></div>
+    <div class="grid2">
+      ${mine.length>0&&html`<${Card} title="Your plan for today">${todayList.length?html`<p class="xs faint" style="margin:0 0 6px">${fit.length} task${fit.length!==1?"s":""} fit an 8-hour day (${tMin(used)} of work). ${spill.length?`${spill.length} won't fit — move them to tomorrow.`:"Everything due fits."}</p>${fit.map(t=>RowP(t,false))}${spill.length>0&&html`<div class="tk-spill"><b class="xs">Won't fit today</b>${spill.map(t=>html`<div class="row" style="gap:6px"><div style="flex:1;min-width:0">${RowP(t,false)}</div>${TR.canEdit(t,user)&&html`<button class="btn btn-ghost btn-sm" onClick=${()=>A.tReschedule(t.key,tAddDays(t0,1))}>Tomorrow</button>`}</div>`)}</div>`}`:html`<${TEmpty} title="Nothing due today">Pull something forward from the planner if you have capacity.<//>`}<//>`}
+      <${Card} title="At risk">${risks.length?risks.slice(0,8).map(x=>html`<div class="tk-risk"><div style="flex:1;min-width:0">${RowP(x.t,r!=="Staff")}<span class="xs tk-bad">${x.why}</span></div>${x.fix&&html`<button class="btn btn-ghost btn-sm" onClick=${x.fix.fn}>${x.fix.label}</button>`}</div>`):html`<${TEmpty} title="No risks found">Nothing overdue, blocked or stalled in your scope.<//>`}<//>
+      ${["RM","HOD"].includes(r)&&html`<${Card} title="Waiting for your approval">${wait.length?wait.map(t=>html`<div class="row" style="gap:6px"><div style="flex:1;min-width:0">${RowP(t)}</div><button class="btn btn-ok btn-sm" onClick=${()=>A.tMove(t.key,"05")}>Approve</button></div>`):html`<${TEmpty} title="Nothing to approve"><//>`}<//>`}
+      ${r!=="Staff"&&html`<${Card} title="Workload balance">${people.length?html`<p class="xs faint" style="margin:0 0 8px">Average open work per person: ${tMin(avg)}.</p>${heavy.length?heavy.map(x=>html`<div class="tk-row"><span class="avatar tk-av">${initials(x.p.name)}</span><span class="g"><b>${x.p.name}</b><small class="tk-bad">${tMin(x.h)} open · ${x.n} tasks${x.over?` · ${x.over} overdue`:""}</small></span>${light[0]&&html`<span class="xs faint">→ consider moving one to ${light[0].p.name.split(" ")[0]} (${tMin(light[0].h)})</span>`}</div>`):html`<div class="xs faint">No one is overloaded. Nice.</div>`}${!heavy.length&&light.length>0&&html`<div class="xs faint" style="margin-top:6px">Has capacity: ${light.map(x=>x.p.name).join(", ")}</div>`}`:html`<${TEmpty} title="No team data"><//>`}<//>`}
+      <${Card} title="Last 7 days"><div class="tk-digest"><div><b>${doneWk.length}</b><small>completed</small></div><div><b>${newWk.length}</b><small>created</small></div><div><b>${sc.filter(tOpen).length}</b><small>still open</small></div><div><b>${ratedWk.length?(ratedWk.reduce((a,t)=>a+t.rating,0)/ratedWk.length).toFixed(1):"—"}</b><small>avg rating</small></div></div>
+        ${top&&r!=="Staff"&&html`<div class="xs faint" style="margin-top:8px">Most completions: ${tName(state,top[0])} (${top[1]}).</div>`}<div class="xs faint" style="margin-top:4px">${tSuggestion(state,sc)}</div><//>
+    </div></div>`;
+}
+
+/* ---------- Settings (Regional Manager): departments and workflow stages ---------- */
+function TSettings({state,user,A}){
+  const can=TR.canSettings(user);
+  const [code,setCode]=useState(""); const [name,setName]=useState("");
+  const depts=tDepts(), stages=tStages(); const count=(k,v)=>(state.tasks||[]).filter(t=>t[k]===v).length;
+  const saveD=list=>A.tSettings({taskDepts:list}); const saveS=list=>A.tSettings({taskStages:list});
+  const addD=()=>{ const c=code.trim().toUpperCase(), n=name.trim(); if(!c||!n){ tToast("Enter a code and a name","bad"); return; } if(depts.some(d=>d.code===c)){ tToast("That code is already used","bad"); return; }
+    const id=pad(Math.max(0,...depts.map(d=>+d.id||0))+1,2); saveD([...depts,{id,code:c.slice(0,10),name:n.slice(0,60),color:"#2567CF"}]); setCode(""); setName(""); };
+  return html`<div class="stack" style="gap:14px">
+    ${!can&&html`<div class="notice notice-warn"><${Icon} name="lock"/><span>Only the Regional Manager can manage departments, stages and rules. People and their roles are managed by the Super Admin under <b>Users</b>.</span></div>`}
+    <div class="grid2">
+      <${Card} title="Departments" right=${html`<span class="xs faint">${depts.length}</span>`}>
+        ${can&&html`<div class="tk-inline" style="margin-bottom:10px"><input class="input" style="max-width:150px" placeholder="Code (e.g. MEDIA)" maxlength="10" value=${code} onInput=${e=>setCode(e.target.value)}/><input class="input" placeholder="Department name" value=${name} onInput=${e=>setName(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter") addD(); }}/><button class="btn btn-primary" onClick=${addD}>Add</button></div>`}
+        <div class="xs faint" style="margin-bottom:8px">Every task must belong to a department. A department with tasks can't be removed. Each person's task department is set by the Super Admin under Users.</div>
+        ${depts.map(d=>{ const n=count("dept",d.id); return html`<div class="tk-lrow"><input type="color" class="tk-color" value=${d.color} disabled=${!can} onChange=${e=>saveD(depts.map(x=>x.id===d.id?{...x,color:e.target.value}:x))} aria-label="Colour"/><span class="g"><input class="tk-inl" value=${d.name} disabled=${!can} onBlur=${e=>{ const v=e.target.value.trim(); if(v&&v!==d.name) saveD(depts.map(x=>x.id===d.id?{...x,name:v}:x)); }} aria-label="Department name"/><small>${d.code} · ${n} tasks</small></span>${can&&html`<button class="iconbtn" aria-label="Remove department" disabled=${n>0} title=${n?"Has tasks — move them first":"Remove"} onClick=${()=>{ if(confirm(`Remove ${d.name}?`)) saveD(depts.filter(x=>x.id!==d.id)); }}><${Icon} name="trash"/></button>`}</div>`; })}<//>
+      <${Card} title="Workflow stages" right=${html`<span class="xs faint">7 global stages, used by every department</span>`}>
+        ${stages.map(s=>html`<div class="tk-lrow"><input type="color" class="tk-color" value=${s.color} disabled=${!can} onChange=${e=>saveS(stages.map(x=>x.id===s.id?{...x,color:e.target.value}:x))} aria-label="Colour"/><span class="g"><input class="tk-inl" value=${s.name} disabled=${!can} onBlur=${e=>{ const v=e.target.value.trim(); if(v&&v!==s.name) saveS(stages.map(x=>x.id===s.id?{...x,name:v}:x)); }} aria-label="Stage name"/><small>Stage ${s.id}${s.id==="04"?" · approval needed from HOD / RM":s.id==="05"?" · only HOD / RM can approve":s.id==="06"||s.id==="07"?" · closing rule applies":""}</small></span><span class="xs faint">${count("stage",s.id)} tasks</span></div>`)}<//>
+      <${Card} title="Rules"><div class="notice notice-info"><${Icon} name="shield"/><span><b>Closing rule.</b> Nobody can close a task assigned to themselves. The person who assigned it, the department HOD or the Regional Manager closes it, and HOD / RM give a quality rating from 1 to 5. Self-assigned tasks need HOD or RM sign-off. Tasks with unfinished dependencies can't be closed. Only the department HOD or the Regional Manager can approve.</span></div>
+        <div class="xs faint" style="margin-top:10px">Roles in Tasks: Super Admin and Regional Manager act as <b>RM</b>; Head of Department as <b>HOD</b>; President is view-only; General Secretary views and comments; everyone else is <b>Staff</b>. The Super Admin can tick <b>Manage all tasks</b> for anyone under Users to give them RM rights here.</div><//>
+    </div></div>`;
+}
+
+/* ---------- task dialog: draft + Save, like the planner ---------- */
+function TaskModal({isNew,preset,tkey,state,user,A,timer,onClose,open,onCreated}){
+  const orig=isNew?null:(state.tasks||[]).find(x=>x.key===tkey);
+  const blank=()=>({title:"",description:"",dept:tUDept(user),stage:"01",assigneeId:user.id,creatorId:user.id,plannedDate:tToday(),startDate:"",priority:"Medium",tags:[],estimate:60,subtasks:[],dependencies:[],customFields:[],recurring:"none",...(preset||{})});
+  const [d,setD]=useState(()=>isNew?blank():orig?JSON.parse(JSON.stringify(orig)):null);
+  const [est,setEst]=useState(()=>tMin((isNew?blank():orig||{}).estimate));
+  const [sub,setSub]=useState(""); const [tag,setTag]=useState(""); const [cfk,setCfk]=useState(""); const [cfv,setCfv]=useState("");
+  const [logv,setLogv]=useState(""); const [cmt,setCmt]=useState(""); const [ment,setMent]=useState(null); const [busy,setBusy]=useState(false);
+  const titleRef=useRef(); const fileRef=useRef();
+  useEffect(()=>{ if(isNew&&titleRef.current) setTimeout(()=>titleRef.current&&titleRef.current.focus(),60); },[]);
+  if(!isNew&&(!orig||!TR.canSee(orig,user))) return html`<${Modal} title="Task" onClose=${onClose} narrow><${TEmpty} title=${orig?"You don't have access to this task":"Task not found"}>${orig?"":"It may have been deleted."}<//><//>`;
+  const live=isNew?d:orig;   // saved values for comments, time, files, rating, activity
+  const set=(k,v)=>setD(x=>({...x,[k]:v}));
+  const editable=isNew||TR.canEdit(orig,user);
+  const canClose=!isNew&&TR.canClose(orig,user); const canApprove=!isNew&&TR.canApprove(orig,user)&&orig.stage==="04";
+  const people=tAssignable(state,d.dept,user); const cur=tUser(state,d.assigneeId); if(cur&&!people.some(p=>p.id===cur.id)) people.push(cur);
+  const deps=(d.dependencies||[]).map(k=>(state.tasks||[]).find(x=>x.key===k)).filter(Boolean);
+  const depOptions=(state.tasks||[]).filter(t=>t.v===2&&TR.canSee(t,user)&&t.key!==(orig&&orig.key)&&!(d.dependencies||[]).includes(t.key)&&tOpen(t));
+  const deptLocked=!editable||(!isNew&&tRole(user)!=="RM");
+  const mine=!isNew&&timer.tm&&timer.tm.key===orig.key;
+  const save=()=>{
+    if(!String(d.title||"").trim()){ tToast("Give the task a title — type it in the first box (\"What needs to be done?\").","bad"); if(titleRef.current) titleRef.current.focus(); return; }
+    const e=tParseMin(est); if(isNaN(e)){ tToast("Write the effort like 45m, 2h or 1h 30m","bad"); return; }
+    const payload={...d,estimate:e};
+    if(isNew){ const t=A.tCreate(payload); if(t){ onCreated&&onCreated(t); } return; }
+    if(A.tSave(orig.key,payload)) onClose();
+  };
+  const quick=to=>{ if(A.tMove(orig.key,to)) setD(x=>({...x,stage:to})); };
   const MAX=SB_READY?10*1024*1024:400*1024;
-  const onFile=async e=>{ const fl=e.target.files[0]; e.target.value=""; if(!fl) return;
-    if(fl.size>MAX){ tToast(`Please keep files under ${SB_READY?"10 MB":"400 KB"}`,"bad"); return; }
+  const onFile=async ev=>{ const files=[...ev.target.files]; ev.target.value=""; for(const fl of files){
+    if(fl.size>MAX){ tToast(`${fl.name}: please keep files under ${SB_READY?"10 MB":"400 KB"}`,"bad"); continue; }
     setBusy(true);
     try{
-      if(SB_READY){ const path=`${t.key}/${uid()}-${fl.name.replace(/[^\w.\-]+/g,"_").slice(-80)}`; const { error } = await sb.storage.from("task-files").upload(path,fl,{contentType:fl.type||"application/octet-stream",upsert:false}); if(error) throw new Error(/not found|bucket/i.test(error.message)?"File storage is not set up yet — run supabase-tasks.sql once.":error.message); A.tAddFile(t.key,{name:fl.name,size:fl.size,type:fl.type,path}); }
-      else { const data=await new Promise((ok,bad)=>{ const r=new FileReader(); r.onload=()=>ok(r.result); r.onerror=bad; r.readAsDataURL(fl); }); A.tAddFile(t.key,{name:fl.name,size:fl.size,type:fl.type,data}); }
+      if(SB_READY){ const path=`${orig.key}/${uid()}-${fl.name.replace(/[^\w.\-]+/g,"_").slice(-80)}`; const { error } = await sb.storage.from("task-files").upload(path,fl,{contentType:fl.type||"application/octet-stream",upsert:false}); if(error) throw new Error(/not found|bucket/i.test(error.message)?"File storage is not set up yet — run supabase-tasks.sql once in Supabase.":error.message); A.tAddFile(orig.key,{name:fl.name,size:fl.size,type:fl.type,path}); }
+      else { const data=await new Promise((ok,bad)=>{ const r=new FileReader(); r.onload=()=>ok(r.result); r.onerror=bad; r.readAsDataURL(fl); }); A.tAddFile(orig.key,{name:fl.name,size:fl.size,type:fl.type,data}); }
     }catch(err){ tToast("Upload failed: "+(err.message||err),"bad"); }
-    setBusy(false); };
-  const openFile=async f=>{ try{ let url=f.data; if(f.path){ const { data, error } = await sb.storage.from("task-files").createSignedUrl(f.path,600); if(error) throw error; url=data.signedUrl; } const a=document.createElement("a"); a.href=url; a.target="_blank"; a.rel="noopener"; if(f.data) a.download=f.name; a.click(); }catch(err){ tToast("Could not open the file: "+(err.message||err),"bad"); } };
-  const delFile=async f=>{ if(!confirm(`Remove ${f.name}?`)) return; if(f.path&&sb){ try{ await sb.storage.from("task-files").remove([f.path]); }catch(e){} } A.tRemoveFile(t.key,f.id); };
-  const logTime=()=>{ const v=tParseMin(logv); if(isNaN(v)||!v){ tToast("Write the time like 45m, 1h 30m or 90 (minutes)","bad"); return; } if(A.tLogTime(t.key,v)) setLogv(""); };
-  const sendCmt=()=>{ if(cmt.trim()&&A.tComment(t.key,cmt)){ setCmt(""); setMent(null); } };
-  const mentionables=state.users.filter(u=>u.active&&u.id!==user.id);
+    setBusy(false); } };
+  const openFile=async f=>{ try{ let url=f.data; if(f.path){ const { data, error } = await sb.storage.from("task-files").createSignedUrl(f.path,600); if(error) throw error; url=data.signedUrl; } if(!url) throw new Error("This file was not stored."); const a=document.createElement("a"); a.href=url; a.target="_blank"; a.rel="noopener"; if(f.data) a.download=f.name; a.click(); }catch(err){ tToast("Could not open the file: "+(err.message||err),"bad"); } };
+  const delFile=async f=>{ if(!confirm(`Remove ${f.name}?`)) return; if(f.path&&sb){ try{ await sb.storage.from("task-files").remove([f.path]); }catch(e){} } A.tRemoveFile(orig.key,f.id); };
+  const logTime=()=>{ const v=tParseMin(logv); if(isNaN(v)||!v){ tToast("Write the time like 45m, 1h 30m or 90 (minutes)","bad"); return; } if(A.tLogTime(orig.key,v)) setLogv(""); };
+  const mentionables=(state.users||[]).filter(u=>u.active!==false&&u.id!==user.id&&u.username);
   const onCmt=e=>{ const v=e.target.value; setCmt(v); const m=/(^|\s)@([\w.-]*)$/.exec(v.slice(0,e.target.selectionStart)); setMent(m?m[2].toLowerCase():null); };
   const pickMent=u=>{ setCmt(c=>c.replace(/(^|\s)@([\w.-]*)$/,(_,s)=>`${s}@${u.username} `)); setMent(null); };
-  const mList=ment===null?[]:mentionables.filter(u=>(u.username||"").toLowerCase().includes(ment)||(u.name||"").toLowerCase().includes(ment)).slice(0,6);
-  const renderText=s=>s.split(/(@[\w.-]+)/g).map(p=>p[0]==="@"&&state.users.some(u=>"@"+u.username===p)?html`<span class="m">${p}</span>`:p);
-  const del=()=>{ if(confirm(`Delete ${t.id} “${t.title}”? This cannot be undone.`)&&A.tDelete(t.key)) onClose(); };
-  const creator=tUser(state,t.creatorId);
-
-  const footer=html`<div class="tk-moves">${reason?html`<input class="input" style="flex:1;min-width:180px" autofocus placeholder=${`Reason to ${reason.m.label.toLowerCase()}…`} value=${reason.text} onInput=${e=>setReason({...reason,text:e.target.value})} onKeyDown=${e=>{ if(e.key==="Enter"&&reason.text.trim()){ A.tMove(t.key,reason.m.to,reason.text); setReason(null); } }}/><button class="btn btn-ghost" onClick=${()=>setReason(null)}>Back</button><button class=${"btn "+(reason.m.tone==="btn-bad"?"btn-bad":"btn-primary")} disabled=${!reason.text.trim()} onClick=${()=>{ if(A.tMove(t.key,reason.m.to,reason.text)) setReason(null); }}>${reason.m.label}</button>`
-    :html`${tCanDelete(user,t)&&html`<button class="btn btn-ghost" onClick=${del}><${Icon} name="trash"/>Delete</button>`}<span class="grow"/>${!moves.length&&T_OPEN.includes(t.stage)&&html`<span class="xs faint">Next: ${tNextHint(state,t)}</span>`}${moves.map(m=>html`<button class=${"btn "+m.tone} disabled=${m.to==="done"&&blocked.length>0} title=${m.to==="done"&&blocked.length?"Waiting for "+blocked.map(b=>b.id).join(", "):""} onClick=${()=>doMove(m)}><${Icon} name=${m.icon}/>${m.label}</button>`)}`}</div>`;
-
-  return html`<${Modal} title=${t.id} sub=${`${t.dept} · created by ${creator?creator.name:"?"} on ${fmtD(t.createdAt)}`} onClose=${onClose} footer=${footer}>
-    <div class="tk-flow" aria-label="Workflow">${TSTAGES.filter(s=>s.k!=="cancelled"||t.stage==="cancelled").map(s=>html`<span class=${s.k===t.stage?"now":TSTAGE[s.k].i<TSTAGE[t.stage].i&&t.stage!=="cancelled"?"past":""}>${s.label}</span>`)}</div>
-    ${tOverdue(t)&&html`<div class="notice notice-bad"><${Icon} name="alert"/><span>Overdue — it was planned for ${tFmtY(t.plannedDate)}.</span></div>`}
-    ${t.sentBack&&t.stage==="progress"&&html`<div class="notice notice-warn"><${Icon} name="back"/><span><b>Sent back by ${t.sentBack.by}:</b> ${t.sentBack.comment}</span></div>`}
-    ${blocked.length>0&&html`<div class="notice notice-info"><${Icon} name="dep"/><span>Can't be closed until ${blocked.map(b=>b.id).join(", ")} ${blocked.length>1?"are":"is"} done.</span></div>`}
-    ${T_OPEN.includes(t.stage)&&!moves.length&&html`<div class="xs faint">Next step: ${tNextHint(state,t)}.</div>`}
-    <input class="tk-title" value=${title} disabled=${!manage} aria-label="Title" onInput=${e=>setTitle(e.target.value)} onBlur=${()=>{ if(title.trim()!==t.title) { if(!up({title})) setTitle(t.title); } }} onKeyDown=${e=>{ if(e.key==="Enter") e.target.blur(); }}/>
-    <div class="grid3">
-      <${Field} label="Stage"><div style="padding-top:6px"><${TStage} k=${t.stage}/></div><//>
-      <${Field} label="Department"><select class="select" value=${t.dept} disabled=${!manage||tDeptsFor(user).length<2} onChange=${e=>{ const d=e.target.value; const p=tAssignable(state,user,d); const keep=p.some(x=>x.id===t.assigneeId); up(keep?{dept:d}:{dept:d,assigneeId:(p.find(x=>x.id===user.id)||p[0]||{}).id}); }}>${(tDeptsFor(user).includes(t.dept)?tDeptsFor(user):[t.dept,...tDeptsFor(user)]).map(d=>html`<option value=${d}>${d}</option>`)}</select><//>
-      <${Field} label="Assigned to"><select class="select" value=${t.assigneeId} disabled=${!manage} onChange=${e=>up({assigneeId:e.target.value})}>${people.map(p=>html`<option value=${p.id}>${p.name} · ${p.dept}</option>`)}</select><//>
-      <${Field} label="Priority"><select class="select" value=${t.priority} disabled=${!manage} onChange=${e=>up({priority:e.target.value})}>${Object.keys(TPRI).map(p=>html`<option value=${p}>${p}</option>`)}</select><//>
-      <${Field} label="Start date"><input class="input" type="date" value=${t.startDate||""} max=${t.plannedDate} disabled=${!manage} onChange=${e=>up({startDate:e.target.value})}/><//>
-      <${Field} label="Planned / due date"><input class="input" type="date" value=${t.plannedDate||""} disabled=${!manage} onChange=${e=>{ if(e.target.value) up({plannedDate:e.target.value}); else e.target.value=t.plannedDate; }}/><//>
-      <${Field} label="Repeats"><select class="select" value=${t.recurring||"none"} disabled=${!manage} onChange=${e=>up({recurring:e.target.value})}>${Object.entries(TREC).map(([k,v])=>html`<option value=${k}>${v}</option>`)}</select><//>
-      <${Field} label="Estimate"><input class="input" value=${est} placeholder="e.g. 2h" disabled=${!manage} onInput=${e=>setEst(e.target.value)} onBlur=${()=>{ const v=tParseMin(est); if(isNaN(v)){ tToast("Write the estimate like 2h, 1h 30m or 45m","bad"); setEst(est0); return; } up({estimateMin:v}); }}/><//>
-      <${Field} label="Time logged"><div class="row" style="padding-top:6px;gap:6px"><b>${tMin(t.loggedMin)}</b>${t.estimateMin?html`<span class="xs faint">of ${tMin(t.estimateMin)}</span>`:""}</div><//>
+  const mList=ment===null?[]:mentionables.filter(u=>u.username.toLowerCase().includes(ment)||(u.name||"").toLowerCase().includes(ment)).slice(0,6);
+  const sendCmt=()=>{ if(cmt.trim()&&A.tComment(orig.key,cmt)){ setCmt(""); setMent(null); } };
+  const renderText=s=>s.split(/(@[\w.-]+)/g).map(p=>p[0]==="@"&&(state.users||[]).some(u=>"@"+u.username===p)?html`<span class="m">${p}</span>`:p);
+  const del=()=>{ if(confirm(`Delete ${orig.id} “${orig.title}”? This cannot be undone.`)&&A.tDelete(orig.key)) onClose(); };
+  const why=!isNew?TR.whyNoClose(orig,user,state):"";
+  const footer=html`<div class="tk-moves">
+    ${canApprove&&html`<button class="btn btn-ok" onClick=${()=>quick("05")}><${Icon} name="approve"/>Approve</button>`}
+    ${!isNew&&canClose&&orig.stage!=="06"&&html`<button class="btn btn-soft" onClick=${()=>quick("06")}><${Icon} name="check"/>Mark done</button>`}
+    <span class="grow"/>
+    <button class="btn btn-ghost" onClick=${onClose}>${editable?"Cancel":"Close"}</button>
+    ${editable&&html`<button class="btn btn-primary" onClick=${save}><${Icon} name="check"/>${isNew?"Create task":"Save changes"}</button>`}</div>`;
+  return html`<${Modal} title=${isNew?"New task":orig.id} sub=${isNew?"Fill in the title, then Create task":`${tDept(orig.dept).code} · ${tDept(orig.dept).name} · created by ${tName(state,orig.creatorId)} · ${TROLE_LABEL[tRole(user)]} view`} onClose=${onClose} footer=${footer}>
+    <label class="tk-title-wrap"><span>Task title <b class="tk-bad">*</b></span><input ref=${titleRef} class="tk-title" value=${d.title} placeholder="What needs to be done?" disabled=${!editable} onInput=${e=>set("title",e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter") save(); }}/></label>
+    ${!isNew&&html`<div class="row wrap" style="gap:6px">
+      <${Tag} tone=${editable?"ok":"neutral"}>${editable?"You can edit":"Read only for you"}</${Tag}>
+      <span title=${canClose?"":why}><${Tag} tone=${canClose?"ok":"neutral"}>${canClose?"You can close":"Can't close: "+why}</${Tag}></span>
+      ${orig.stage==="04"&&html`<${Tag} tone=${canApprove?"violet":"neutral"}>${canApprove?"Needs your approval":"Waiting for HOD approval"}</${Tag}>`}
+      ${tBlockers(state,orig).length>0&&html`<${Tag} tone="bad">Blocked by ${tBlockers(state,orig).map(x=>x.id).join(", ")}</${Tag}>`}
+      ${TR.canDelete(orig,user)&&html`<button class="btn btn-ghost btn-sm" style="margin-left:auto" onClick=${del}><${Icon} name="trash"/>Delete</button>`}</div>`}
+    <div class="grid2">
+      <${Field} label="Stage"><select class="select" value=${d.stage} disabled=${!editable||isNew} onChange=${e=>set("stage",e.target.value)}>${tStages().map(s=>html`<option value=${s.id}>${s.name}</option>`)}</select><//>
+      <${Field} label="Priority"><select class="select" value=${d.priority} disabled=${!editable} onChange=${e=>set("priority",e.target.value)}>${TPRI_LIST.map(p=>html`<option value=${p}>${p}</option>`)}</select><//>
+      <${Field} label="Department"><select class="select" value=${d.dept} disabled=${deptLocked} onChange=${e=>{ const v=e.target.value; const p=tAssignable(state,v,user); setD(x=>({...x,dept:v,assigneeId:p.some(z=>z.id===x.assigneeId)?x.assigneeId:(p.find(z=>z.id===user.id)||p[0]||{}).id})); }}>${tDepts().map(x=>html`<option value=${x.id}>${x.code} · ${x.name}</option>`)}</select><//>
+      <${Field} label="Assigned to"><select class="select" value=${d.assigneeId} disabled=${!editable} onChange=${e=>set("assigneeId",e.target.value)}>${people.map(p=>html`<option value=${p.id}>${p.name}${p.id===user.id?" (me)":""}</option>`)}</select><//>
+      <${Field} label="Planned date"><input type="date" class="input" value=${d.plannedDate} disabled=${!editable} onInput=${e=>set("plannedDate",e.target.value)}/><//>
+      <${Field} label="Start date (optional)"><input type="date" class="input" value=${d.startDate||""} disabled=${!editable} onInput=${e=>set("startDate",e.target.value)}/><//>
+      <${Field} label="Estimated effort (e.g. 2h 30m, 45m)"><input class="input" value=${est} placeholder="e.g. 2h 30m" disabled=${!editable} onInput=${e=>setEst(e.target.value)} style=${isNaN(tParseMin(est))?"border-color:var(--bad)":""}/><//>
+      <${Field} label="Repeats"><select class="select" value=${d.recurring||"none"} disabled=${!editable} onChange=${e=>set("recurring",e.target.value)}>${Object.entries(TREC).map(([k,v])=>html`<option value=${k}>${v}</option>`)}</select><//>
     </div>
-    <${Field} label="Description"><textarea class="textarea" value=${desc} disabled=${!work} placeholder=${work?"Add details…":"No description"} onInput=${e=>setDesc(e.target.value)} onBlur=${()=>{ if(desc!==(t.description||"")) up({description:desc.slice(0,5000)}); }}/><//>
-    <div class="tk-sec"><h4><${Icon} name="tag"/>Tags</h4><div class="row wrap" style="gap:6px">${(t.tags||[]).map(g=>html`<span class="tk-chip">#${g}${manage&&html`<button aria-label=${"Remove "+g} onClick=${()=>up({tags:t.tags.filter(x=>x!==g)})}><${Icon} name="x"/></button>`}</span>`)}${!(t.tags||[]).length&&!manage&&html`<span class="xs faint">None</span>`}
-      ${manage&&html`<input class="input" style="max-width:180px;height:32px" placeholder="Add tag + Enter" value=${tag} onInput=${e=>setTag(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter"){ const v=tag.trim().replace(/^#/,"").toLowerCase(); if(v&&!(t.tags||[]).includes(v)) up({tags:[...(t.tags||[]),v]}); setTag(""); } }}/>`}</div></div>
-    <div class="tk-sec"><h4><${Icon} name="check"/>Checklist<span class="grow"/><span class="xs faint">${subs.filter(s=>s.done).length}/${subs.length}</span></h4>
-      ${subs.map(s=>html`<div class=${"tk-sub"+(s.done?" done":"")}><button class=${"tk-chk"+(s.done?" on":"")} disabled=${!work} aria-label=${s.done?"Mark not done":"Mark done"} onClick=${()=>up({subtasks:subs.map(x=>x.id===s.id?{...x,done:!x.done}:x)})}>${s.done&&html`<${Icon} name="check"/>`}</button><span>${s.title}</span>${work&&html`<button class="tk-x" aria-label="Remove" onClick=${()=>up({subtasks:subs.filter(x=>x.id!==s.id)})}><${Icon} name="x"/></button>`}</div>`)}
-      ${work&&html`<div class="tk-inline"><input class="input" placeholder="Add a checklist item" value=${sub} onInput=${e=>setSub(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter"&&sub.trim()){ up({subtasks:[...subs,{id:uid(),title:sub.trim().slice(0,200),done:false}]}); setSub(""); } }}/><button class="btn btn-ghost" disabled=${!sub.trim()} onClick=${()=>{ up({subtasks:[...subs,{id:uid(),title:sub.trim().slice(0,200),done:false}]}); setSub(""); }}><${Icon} name="plus"/>Add</button></div>`}</div>
-    <div class="tk-sec"><h4><${Icon} name="dep"/>Waits for</h4>
-      ${deps.map(x=>html`<div class="tk-sub"><${TStage} k=${x.stage}/><span><button class="link-like" onClick=${()=>open(x.key)}>${x.id}</button> ${x.title}</span>${manage&&html`<button class="tk-x" aria-label="Remove" onClick=${()=>up({deps:t.deps.filter(k=>k!==x.key)})}><${Icon} name="x"/></button>`}</div>`)}
-      ${!deps.length&&html`<span class="xs faint">Nothing — this task can be closed on its own.</span>`}
-      ${manage&&depChoices.length>0&&html`<select class="select" value="" onChange=${e=>{ if(e.target.value) up({deps:[...(t.deps||[]),e.target.value]}); e.target.value=""; }}><option value="">+ Add a task this one waits for…</option>${depChoices.slice(0,200).map(x=>html`<option value=${x.key}>${x.id} · ${x.title.slice(0,60)}</option>`)}</select>`}</div>
-    <div class="tk-sec"><h4><${Icon} name="clip"/>Files<span class="grow"/>${work&&html`<button class="btn btn-ghost btn-sm" disabled=${busy} onClick=${()=>fileRef.current.click()}><${Icon} name="upload"/>${busy?"Uploading…":"Attach"}</button>`}</h4>
-      <input type="file" class="hidden" ref=${fileRef} onChange=${onFile}/>
-      ${(t.files||[]).map(f=>html`<div class="tk-file"><${Icon} name="file"/><div class="g"><b>${f.name}</b><small>${Math.max(1,Math.round((f.size||0)/1024))} KB · ${f.by} · ${fmtD(f.at)}</small></div><button class="btn btn-ghost btn-sm" onClick=${()=>openFile(f)}>Open</button>${work&&html`<button class="tk-x" aria-label="Remove file" onClick=${()=>delFile(f)}><${Icon} name="trash"/></button>`}</div>`)}
-      ${!(t.files||[]).length&&html`<span class="xs faint">No files. ${SB_READY?"Any file up to 10 MB.":"Up to 400 KB each in offline mode."}</span>`}</div>
-    ${tCanWork(user,t)&&T_OPEN.includes(t.stage)&&html`<div class="tk-sec"><h4><${Icon} name="clock"/>Time</h4><div class="tk-inline"><input class="input" placeholder="e.g. 45m or 1h 30m" value=${logv} onInput=${e=>setLogv(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter") logTime(); }}/><button class="btn btn-ghost" onClick=${logTime}>Log time</button>
-      ${mine?html`<button class="btn btn-soft" onClick=${()=>stopTimer(timer,A)}><${Icon} name="stop"/>Stop ${timer.label}</button>`:html`<button class="btn btn-ghost" disabled=${!!timer.tm} title=${timer.tm?"Another timer is running":""} onClick=${()=>timer.start(t.key)}><${Icon} name="play"/>Start timer</button>`}</div></div>`}
-    ${["approved","done"].includes(t.stage)&&(appr||t.rating)&&html`<div class="tk-sec"><h4><${Icon} name="star"/>HOD rating</h4><div class="row" style="gap:10px"><${TStars} n=${t.rating||0} onPick=${appr?(n=>A.tRate(t.key,n)):null}/>${t.ratedBy&&html`<span class="xs faint">by ${t.ratedBy}</span>`}</div></div>`}
-    <div class="tk-sec"><h4><${Icon} name="msg"/>Comments</h4>
-      ${(t.comments||[]).map(c=>html`<div class="tk-cmt"><span class="avatar tk-av">${initials(c.by)}</span><div class="bubble"><b>${c.by}</b><small>${fmtDT(c.at)}</small><p>${renderText(c.text)}</p></div></div>`)}
-      <div style="position:relative">${mList.length>0&&html`<div class="tk-mention">${mList.map(u=>html`<button onClick=${()=>pickMent(u)}><span class="avatar tk-av">${initials(u.name)}</span><b>${u.name}</b><span class="xs faint">@${u.username} · ${u.dept}</span></button>`)}</div>`}
-        <div class="tk-inline"><textarea class="textarea" style="min-height:44px" placeholder="Write a comment — type @ to mention someone" value=${cmt} onInput=${onCmt} onKeyDown=${e=>{ if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)) sendCmt(); if(e.key==="Escape"&&ment!==null){ e.stopPropagation(); setMent(null); } }}/><button class="btn btn-primary" disabled=${!cmt.trim()} onClick=${sendCmt}><${Icon} name="send"/></button></div></div></div>
-    <div class="tk-sec"><h4><${Icon} name="list"/>Activity<span class="grow"/><button class="btn btn-ghost btn-sm" onClick=${()=>setShowAct(s=>!s)}>${showAct?"Hide":"Show"} (${(t.activity||[]).length})</button></h4>
-      ${showAct&&(t.activity||[]).map(a=>html`<div class="tk-act"><b>${a.by}</b> ${a.text} <span class="faint">· ${fmtDT(a.at)}</span></div>`)}</div>
+    <${Field} label="Description"><textarea class="textarea" value=${d.description} disabled=${!editable} placeholder="Context, links, expected outcome…" onInput=${e=>set("description",e.target.value)}/><//>
+    <div class="tk-sec"><h4><${Icon} name="subtask"/>Subtasks <span class="faint">${(d.subtasks||[]).filter(s=>s.done).length}/${(d.subtasks||[]).length}</span></h4>
+      ${(d.subtasks||[]).map(s=>html`<div class=${"tk-sub"+(s.done?" done":"")}><button class=${"tk-chk"+(s.done?" on":"")} disabled=${!editable} aria-label="Toggle subtask" onClick=${()=>set("subtasks",d.subtasks.map(x=>x.id===s.id?{...x,done:!x.done}:x))}>${s.done&&html`<${Icon} name="check"/>`}</button><span>${s.title}</span>${editable&&html`<button class="tk-x" aria-label="Remove subtask" onClick=${()=>set("subtasks",d.subtasks.filter(x=>x.id!==s.id))}><${Icon} name="x"/></button>`}</div>`)}
+      ${editable&&html`<div class="tk-inline"><input class="input" placeholder="Add a subtask and press Enter" value=${sub} onInput=${e=>setSub(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter"&&sub.trim()){ set("subtasks",[...(d.subtasks||[]),{id:uid(),title:sub.trim().slice(0,200),done:false}]); setSub(""); } }}/><button class="btn btn-ghost" disabled=${!sub.trim()} onClick=${()=>{ set("subtasks",[...(d.subtasks||[]),{id:uid(),title:sub.trim().slice(0,200),done:false}]); setSub(""); }}>Add</button></div>`}</div>
+    <div class="grid2">
+      <div class="tk-sec"><h4><${Icon} name="tag"/>Tags</h4><div class="row wrap" style="gap:6px">${(d.tags||[]).map(g=>html`<span class="tk-chip">${g}${editable&&html`<button aria-label=${"Remove "+g} onClick=${()=>set("tags",d.tags.filter(x=>x!==g))}><${Icon} name="x"/></button>`}</span>`)}${!(d.tags||[]).length&&html`<span class="xs faint">No tags</span>`}</div>
+        ${editable&&html`<div class="tk-inline"><input class="input" placeholder="Add tag" value=${tag} onInput=${e=>setTag(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter"){ const v=tag.trim().replace(/^#/,""); if(v&&!(d.tags||[]).includes(v)) set("tags",[...(d.tags||[]),v]); setTag(""); } }}/><button class="btn btn-ghost" onClick=${()=>{ const v=tag.trim().replace(/^#/,""); if(v&&!(d.tags||[]).includes(v)) set("tags",[...(d.tags||[]),v]); setTag(""); }}>Add</button></div>`}</div>
+      <div class="tk-sec"><h4><${Icon} name="dep"/>Depends on</h4>
+        ${deps.map(x=>html`<div class="tk-sub"><span><button class="link-like" onClick=${()=>open(x.key)}>${x.id}</button> ${x.title}</span><${TStagePill} id=${x.stage}/>${editable&&html`<button class="tk-x" aria-label="Remove dependency" onClick=${()=>set("dependencies",d.dependencies.filter(k=>k!==x.key))}><${Icon} name="x"/></button>`}</div>`)}
+        ${!deps.length&&html`<span class="xs faint">No dependencies. This task can be closed any time.</span>`}
+        ${editable&&depOptions.length>0&&html`<select class="select" value="" onChange=${e=>{ if(e.target.value) set("dependencies",[...(d.dependencies||[]),e.target.value]); e.target.value=""; }}><option value="">Add a dependency…</option>${depOptions.slice(0,300).map(x=>html`<option value=${x.key}>${x.id} · ${x.title.slice(0,60)}</option>`)}</select>`}</div>
+    </div>
+    <div class="grid2">
+      <div class="tk-sec"><h4><${Icon} name="clock"/>Time tracking</h4>
+        ${isNew?html`<span class="xs faint">Create the task first, then track time here.</span>`:html`<div class=${"tk-timerbox"+(mine?" on":"")}><b>${mine?timer.label:tMin(live.timeLogged)}</b><small>${mine?"running · logged "+tMin(live.timeLogged):"logged of "+tMin(live.estimate)+" estimated"}</small><span class="grow"/>${editable&&(mine?html`<button class="btn btn-bad btn-sm" onClick=${()=>stopTimer(timer,A)}><${Icon} name="stop"/>Stop</button>`:html`<button class="btn btn-primary btn-sm" disabled=${!!timer.tm} title=${timer.tm?"Another timer is running":""} onClick=${()=>timer.start(orig.key)}><${Icon} name="play"/>Start</button>`)}</div>
+          ${editable&&html`<div class="tk-inline"><input class="input" placeholder="Log time manually, e.g. 45m or 1h 30m" value=${logv} onInput=${e=>setLogv(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter") logTime(); }}/><button class="btn btn-ghost" onClick=${logTime}>Log</button></div>`}`}</div>
+      <div class="tk-sec"><h4><${Icon} name="sliders"/>Custom fields</h4>
+        ${(d.customFields||[]).map((cf,i)=>html`<div class="tk-sub"><b class="sm">${cf.k}</b><span>${cf.v}</span>${editable&&html`<button class="tk-x" aria-label="Remove field" onClick=${()=>set("customFields",d.customFields.filter((_,j)=>j!==i))}><${Icon} name="x"/></button>`}</div>`)}
+        ${!(d.customFields||[]).length&&html`<span class="xs faint">Add fields like budget, location or beneficiary count.</span>`}
+        ${editable&&html`<div class="tk-inline"><input class="input" style="max-width:40%" placeholder="Field" value=${cfk} onInput=${e=>setCfk(e.target.value)}/><input class="input" placeholder="Value" value=${cfv} onInput=${e=>setCfv(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter"&&cfk.trim()){ set("customFields",[...(d.customFields||[]),{k:cfk.trim(),v:cfv.trim()}]); setCfk(""); setCfv(""); } }}/><button class="btn btn-ghost" disabled=${!cfk.trim()} onClick=${()=>{ set("customFields",[...(d.customFields||[]),{k:cfk.trim(),v:cfv.trim()}]); setCfk(""); setCfv(""); }}>Add</button></div>`}</div>
+    </div>
+    <div class="tk-sec"><h4><${Icon} name="clip"/>Attachments <span class="faint">${(live.attachments||[]).length}</span><span class="grow"/>${!isNew&&editable&&html`<button class="btn btn-ghost btn-sm" disabled=${busy} onClick=${()=>fileRef.current.click()}><${Icon} name="plus"/>${busy?"Uploading…":"Add files"}</button>`}</h4>
+      <input type="file" multiple class="hidden" ref=${fileRef} accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt" onChange=${onFile}/>
+      ${isNew?html`<span class="xs faint">Create the task first, then add files.</span>`:(live.attachments||[]).length?(live.attachments||[]).map(fl=>html`<div class="tk-file"><${Icon} name="file"/><div class="g"><b>${fl.name}</b><small>${Math.max(1,Math.round((fl.size||0)/1024))} KB · ${fl.by||""}</small></div>${(fl.path||fl.data)&&html`<button class="btn btn-ghost btn-sm" onClick=${()=>openFile(fl)}>Open</button>`}${editable&&html`<button class="tk-x" aria-label="Remove attachment" onClick=${()=>delFile(fl)}><${Icon} name="x"/></button>`}</div>`):html`<span class="xs faint">PDF, Word, Excel or photos — up to ${SB_READY?"10 MB":"400 KB"} each.</span>`}</div>
+    ${!isNew&&html`<div class="tk-sec"><h4><${Icon} name="msg"/>Comments <span class="faint">${(live.comments||[]).length}</span></h4>
+      ${(live.comments||[]).map(c=>html`<div class="tk-cmt"><span class="avatar tk-av">${initials(c.by)}</span><div class="bubble"><b>${c.by}</b><small>${ago(c.at)}</small><p>${renderText(c.text)}</p></div></div>`)}
+      ${!(live.comments||[]).length&&html`<span class="xs faint">No comments yet.</span>`}
+      ${TR.canComment(user)?html`<div style="position:relative">${mList.length>0&&html`<div class="tk-mention">${mList.map(u=>html`<button onClick=${()=>pickMent(u)}><span class="avatar tk-av">${initials(u.name)}</span><b>${u.name}</b><span class="xs faint">@${u.username}</span></button>`)}</div>`}
+        <div class="tk-inline"><input class="input" placeholder="Write a comment… use @ to mention" value=${cmt} onInput=${onCmt} onKeyDown=${e=>{ if(e.key==="Enter") sendCmt(); if(e.key==="Escape"&&ment!==null){ e.stopPropagation(); setMent(null); } }}/><button class="btn btn-primary" disabled=${!cmt.trim()} onClick=${sendCmt} aria-label="Send comment"><${Icon} name="send"/></button></div></div>`:html`<span class="xs faint">Your role can view but not comment.</span>`}</div>`}
+    ${!isNew&&orig.stage==="06"&&(TR.canRate(orig,user)||orig.rating)&&html`<div class="tk-sec"><h4><${Icon} name="star"/>Quality rating by HOD / RM</h4><div class="row" style="gap:10px"><${TStars} n=${orig.rating||0} onPick=${TR.canRate(orig,user)?(n=>A.tRate(orig.key,n)):null}/><span class="xs faint">${orig.rating?orig.rating+" / 5"+(orig.ratedBy?" by "+orig.ratedBy:""):"Not rated yet"}</span></div></div>`}
+    ${!isNew&&html`<div class="tk-sec"><h4><${Icon} name="list"/>Activity</h4>${(orig.activity||[]).slice().reverse().slice(0,12).map(a=>html`<div class="tk-act"><b>${a.by}</b> ${a.text} <span class="faint" style="float:right">${ago(a.at)}</span></div>`)}</div>`}
   <//>`;
 }
 
@@ -6079,7 +6270,7 @@ function VendorQuote({token}){
 }
 
 /* Any unexpected error is shown as a red message, so a failure is never silent ("button does nothing"). */
-const BUILD="2026-10-27 tasks-4";
+const BUILD="2026-10-27 planner-5";
 (()=>{ let last=0; const show=m=>{ console.error(m); if(Date.now()-last<1500) return; last=Date.now(); if(window.__toast) window.__toast("Error: "+String(m).slice(0,180)+" (build "+BUILD+")","bad"); };
   window.addEventListener("error",e=>show(e.message||e.error)); window.addEventListener("unhandledrejection",e=>show((e.reason&&e.reason.message)||e.reason)); })();
 const vendorToken=(/#rfq=([0-9a-f]{16,})/i.exec(location.hash||"")||[])[1];
