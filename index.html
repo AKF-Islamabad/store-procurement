@@ -5755,7 +5755,9 @@ function Tasks({state,user,A,taskOpen,setTaskOpen}){
     if(p.badDate){ tToast(`“${p.badDate}” is not a real date`,"bad"); return; }
     const a=p.assigneeId?tUser(state,p.assigneeId):user;
     const d=tIsAdmin(user)?(a.dept||user.dept):user.dept;
-    if(A.tCreate({...blank(),...p,dept:d,assigneeId:a.id,plannedDate:p.plannedDate||today,tags:p.tags})) setQuick(""); };
+    if(A.tCreate({...blank(),...p,dept:d,assigneeId:a.id,plannedDate:p.plannedDate||today,tags:p.tags})){ setQuick(""); showAll(); } };
+  /* a new task must never vanish behind a filter such as "Assigned to me" */
+  const showAll=()=>{ setQ(""); setScope("all"); setDept("all"); setWho("all"); setPri("all"); if(view==="performance") setView("board"); };
   const exportCsv=()=>{ const head=["ID","Title","Department","Assigned to","Created by","Priority","Stage","Start","Planned","Completed","Estimate (min)","Logged (min)","Rating","Tags"];
     const rows=list.map(t=>[t.id,t.title,t.dept,(tUser(state,t.assigneeId)||{}).name||"",(tUser(state,t.creatorId)||{}).name||"",t.priority,TSTAGE[t.stage].label,t.startDate,t.plannedDate,tLocalDay(t.completedAt),t.estimateMin||0,t.loggedMin||0,t.rating||"",(t.tags||[]).join(" ")]);
     const csv=[head,...rows].map(r=>r.map(v=>`"${String(v==null?"":v).replace(/"/g,'""')}"`).join(",")).join("\r\n");
@@ -5788,15 +5790,17 @@ function Tasks({state,user,A,taskOpen,setTaskOpen}){
       ${(q||scope!=="all"||dept!=="all"||who!=="all"||pri!=="all")&&html`<button class="btn btn-ghost btn-sm" onClick=${()=>{ setQ(""); setScope("all"); setDept("all"); setWho("all"); setPri("all"); }}><${Icon} name="x"/>Clear</button>`}
       <button class="btn btn-ghost btn-sm" title="Download the tasks shown as a spreadsheet" onClick=${exportCsv}><${Icon} name="download"/>Excel (CSV)</button>
     </div>`}
-    ${!all.length&&html`<${Card}><${Empty} title="No tasks yet">${canCreate?"Type a task in the box above and press Enter, or click New task.":"Tasks created by departments will appear here."}<//><//>`}
-    ${all.length>0&&view==="board"&&html`<${TBoard} tasks=${list} state=${state} user=${user} A=${A} open=${open}/>`}
-    ${all.length>0&&view==="list"&&html`<${TList} tasks=${list} state=${state} open=${open}/>`}
-    ${all.length>0&&view==="calendar"&&html`<${TCalendar} tasks=${list} state=${state} user=${user} A=${A} open=${open} onCreate=${canCreate?(date=>setCreating(blank({plannedDate:date}))):null}/>`}
-    ${all.length>0&&view==="workload"&&html`<${TWorkload} tasks=${list} state=${state} open=${open}/>`}
-    ${all.length>0&&view==="performance"&&html`<${TPerformance} tasks=${all} state=${state}/>`}
+    <div class="xs faint row" style="gap:6px"><${Icon} name=${SB_READY?"shield":"alert"} cls="icon" style="width:13px"/>${SB_READY?"Saved in Supabase (shared with all staff)":"Offline mode: saved in this browser only"} · ${(state.tasks||[]).length} task${(state.tasks||[]).length===1?"":"s"} in the database · ${all.length} visible to you${list.length!==all.length?` · ${list.length} match the filters`:""}</div>
+    ${!all.length&&html`<div class="notice notice-info"><${Icon} name="tasks"/><span>${canCreate?html`No tasks yet. Type one in the box above and press <b>Enter</b> (e.g. <i>Prepare ration list tomorrow !high</i>), or click <b>New task</b>. The board, planner and reports below fill in as tasks are added.`:"No tasks yet. Tasks created by departments will appear here."}</span></div>`}
+    ${all.length>0&&!list.length&&html`<div class="notice notice-warn"><${Icon} name="search"/><span>${all.length} task${all.length===1?"":"s"} hidden by the filters. <button class="link-like" onClick=${()=>{ setQ(""); setScope("all"); setDept("all"); setWho("all"); setPri("all"); }}>Show all tasks</button></span></div>`}
+    ${view==="board"&&html`<${TBoard} tasks=${list} state=${state} user=${user} A=${A} open=${open}/>`}
+    ${view==="list"&&html`<${TList} tasks=${list} state=${state} open=${open}/>`}
+    ${view==="calendar"&&html`<${TCalendar} tasks=${list} state=${state} user=${user} A=${A} open=${open} onCreate=${canCreate?(date=>setCreating(blank({plannedDate:date}))):null}/>`}
+    ${view==="workload"&&html`<${TWorkload} tasks=${list} state=${state} open=${open}/>`}
+    ${view==="performance"&&html`<${TPerformance} tasks=${all} state=${state}/>`}
   </div>
   ${/* dialogs sit outside .tk-page: its entry animation would otherwise trap them under the top bar */""}
-  ${creating&&html`<${TaskForm} init=${creating} state=${state} user=${user} A=${A} onClose=${()=>setCreating(null)}/>`}
+  ${creating&&html`<${TaskForm} init=${creating} state=${state} user=${user} A=${A} onClose=${()=>setCreating(null)} onCreated=${showAll}/>`}
   ${taskOpen&&html`<${TaskModal} key=${taskOpen} tkey=${taskOpen} state=${state} user=${user} A=${A} timer=${timer} onClose=${()=>setTaskOpen(null)} open=${open}/>`}<//>`;
 }
 
@@ -5924,13 +5928,13 @@ function TPerformance({tasks,state}){
 }
 
 /* ---- new task form ---- */
-function TaskForm({init,state,user,A,onClose}){
+function TaskForm({init,state,user,A,onClose,onCreated}){
   const [f,setF]=useState(init); const set=(k,v)=>setF(x=>({...x,[k]:v})); const [tag,setTag]=useState("");
   const people=tAssignable(state,user,f.dept);
   useEffect(()=>{ if(!people.some(p=>p.id===f.assigneeId)) set("assigneeId",(people.find(p=>p.id===user.id)||people[0]||{}).id||""); },[f.dept]);
   const est=tParseMin(f.estimate);
   const ok=f.title.trim()&&f.assigneeId&&tDate(f.plannedDate)&&!(f.startDate&&(!tDate(f.startDate)||f.startDate>f.plannedDate))&&!isNaN(est);
-  const save=()=>{ if(!ok) return; if(A.tCreate({...f,estimateMin:est||0})) onClose(); };
+  const save=()=>{ if(!ok) return; if(A.tCreate({...f,estimateMin:est||0})){ if(onCreated) onCreated(); onClose(); } };
   const addTag=()=>{ const v=tag.trim().replace(/^#/,"").toLowerCase(); if(v&&!f.tags.includes(v)) set("tags",[...f.tags,v]); setTag(""); };
   return html`<${Modal} title="New task" sub="It starts as New and follows the approval steps" onClose=${onClose} footer=${html`<button class="btn btn-ghost" onClick=${onClose}>Cancel</button><span class="grow"/>${f.startDate&&f.plannedDate&&f.startDate>f.plannedDate&&html`<span class="sm tk-bad">Start date is after the planned date</span>`}<button class="btn btn-primary" disabled=${!ok} onClick=${save}><${Icon} name="check"/>Create task</button>`}>
     <input class="tk-title" autofocus placeholder="What needs to be done?" value=${f.title} onInput=${e=>set("title",e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)) save(); }}/>
@@ -6075,7 +6079,7 @@ function VendorQuote({token}){
 }
 
 /* Any unexpected error is shown as a red message, so a failure is never silent ("button does nothing"). */
-const BUILD="2026-10-27 tasks-3";
+const BUILD="2026-10-27 tasks-4";
 (()=>{ let last=0; const show=m=>{ console.error(m); if(Date.now()-last<1500) return; last=Date.now(); if(window.__toast) window.__toast("Error: "+String(m).slice(0,180)+" (build "+BUILD+")","bad"); };
   window.addEventListener("error",e=>show(e.message||e.error)); window.addEventListener("unhandledrejection",e=>show((e.reason&&e.reason.message)||e.reason)); })();
 const vendorToken=(/#rfq=([0-9a-f]{16,})/i.exec(location.hash||"")||[])[1];
