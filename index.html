@@ -5079,9 +5079,11 @@ function Finance({state,user,A,openReq,openDoc,readOnly}){
 }
 
 /* ---------- Settings (Super Admin) ---------- */
-function Settings({state,A}){
-  const [f,setF]=useState({...DEFAULT_SETTINGS,...state.settings,storeAutoApprove:0,procurementAutoApprove:0}); const set=(k,v)=>setF({...f,[k]:v}); const pct=k=>html`<input class="input" type="number" step="0.5" min="0" max="100" value=${Math.round(f[k]*1000)/10} onInput=${e=>set(k,Number(e.target.value)/100)}/>`;
-  const dirty=JSON.stringify(f)!==JSON.stringify(state.settings);
+function Settings({state,A,user}){
+  /* task departments & stages are saved separately by their own card below, so they are left out of this form */
+  const noTask=o=>{ const {taskDepts,taskStages,...rest}=o||{}; return rest; };
+  const [f,setF]=useState(noTask({...DEFAULT_SETTINGS,...state.settings,storeAutoApprove:0,procurementAutoApprove:0})); const set=(k,v)=>setF({...f,[k]:v}); const pct=k=>html`<input class="input" type="number" step="0.5" min="0" max="100" value=${Math.round(f[k]*1000)/10} onInput=${e=>set(k,Number(e.target.value)/100)}/>`;
+  const dirty=JSON.stringify(f)!==JSON.stringify(noTask(state.settings));
   return html`<div class="stack" style="gap:16px">
     <${Card} title="Organisation & policy" desc="These rules apply to every request from the moment they are saved; changes are written to the audit log.">
       <div class="grid3"><${Field} label="Organisation name on documents"><input class="input" value=${f.orgName} onInput=${e=>set("orgName",e.target.value)}/><//><${Field} label="Fiscal year"><input class="input" value=${f.fiscalYear} onInput=${e=>set("fiscalYear",e.target.value)}/><//><${Field} label="Escalation after (hours)"><input class="input" type="number" min="1" value=${f.escalationHours} onInput=${e=>set("escalationHours",Number(e.target.value))}/><//>
@@ -5095,7 +5097,9 @@ function Settings({state,A}){
       ${f.aiProvider==="gemini"&&html`<div class="notice notice-warn" style="margin-top:10px"><${Icon} name="alert"/><span>The key is stored with the portal settings, so any signed-in user's browser can use it. Use a free-tier key with no billing attached. Only a summary of portal figures (no passwords or signatures) is sent to Google.</span></div>`}<//>
     <${Card} title="Tax rules (FBR)" desc="Applied automatically to every quotation and purchase order."><div class="grid4"><${Field} label="GST %">${pct("gst")}<//><${Field} label="WHT goods · filer %">${pct("whtGoodsFiler")}<//><${Field} label="WHT goods · non-filer %">${pct("whtGoodsNonFiler")}<//><${Field} label="WHT services · filer %">${pct("whtServicesFiler")}<//><${Field} label="WHT services · non-filer %">${pct("whtServicesNonFiler")}<//></div><//>
     <${BackupCard} state=${state} A=${A}/>
-    <div class="row"><span class="grow sm muted">${dirty?"You have unsaved changes.":"All changes saved."}</span><button class="btn btn-ghost" onClick=${()=>setF({...DEFAULT_SETTINGS})}>Restore defaults</button><button class="btn btn-primary" disabled=${!dirty} onClick=${()=>A.saveSettings(f)}><${Icon} name="check"/>Save settings</button></div>
+    <div class="row"><span class="grow sm muted">${dirty?"You have unsaved changes.":"All changes saved."}</span><button class="btn btn-ghost" onClick=${()=>setF(noTask({...DEFAULT_SETTINGS}))}>Restore defaults</button><button class="btn btn-primary" disabled=${!dirty} onClick=${()=>A.saveSettings(f)}><${Icon} name="check"/>Save settings</button></div>
+    <h2 style="margin:12px 0 0;font-size:17px">Tasks & Events</h2>
+    <${TSettings} state=${state} user=${user} A=${A}/>
   </div>`;
 }
 
@@ -5397,10 +5401,12 @@ function InsightsCard({state,user,openReq,setTab}){
 }
 /* Built-in answers: understands status look-ups, "pending", "stock", "budget", "vendor", "how do I …" */
 function builtinAnswer(q,state,user){
+  const ta=taskAnswer(q,state,user); if(ta) return ta;   // tasks & events (staff only ever get task answers)
   const s=q.toLowerCase(); const reqs=visibleRequests(user,state.requests);
   const idm=/akf-(mr|sr)-\d{4}-\d{4}|po-\d{4}-\d{4}|rfq-\d{4}-\d{3}/i.exec(q);
   if(idm){ const id=idm[0].toUpperCase(); const r=reqs.find(x=>x.id===id); if(r){ const n=nextStage(r); const last=r.timeline[r.timeline.length-1]; return `**${r.id}** — ${r.purpose} (${r.dept}, ${pkr(reqTotal(r))}).\nStatus: **${statusLabel(r)}**. Last step: ${last.action} by ${last.by}, ${ago(last.at)}.${n?`\nNext: **${n.label}** by **${n.who}**.${isEscalated(r)?" ⚠ This step is past the escalation limit.":""}`:""}`; } const po=state.pos.find(p=>p.id===id); if(po) return `**${po.id}**: ${(state.vendors.find(v=>v.id===po.vendorId)||{}).name}, total incl. tax ${pkr(po.gross||po.net)}, status ${po.status}, delivery by ${fmtD(po.deliveryBy)}.`; return `I could not find ${id} among the records you can see.`; }
-  if(/pending|waiting|my action|to do|todo/.test(s)){ const mine=reqs.filter(r=>canAct(user,r)); return mine.length?`You have **${mine.length}** item(s) waiting:\n`+mine.map(r=>`• ${r.id} — ${nextStage(r).label} · ${r.purpose} · ${pkr(reqTotal(r))}`).join("\n"):"Nothing is waiting for you right now. 👍"; }
+  if(/pending|waiting|my action|to do|todo/.test(s)){ const mine=reqs.filter(r=>canAct(user,r)); const tw=tWaitingCount(state,user);
+    return (mine.length?`You have **${mine.length}** request(s) waiting:\n`+mine.map(r=>`• ${r.id} — ${nextStage(r).label} · ${r.purpose} · ${pkr(reqTotal(r))}`).join("\n"):"No request is waiting for you. 👍")+(tw?`\n\nTasks & Events: **${tw}** item(s) need you (approvals, sign-offs or your overdue tasks) — ask **"tasks waiting for my approval"** or **"overdue tasks"**.`:""); }
   if(/delay|late|escalat|bottleneck|slow/.test(s)){ const e=reqs.filter(isEscalated); return e.length?`**${e.length}** request(s) are past ${SETTINGS.escalationHours}h:\n`+e.map(r=>`• ${r.id} waiting for ${nextStage(r).who} for ${Math.round(hoursSince(r.timeline[r.timeline.length-1].at))}h`).join("\n"):"No request is past the escalation limit."; }
   if(/stock|store|inventory|expir|minimum|reorder/.test(s)){ const low=state.stock.filter(x=>x.qty<=x.min), exp=state.stock.filter(x=>x.expiry&&(new Date(x.expiry)-Date.now())/864e5<30); return `Stock: **${state.stock.length}** items worth **${pkr(state.stock.reduce((a,x)=>a+x.qty*x.price,0))}**.\n`+(low.length?`Below minimum: ${low.map(x=>`${x.name} (${x.qty}/${x.min} ${x.uom})`).join(", ")}.\n`:"No item is below minimum.\n")+(exp.length?`Expiring within 30 days: ${exp.map(x=>`${x.name} (${fmtD(x.expiry)})`).join(", ")}.`:"Nothing expires within 30 days."); }
   if(/budget|fund|allocat|spend|spent/.test(s)) return "Budget lines:\n"+state.budgets.map(b=>{ const u=budgetUse(state,b.code); return `• ${b.code}: ${pkr(u.allocated)} allocated, ${pkr(u.spent)} spent, ${pkr(u.committed)} committed → **${pkr(u.remaining)}** left`; }).join("\n");
@@ -5413,10 +5419,11 @@ function builtinAnswer(q,state,user){
 }
 function aiContext(state,user){
   const reqs=visibleRequests(user,state.requests).slice(0,60).map(r=>({id:r.id,type:r.type,dept:r.dept,purpose:r.purpose,amount:reqTotal(r),status:statusLabel(r),next:(nextStage(r)||{}).who||"",lastUpdate:r.timeline[r.timeline.length-1].at,escalated:isEscalated(r)}));
-  return JSON.stringify({today:nowISO().slice(0,10),org:SETTINGS.orgName,me:{name:user.name,role:ROLES[user.role].label,dept:user.dept},approvalMatrix:{procurement:FLOW.procurement.map(s=>s.who+": "+s.label),store:FLOW.store.map(s=>s.who+": "+s.label),directPurchaseLimit:SETTINGS.directPurchaseLimit},
+  if(user.role==="staff") return JSON.stringify({today:nowISO().slice(0,10),org:SETTINGS.orgName,me:{name:user.name,role:"Staff",dept:user.dept},...taskContext(state,user)});
+  return JSON.stringify({today:nowISO().slice(0,10),org:SETTINGS.orgName,me:{name:user.name,role:(ROLES[user.role]||{}).label,dept:user.dept},approvalMatrix:{procurement:FLOW.procurement.map(s=>s.who+": "+s.label),store:FLOW.store.map(s=>s.who+": "+s.label),directPurchaseLimit:SETTINGS.directPurchaseLimit},
     requests:reqs, stock:user.role==="hod"?[]:state.stock.map(s=>({name:s.name,qty:s.qty,uom:s.uom,min:s.min,store:s.store,expiry:s.expiry,value:s.qty*s.price})),
     budgets:state.budgets.map(b=>({code:b.code,...budgetUse(state,b.code)})), vendors:state.vendors.map(v=>({name:v.name,filer:v.filer,gst:v.gstRegistered!==false,rating:v.rating,category:v.category})),
-    insights:buildInsights(state,user).map(i=>i.t)});
+    insights:buildInsights(state,user).map(i=>i.t),...taskContext(state,user)});
 }
 async function askGemini(q,history,state,user){
   const key=SETTINGS.aiKey, model=SETTINGS.aiModel||"gemini-2.5-flash";
@@ -5429,12 +5436,12 @@ async function askGemini(q,history,state,user){
 const mdLite=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>");
 function Assistant({state,user,openReq}){
   const [open,setOpen]=useState(false); const [q,setQ]=useState(""); const [busy,setBusy]=useState(false);
-  const [msgs,setMsgs]=useState(()=>[{me:false,text:`Assalam o Alaikum ${user.name.split(" ")[0]}! I'm your portal assistant. I read live portal data to tell you what's pending, where delays are, stock and budget risks, and how to improve the process.`}]);
+  const [msgs,setMsgs]=useState(()=>[{me:false,text:user.role==="staff"?`Assalam o Alaikum ${user.name.split(" ")[0]}! I'm your portal assistant. Ask me to plan your day, show overdue tasks, upcoming events or any task number like AK-101.`:`Assalam o Alaikum ${user.name.split(" ")[0]}! I'm your portal assistant. I read live portal data to tell you what's pending, your tasks and events, where delays are, stock and budget risks, and how to improve the process.`}]);
   const box=useRef(); useEffect(()=>{ if(box.current) box.current.scrollTop=box.current.scrollHeight; },[msgs,open]);
   const ask=async text=>{ const t=(text||q).trim(); if(!t||busy) return; setQ(""); const hist=msgs; setMsgs(m=>[...m,{me:true,text:t}]); setBusy(true);
     let a; if(SETTINGS.aiProvider==="gemini"&&SETTINGS.aiKey){ try{ a=await askGemini(t,hist,state,user); }catch(e){ a=builtinAnswer(t,state,user)+`\n\n_(Gemini unavailable: ${e.message} — answered with the built-in assistant)_`; } } else a=builtinAnswer(t,state,user);
     setMsgs(m=>[...m,{me:false,text:a}]); setBusy(false); };
-  const chips=["What is pending for me?","Any delays?","Stock alerts","Budget status","How does approval work?","Recommendations"];
+  const chips=user.role==="staff"?["Plan my day","My overdue tasks","Upcoming events","Tasks at risk"]:["What is pending for me?","Plan my day","Upcoming events","Tasks waiting for my approval","Any delays?","Stock alerts","Budget status","How does approval work?"];
   return html`<div class="ai no-print">${open&&html`<div class="ai-panel card"><div class="card-h"><${Icon} name="spark"/><div class="grow"><h3>AI Assistant</h3><div class="desc">${SETTINGS.aiProvider==="gemini"&&SETTINGS.aiKey?"Gemini + live portal data":"Built-in · free · live portal data"}</div></div><button class="iconbtn" style="width:30px;height:30px" aria-label="Close assistant" onClick=${()=>setOpen(false)}><${Icon} name="x"/></button></div>
       <div class="ai-msgs" ref=${box}>${msgs.map(m=>html`<div class=${"ai-msg "+(m.me?"me":"")} dangerouslySetInnerHTML=${{__html:mdLite(m.text).replace(/(AKF-(?:MR|SR)-\d{4}-\d{4})/g,'<a href="#" data-req="$1">$1</a>')}} onClick=${e=>{ const id=e.target.getAttribute&&e.target.getAttribute("data-req"); if(id){ e.preventDefault(); openReq(id); } }}/>`)}${busy&&html`<div class="ai-msg"><span class="dots"><i/><i/><i/></span></div>`}</div>
       <div class="ai-chips">${chips.map(c=>html`<button class="chip" onClick=${()=>ask(c)}>${c}</button>`)}</div>
@@ -5542,7 +5549,7 @@ function App(){
     ${modal&&modal.kind==="stock"&&html`<${StockDocModal} key=${modal.id} id=${modal.id} state=${state} onClose=${()=>setModal(null)}/>`}
     ${pw&&html`<${ChangePassword} A=${A} onClose=${()=>setPw(false)}/>`}
     ${signOpen&&html`<${SignatureModal} user=${meRec} A=${A} onClose=${()=>setSignOpen(false)}/>`}
-    ${user.role!=="staff"&&html`<${Assistant} key=${user.id} state=${state} user=${user} openReq=${openReq}/>`}
+    <${Assistant} key=${user.id} state=${state} user=${user} openReq=${openReq}/>
     <${Toasts} items=${toasts}/>
   </div>`;
 }
@@ -5732,7 +5739,7 @@ const TR={
   canApprove(t,u){ const r=tRole(u); return r==="RM"||(T_MGR.includes(r)&&(t.dept===tUDept(u)||(t.eventId&&r!=="HOD"))&&t.assigneeId!==u.id); },
   canRate(t,u){ const r=tRole(u); return (r==="RM"||(T_MGR.includes(r)&&(t.dept===tUDept(u)||(t.eventId&&r!=="HOD"))))&&t.assigneeId!==u.id; },
   canDelete(t,u){ const r=tRole(u); return r==="RM"||(T_MGR.includes(r)&&(t.dept===tUDept(u)||(t.eventId&&r!=="HOD")))||(t.creatorId===u.id&&t.stage==="01"); },
-  canSettings:u=>tRole(u)==="RM",
+  canSettings:u=>!!u&&u.role==="super",   // task departments & stages live in the portal's Settings page (Super Admin only)
   /* events */
   canSeeEvent(e,u,state){ const r=tRole(u); if(["RM","President","GS","MA","HR"].includes(r)) return true; if(e.createdBy===u.id||e.coordinator===u.id) return true; return ((state||TS||{}).tasks||[]).some(t=>t.eventId===e.key&&(t.assigneeId===u.id||t.creatorId===u.id)); },
   canCreateEvent:u=>["RM","MA","HR","HOD"].includes(tRole(u)),
@@ -5753,12 +5760,12 @@ const tCanAssignOthers=u=>["RM",...T_MGR].includes(tRole(u));
 function tAssignable(state,deptId,u,eventId){
   const act=(state.users||[]).filter(x=>x.active!==false); const r=tRole(u);
   if(r==="RM"||(eventId&&["MA","HR"].includes(r))) return act.filter(x=>tRole(x)!=="President");
-  if(T_MGR.includes(r)) return act.filter(x=>(tUDept(x)===tUDept(u)||x.id===u.id)&&!["President","GS"].includes(tRole(x)));
-  return act.filter(x=>x.id===u.id);
+  if(T_MGR.includes(r)) return act.filter(x=>(tUDept(x)===deptId||x.id===u.id)&&!["President","GS"].includes(tRole(x)));   // as in the planner file
+  return act.filter(x=>x.id===u.id);   // staff: only themselves (your instruction)
 }
 const tAssignError=(state,u,c)=>!tCanAssignOthers(u)&&c.assigneeId!==u.id
   ?"Only the HOD, Manager Admin, HR or the Regional Manager can assign tasks to other people. You can create tasks for yourself."
-  :`${tName(state,c.assigneeId)} is not in your department (${tDept(tUDept(tUser(state,u.id)||u)).name}).${["MA","HR"].includes(tRole(u))?" Manager Admin and HR can assign anyone only for event tasks.":""}`;
+  :`${tName(state,c.assigneeId)} is not in ${tDept(c.dept).name}. Choose someone from that department.`;
 /* why a stage change is not allowed (null = allowed) */
 function tMoveError(state,t,to,u){
   if(!TR.canEdit(t,u)) return "You can't change this task.";
@@ -5913,7 +5920,7 @@ function makeTaskActions(commit,user,toast){
         d.events=d.events.filter(x=>x.key!==key); d.tasks.forEach(t=>{ if(t.eventId===key){ t.eventId=null; t.checkItem=null; } }); audit(d,{id:e.id,title:e.title,dept:tUDept(u)},u,"Event deleted"); return e; },e=>`Deleted ${e.id}`);
     },
     tSettings(patch){
-      return run((d,u)=>{ if(!TR.canSettings(u)) fail("Only the Regional Manager can change task settings."); d.settings={...d.settings,...patch}; },"Settings saved");
+      return run((d,u)=>{ if(!TR.canSettings(u)) fail("Only the Super Admin can change task settings."); d.settings={...d.settings,...patch}; },"Settings saved");
     },
     /* tasks saved by an earlier version of this page are converted once to the planner format */
     tMigrate(){
@@ -5962,6 +5969,42 @@ function taskNotifications(state,user){
 }
 const tWaitingCount=(state,user)=>{ TS=state; return (state.tasks||[]).filter(t=>t.v===2&&TR.canSee(t,user)&&((t.stage==="04"&&TR.canApprove(t,user))||(t.assigneeId===user.id&&tOverdue(t)))).length
   +tVisibleEvents(state,user).filter(e=>{ const n=EV_STEPS.find(st=>!(e.approvals||{})[st.id]); return n&&TR.canSignEvent(e,n.id,user); }).length; };
+
+/* ---------- answers for the portal's Ask AI button (one assistant for the whole portal) ---------- */
+function taskAnswer(q,state,user){
+  TS=state; const s=q.toLowerCase(); const t0=tToday(); const r=tRole(user);
+  const vis=(state.tasks||[]).filter(t=>t.v===2&&TR.canSee(t,user)); const evs=tVisibleEvents(state,user);
+  const scope=r==="Staff"?vis.filter(t=>t.assigneeId===user.id):T_MGR.includes(r)?vis.filter(t=>t.dept===tUDept(user)||t.assigneeId===user.id||(r!=="HOD"&&t.eventId)):vis;
+  const line=t=>`• **${t.id}** ${t.title} — ${tName(state,t.assigneeId)} · ${tStage(t.stage).name} · ${t.priority} · due ${tFmt(t.plannedDate)}${tOverdue(t)?" ⚠ overdue":""}`;
+  const idT=/\bak-\d+\b/i.exec(q), idE=/\bev-\d+\b/i.exec(q);
+  if(idT){ const t=vis.find(x=>x.id.toLowerCase()===idT[0].toLowerCase()); if(!t) return `I could not find ${idT[0].toUpperCase()} among the tasks you can see.`; const ev=tEventOf(state,t);
+    return `**${t.id}** — ${t.title}\nAssigned to ${tName(state,t.assigneeId)} by ${tName(state,t.creatorId)} · ${tDept(t.dept).name}\nStage: **${tStage(t.stage).name}** · ${t.priority} · due ${tFmt(t.plannedDate,true)} · ${tProgress(t)}% done${ev?`\nEvent: ${ev.title} (${tFmt(ev.date,true)})`:""}${tBlockers(state,t).length?`\nWaiting for: ${tBlockers(state,t).map(x=>x.id).join(", ")}`:""}${tOverdue(t)?"\n⚠ Overdue.":""}`; }
+  if(idE){ const e=evs.find(x=>x.id.toLowerCase()===idE[0].toLowerCase()); if(!e) return `I could not find ${idE[0].toUpperCase()} among the events you can see.`; return tEventLine(state,e,true); }
+  const asksTasks=/\btasks?\b|plan my day|my day|overdue|event|sign[- ]?off|workload|who is free|capacity|at risk|blocked|stuck|tracking|assigned/.test(s);
+  if(!asksTasks&&r!=="Staff") return null;
+  if(/event/.test(s)){ const up=evs.filter(e=>!["cancelled","completed"].includes(e.status)&&e.date>=t0).sort((a,b)=>a.date.localeCompare(b.date));
+    return up.length?`**${up.length}** upcoming event(s):\n`+up.slice(0,6).map(e=>tEventLine(state,e,false)).join("\n"):"No upcoming events."; }
+  if(/sign[- ]?off|approv|waiting for me|my action|pending/.test(s)){ const w=vis.filter(t=>t.stage==="04"&&TR.canApprove(t,user)); const se=evs.filter(e=>{ const n=EV_STEPS.find(st=>!(e.approvals||{})[st.id]); return n&&TR.canSignEvent(e,n.id,user); });
+    return (w.length||se.length)?`${w.length?`**${w.length}** task(s) waiting for your approval:\n${w.map(line).join("\n")}`:""}${se.length?`${w.length?"\n\n":""}**${se.length}** event(s) need your sign-off:\n${se.map(e=>`• **${e.id}** ${e.title} (${tFmt(e.date,true)})`).join("\n")}`:""}`:"No task or event is waiting for your approval."; }
+  if(/overdue|late|delay/.test(s)){ const o=scope.filter(tOverdue).sort((a,b)=>a.plannedDate.localeCompare(b.plannedDate)); return o.length?`**${o.length}** overdue task(s):\n${o.slice(0,12).map(line).join("\n")}`:"Nothing is overdue. 👍"; }
+  if(/workload|who is free|capacity|busy/.test(s)&&r!=="Staff"){ const ppl={}; scope.filter(tOpen).forEach(t=>{ const p=ppl[t.assigneeId]=ppl[t.assigneeId]||{n:0,m:0,o:0}; p.n++; p.m+=Math.max(0,(t.estimate||0)-(t.timeLogged||0)); if(tOverdue(t)) p.o++; });
+    const rows=Object.entries(ppl).sort((a,b)=>b[1].m-a[1].m); return rows.length?"Open work per person:\n"+rows.map(([id,p])=>`• ${tName(state,id)}: ${p.n} task(s), ${tMin(p.m)} left${p.o?` · ${p.o} overdue`:""}`).join("\n"):"No open tasks."; }
+  if(/risk|blocked|stuck/.test(s)){ const k=[]; scope.filter(tOverdue).forEach(t=>k.push(`• **${t.id}** overdue since ${tFmt(t.plannedDate)}`)); scope.filter(t=>tOpen(t)&&tBlockers(state,t).length).forEach(t=>k.push(`• **${t.id}** blocked by ${tBlockers(state,t).map(x=>x.id).join(", ")}`));
+    scope.filter(t=>t.stage==="04"&&Date.now()-tTs(t.updatedAt)>2*864e5).forEach(t=>k.push(`• **${t.id}** waiting for HOD approval ${Math.round((Date.now()-tTs(t.updatedAt))/864e5)} days`)); scope.filter(t=>t.priority==="Urgent"&&t.stage==="01").forEach(t=>k.push(`• **${t.id}** urgent but not started`));
+    return k.length?"At risk:\n"+k.slice(0,12).join("\n"):"No risks found in your scope."; }
+  /* default: plan for today */
+  const mine=vis.filter(t=>t.assigneeId===user.id&&tOpen(t)); const due=mine.filter(t=>t.plannedDate<=t0).sort(tByPri); let used=0; const fit=[], spill=[];
+  due.forEach(t=>{ const x=Math.max(0,(t.estimate||0)-(t.timeLogged||0))||30; if(used+x<=480){ used+=x; fit.push(t); } else spill.push(t); });
+  const later=mine.filter(t=>t.plannedDate>t0).sort((a,b)=>a.plannedDate.localeCompare(b.plannedDate)).slice(0,5);
+  if(!mine.length) return r==="Staff"?"You have no open tasks. Ask me about **events**, **overdue** work or a task number like AK-101.":"You have no open tasks assigned to you. Ask me about **overdue** tasks, **events**, **workload**, **risks** or what needs **your approval**.";
+  return `${due.length?`**Your plan for today** — ${fit.length} task(s), about ${tMin(used)} of work:\n${fit.map(line).join("\n")}${spill.length?`\n\nWon't fit today (move to tomorrow): ${spill.map(t=>t.id).join(", ")}`:""}`:"Nothing is due today."}${later.length?`\n\nComing up:\n${later.map(line).join("\n")}`:""}`;
+}
+function tEventLine(state,e,full){ const p=tEvProgress(state,e,""); const n=EV_STEPS.find(st=>!(e.approvals||{})[st.id]); const et=tEvTasks(state,e);
+  const unassigned=Object.keys(e.checklist||{}).filter(k=>e.checklist[k].on&&!/:_x\d+$/.test(k)&&!et.some(t=>t.checkItem===k)).length; const dd=tDaysUntil(e.date);
+  return `• **${e.id}** ${e.title} — ${tFmt(e.date,true)} ${e.time}, ${e.venue} (${dd===0?"today":dd===1?"tomorrow":dd>0?`in ${dd} days`:"past"})\n  ${tEvStatus(e)[0]}${n&&e.status!=="draft"&&!["cancelled","completed"].includes(e.status)?` · next sign-off: ${n.who}`:""} · ${p.done}/${p.total} tasks done${p.over?` · ${p.over} overdue`:""}${unassigned?` · ${unassigned} checklist item(s) not assigned`:""}${full&&e.coordinator?`\n  Coordinator: ${tName(state,e.coordinator)}`:""}`; }
+const taskContext=(state,user)=>{ TS=state; const vis=(state.tasks||[]).filter(t=>t.v===2&&TR.canSee(t,user)).slice(0,120);
+  return {myTaskRole:tRole(user),tasks:vis.map(t=>({id:t.id,title:t.title,dept:tDept(t.dept).code,assignee:tName(state,t.assigneeId),creator:tName(state,t.creatorId),stage:tStage(t.stage).name,priority:t.priority,due:t.plannedDate,overdue:tOverdue(t),progress:tProgress(t),event:(tEventOf(state,t)||{}).id||""})),
+    events:tVisibleEvents(state,user).map(e=>({id:e.id,title:e.title,date:e.date,time:e.time,venue:e.venue,status:tEvStatus(e)[0],signed:Object.keys(e.approvals||{}),tasks:tEvTasks(state,e).length}))}; };
 
 /* ---------- running timer: per user on this device, survives a reload ---------- */
 function useTaskTimer(user){
@@ -6041,7 +6084,8 @@ function Tasks({state,user,A,taskOpen,setTaskOpen}){
   /* notifications can ask to open an event ("ev:KEY") or a view ("view:tracking") */
   useEffect(()=>{ if(!taskOpen) return; if(taskOpen.startsWith("ev:")){ const k=taskOpen.slice(3); setTaskOpen(null); openEvent(k); } else if(taskOpen.startsWith("view:")){ setView(taskOpen.slice(5)); setTaskOpen(null); } },[taskOpen]);
   const running=timer.tm&&vis.find(t=>t.key===timer.tm.key);
-  const VIEWS=[["home","Home","home"],["board","Board","board"],["events","Events","flag"],["tracking","Tracking","log"],["planner","Planner","cal"],["workload","Workload","users"],["performance","Performance","chart"],["assistant","Assistant","zap"],["settings","Settings","settings"]];
+  const VIEWS=[["home","Home","home"],["board","Board","board"],["events","Events","flag"],["tracking","Tracking","log"],["planner","Planner","cal"],["workload","Workload","users"],["performance","Performance","chart"]];
+  if(!VIEWS.some(v=>v[0]===view)) setTimeout(()=>setView("home"),0);   // older saved views (assistant / settings) are gone
   const P={state,user,A,open,vis,filtered,f,setFilter,clearF,openNew,go,timer,openEvent,newEvent};
   const migrating=(state.tasks||[]).some(t=>t.v!==2);
   return html`<${Fragment}><div class="tk-page">
@@ -6049,6 +6093,7 @@ function Tasks({state,user,A,taskOpen,setTaskOpen}){
       <div class="seg" role="tablist">${VIEWS.map(([k,l,i])=>html`<button role="tab" class=${view===k?"active":""} onClick=${()=>setView(k)}><${Icon} name=${i}/>${l}</button>`)}</div>
       <span class="grow"/>
       ${running&&html`<span class="tk-timer"><${Icon} name="clock"/>${running.id} · ${timer.label}<button onClick=${()=>open(running.key)}>Open</button><button onClick=${()=>stopTimer(timer,A)}>Stop & log</button></span>`}
+      ${TR.canCreateEvent(user)&&html`<button class="btn btn-soft" onClick=${newEvent}><${Icon} name="flag"/>New event</button>`}
       ${TR.canCreate(user)&&html`<button class="btn btn-primary" onClick=${()=>openNew()}><${Icon} name="plus"/>New task</button>`}
     </div>
     <div class="xs faint row" style="gap:6px;margin-top:-6px"><${Icon} name=${SB_READY?"shield":"alert"} cls="icon" style="width:13px"/>${SB_READY?"Saved in Supabase, shared with all staff":"Offline mode: saved in this browser only"} · ${(state.tasks||[]).length} task${(state.tasks||[]).length===1?"":"s"} in the database · ${vis.length} visible to you as ${TROLE_LABEL[tRole(user)]}${tRole(user)==="HOD"?" of "+tDept(tUDept(user)).name:""}</div>
@@ -6058,8 +6103,6 @@ function Tasks({state,user,A,taskOpen,setTaskOpen}){
     ${view==="planner"&&html`<${TPlanner} ...${P} month=${month} setMonth=${setMonth} selDay=${selDay} setSelDay=${setSelDay} range=${range} setRange=${setRange}/>`}
     ${view==="workload"&&html`<${TWorkload} ...${P}/>`}
     ${view==="performance"&&html`<${TPerformance} ...${P} perfMonth=${perfMonth} setPerfMonth=${setPerfMonth}/>`}
-    ${view==="assistant"&&html`<${TAssistant} ...${P}/>`}
-    ${view==="settings"&&html`<${TSettings} ...${P}/>`}
     ${view==="events"&&html`<${TEvents} ...${P}/>`}
     ${view==="tracking"&&html`<${TTracking} ...${P}/>`}
   </div>
@@ -6104,7 +6147,6 @@ function THome({state,user,A,open,vis,openNew,go,openEvent}){
     ${TR.canCreate(user)&&html`<div><div class="tk-quick"><${Icon} name="plus"/><input value=${q} onInput=${e=>setQ(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter") add(); }} placeholder="Add a task… e.g. Call donors tomorrow !high #Donors @username" aria-label="Quick add task"/><button class="btn btn-primary btn-sm" onClick=${add}>Add</button></div>
       <div class="tk-hint" style="margin-top:6px">Shortcuts: <code>!urgent</code> <code>#tag</code> <code>@username</code> <code>tomorrow</code> <code>friday</code> <code>next week</code> <code>in 3 days</code> <code>15/11</code> <code>2026-11-05</code></div></div>`}
     <${TTrackingHome} state=${state} user=${user} vis=${vis} go=${go}/>
-    <button class="tk-ai-card" onClick=${()=>go("assistant")}><span class="tk-ai-ico"><${Icon} name="zap"/></span><span><b>${tAiHeadline(state,user,vis)}</b><small>Open your assistant for a plan, risks and a weekly digest.</small></span><${Icon} name="right"/></button>
     <div class="tk-kpis4">
       <${Kpi} label="Due today" value=${dueToday.length} tone="warn" onClick=${()=>go("planner")}/>
       <${Kpi} label="Overdue" value=${overdue.length} tone="bad" onClick=${()=>go("board")}/>
@@ -6329,14 +6371,14 @@ function TAssistant({state,user,A,open,vis,openEvent}){
 
 /* ---------- Settings (Regional Manager): departments and workflow stages ---------- */
 function TSettings({state,user,A}){
-  const can=TR.canSettings(user);
+  TS=state; const can=TR.canSettings(user);
   const [code,setCode]=useState(""); const [name,setName]=useState("");
   const depts=tDepts(), stages=tStages(); const count=(k,v)=>(state.tasks||[]).filter(t=>t[k]===v).length;
   const saveD=list=>A.tSettings({taskDepts:list}); const saveS=list=>A.tSettings({taskStages:list});
   const addD=()=>{ const c=code.trim().toUpperCase(), n=name.trim(); if(!c||!n){ tToast("Enter a code and a name","bad"); return; } if(depts.some(d=>d.code===c)){ tToast("That code is already used","bad"); return; }
     const id=pad(Math.max(0,...depts.map(d=>+d.id||0))+1,2); saveD([...depts,{id,code:c.slice(0,10),name:n.slice(0,60),color:"#2567CF"}]); setCode(""); setName(""); };
   return html`<div class="stack" style="gap:14px">
-    ${!can&&html`<div class="notice notice-warn"><${Icon} name="lock"/><span>Only the Regional Manager can manage departments, stages and rules. People and their roles are managed by the Super Admin under <b>Users</b>.</span></div>`}
+    ${!can&&html`<div class="notice notice-warn"><${Icon} name="lock"/><span>Only the Super Admin can manage task departments and stages.</span></div>`}
     <div class="grid2">
       <${Card} title="Departments" right=${html`<span class="xs faint">${depts.length}</span>`}>
         ${can&&html`<div class="tk-inline" style="margin-bottom:10px"><input class="input" style="max-width:150px" placeholder="Code (e.g. MEDIA)" maxlength="10" value=${code} onInput=${e=>setCode(e.target.value)}/><input class="input" placeholder="Department name" value=${name} onInput=${e=>setName(e.target.value)} onKeyDown=${e=>{ if(e.key==="Enter") addD(); }}/><button class="btn btn-primary" onClick=${addD}>Add</button></div>`}
@@ -6647,7 +6689,7 @@ function VendorQuote({token}){
 }
 
 /* Any unexpected error is shown as a red message, so a failure is never silent ("button does nothing"). */
-const BUILD="2026-10-28 events-7";
+const BUILD="2026-10-28 events-8";
 (()=>{ let last=0; const show=m=>{ console.error(m); if(Date.now()-last<1500) return; last=Date.now(); if(window.__toast) window.__toast("Error: "+String(m).slice(0,180)+" (build "+BUILD+")","bad"); };
   window.addEventListener("error",e=>show(e.message||e.error)); window.addEventListener("unhandledrejection",e=>show((e.reason&&e.reason.message)||e.reason)); })();
 const vendorToken=(/#rfq=([0-9a-f]{16,})/i.exec(location.hash||"")||[])[1];
